@@ -1,7 +1,11 @@
-import subprocess
+import json
+import urllib.error
+import urllib.request
 
 
 MODEL = "qwen3:8b"
+OLLAMA_URL = "http://localhost:11434/api/generate"
+TIMEOUT_SECONDS = 30
 
 
 SYSTEM_PROMPT = """
@@ -45,13 +49,51 @@ Analyse the following software requirement:
 {requirement}
 """
 
-    result = subprocess.run(
-        ["ollama", "run", MODEL, prompt],
-        capture_output=True,
-        text=True
+    payload = {
+        "model": MODEL,
+        "prompt": prompt,
+        "stream": True,
+        "think": False,
+        "options": {
+            "num_predict": 400,
+            "num_ctx": 2048,
+            "temperature": 0.3,
+        },
+    }
+
+    request = urllib.request.Request(
+        OLLAMA_URL,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST",
     )
 
-    if result.returncode != 0:
-        raise RuntimeError(result.stderr)
+    chunks = []
 
-    return result.stdout
+    try:
+        with urllib.request.urlopen(request, timeout=TIMEOUT_SECONDS) as response:
+            for raw_line in response:
+                line = raw_line.decode("utf-8").strip()
+                if not line:
+                    continue
+
+                data = json.loads(line)
+                if data.get("error"):
+                    raise RuntimeError(data["error"])
+
+                chunks.append(data.get("response") or "")
+
+                if data.get("done"):
+                    break
+    except TimeoutError as error:
+        raise RuntimeError("Qwen timed out while generating a response.") from error
+    except urllib.error.URLError as error:
+        raise RuntimeError(
+            "Could not reach Ollama. Start Ollama and confirm qwen3:8b is installed."
+        ) from error
+
+    answer = "".join(chunks).strip()
+    if not answer:
+        raise RuntimeError("Qwen returned an empty response.")
+
+    return answer

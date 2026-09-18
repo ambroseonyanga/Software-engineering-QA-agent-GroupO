@@ -127,9 +127,14 @@ def ask_ollama(prompt, model="qwen3:8b"):
         json={
             "model": model,
             "prompt": prompt,
-            "stream": False
+            "stream": False,
+            "think": False,
+            "options": {
+                "num_predict": 400,
+                "num_ctx": 2048,
+            },
         },
-        timeout=120
+        timeout=180
     )
 
     response.raise_for_status()
