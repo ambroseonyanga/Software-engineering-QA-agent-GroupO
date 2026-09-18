@@ -1,0 +1,11 @@
+source_id,source_name,file_path,source_type,origin,authority,purpose,access_status
+SRC-001,Project Charter,knowledge/corpus/project_charter.md,Project document,Project team,Primary,Defines the project problem target users objectives scope assumptions and constraints,Authorized
+SRC-002,User Stories and Acceptance Criteria,knowledge/corpus/user_stories.md,Requirements document,Project team,Primary,Defines user stories requirements and acceptance criteria,Authorized
+SRC-003,AI Boundary Matrix,knowledge/corpus/ai_boundary_matrix.md,Project control document,Project team,Primary,Defines AI responsibilities deterministic responsibilities and human approval boundaries,Authorized
+SRC-004,Model Selection Note,knowledge/corpus/model_selection.md,Technical decision document,Project team,Primary,Documents the selected model and model selection considerations,Authorized
+SRC-005,Prompt Specification v1.0,knowledge/corpus/prompt_v1.0.md,Prompt specification,Project team,Primary,Documents the initial QA agent prompt role task context constraints output and failure behaviour,Authorized
+SRC-006,Prompt Specification v1.1,knowledge/corpus/prompt_v1.1.md,Prompt specification,Project team,Primary,Documents the revised QA agent prompt and traceability constraints,Authorized
+SRC-007,Prompt Evaluation,knowledge/corpus/prompt_evaluation.md,Evaluation document,Project team,Primary,Records prompt evaluation cases observed behaviour weaknesses and improvements,Authorized
+SRC-008,Baseline Model Interaction,knowledge/corpus/baseline_model_interaction.md,Test evidence,Project team,Primary,Records baseline Qwen3 model interaction and performance evidence,Authorized
+SRC-009,Week 1 Progress Report,knowledge/corpus/week1_progress.md,Progress report,Project team,Primary,Records Week 1 project progress decisions and evidence,Authorized
+SRC-010,Week 2 Progress Report,knowledge/corpus/week2_progress.md,Progress report,Project team,Primary,Records Week 2 model integration prompt engineering and evaluation progress,Authorized
