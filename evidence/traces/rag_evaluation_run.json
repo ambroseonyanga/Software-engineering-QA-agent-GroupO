@@ -1,0 +1,424 @@
+{
+  "run_at_utc": "2026-09-25T11:03:06.837543+00:00",
+  "model": "qwen3:8b",
+  "pipeline": "src/rag_service.py",
+  "test_count": 15,
+  "results": [
+    {
+      "id": "RAG-01",
+      "type": "Answerable",
+      "question": "What is the project about?",
+      "expected_sources": [
+        "project_charter.md"
+      ],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-004",
+          "source": "model_selection.md",
+          "chunk_id": 1,
+          "score": 0.145
+        },
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 3,
+          "score": 0.14
+        },
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 1,
+          "score": 0.126
+        }
+      ],
+      "answer": "The project is a Software Engineering QA system that lever\n\nSources used:\n- SRC-004: model_selection.md (chunk 1, score 0.145)\n- SRC-001: project_charter.md (chunk 3, score 0.140)\n- SRC-012: week3_progress.md (chunk 1, score 0.126)",
+      "latency_seconds": 69.36,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-02",
+      "type": "Answerable",
+      "question": "What is the user's main task and target problem?",
+      "expected_sources": [
+        "project_charter.md"
+      ],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 0,
+          "score": 0.124
+        },
+        {
+          "source_id": "SRC-009",
+          "source": "week1_progress.md",
+          "chunk_id": 0,
+          "score": 0.096
+        }
+      ],
+      "answer": "The user's main task is to provide the Software\n\nSources used:\n- SRC-001: project_charter.md (chunk 0, score 0.124)\n- SRC-009: week1_progress.md (chunk 0, score 0.096)",
+      "latency_seconds": 38.27,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-03",
+      "type": "Answerable",
+      "question": "What is the Week 2 baseline model?",
+      "expected_sources": [
+        "model_selection.md",
+        "week2_progress.md"
+      ],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-004",
+          "source": "model_selection.md",
+          "chunk_id": 2,
+          "score": 0.222
+        },
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 0,
+          "score": 0.146
+        },
+        {
+          "source_id": "SRC-008",
+          "source": "baseline_model_interaction.md",
+          "chunk_id": 0,
+          "score": 0.145
+        }
+      ],
+      "answer": "The Week 2 baseline model is the Qwen\n\nSources used:\n- SRC-004: model_selection.md (chunk 2, score 0.222)\n- SRC-012: week3_progress.md (chunk 0, score 0.146)\n- SRC-008: baseline_model_interaction.md (chunk 0, score 0.145)",
+      "latency_seconds": 44.27,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-04",
+      "type": "Answerable",
+      "question": "What does the AI boundary matrix define?",
+      "expected_sources": [
+        "ai_boundary_matrix.md"
+      ],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-009",
+          "source": "week1_progress.md",
+          "chunk_id": 0,
+          "score": 0.125
+        },
+        {
+          "source_id": "SRC-003",
+          "source": "ai_boundary_matrix.md",
+          "chunk_id": 0,
+          "score": 0.109
+        },
+        {
+          "source_id": "SRC-009",
+          "source": "week1_progress.md",
+          "chunk_id": 2,
+          "score": 0.09
+        }
+      ],
+      "answer": "The AI boundary matrix defines the responsibilities and limitations of\n\nSources used:\n- SRC-009: week1_progress.md (chunk 0, score 0.125)\n- SRC-003: ai_boundary_matrix.md (chunk 0, score 0.109)\n- SRC-009: week1_progress.md (chunk 2, score 0.090)",
+      "latency_seconds": 60.08,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-05",
+      "type": "Answerable",
+      "question": "What are the key deliverables for Week 3?",
+      "expected_sources": [],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-013",
+          "source": "source_register.md",
+          "chunk_id": 1,
+          "score": 0.221
+        },
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 0,
+          "score": 0.132
+        },
+        {
+          "source_id": "SRC-011",
+          "source": "week3_assignment_requirements.md",
+          "chunk_id": 0,
+          "score": 0.103
+        }
+      ],
+      "answer": "The key deliverables for Week 3 are:\n\nSources used:\n- SRC-013: source_register.md (chunk 1, score 0.221)\n- SRC-012: week3_progress.md (chunk 0, score 0.132)\n- SRC-011: week3_assignment_requirements.md (chunk 0, score 0.103)",
+      "latency_seconds": 48.54,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-06",
+      "type": "Partially answerable",
+      "question": "What is the current status of Week 3?",
+      "expected_sources": [],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 0,
+          "score": 0.152
+        },
+        {
+          "source_id": "SRC-013",
+          "source": "source_register.md",
+          "chunk_id": 1,
+          "score": 0.121
+        }
+      ],
+      "answer": "The current status of Week 3 is that it\n\nSources used:\n- SRC-012: week3_progress.md (chunk 0, score 0.152)\n- SRC-013: source_register.md (chunk 1, score 0.121)",
+      "latency_seconds": 30.66,
+      "automatic_judgement": "Review"
+    },
+    {
+      "id": "RAG-07",
+      "type": "Unanswerable",
+      "question": "What is the payment gateway API secret?",
+      "expected_sources": [],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-004",
+          "source": "model_selection.md",
+          "chunk_id": 0,
+          "score": 0.096
+        }
+      ],
+      "answer": "I could not find sufficient information in the project documentation\n\nSources used:\n- SRC-004: model_selection.md (chunk 0, score 0.096)",
+      "latency_seconds": 22.23,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-08",
+      "type": "Unanswerable",
+      "question": "What is the exact production deployment command?",
+      "expected_sources": [],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 3,
+          "score": 0.155
+        }
+      ],
+      "answer": "I could not find sufficient information in the project documentation\n\nSources used:\n- SRC-001: project_charter.md (chunk 3, score 0.155)",
+      "latency_seconds": 21.73,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-09",
+      "type": "Answerable",
+      "question": "Which documents are in the controlled project corpus?",
+      "expected_sources": [],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 0,
+          "score": 0.187
+        },
+        {
+          "source_id": "SRC-011",
+          "source": "week3_assignment_requirements.md",
+          "chunk_id": 0,
+          "score": 0.138
+        },
+        {
+          "source_id": "SRC-013",
+          "source": "source_register.md",
+          "chunk_id": 1,
+          "score": 0.11
+        }
+      ],
+      "answer": "The controlled project corpus is maintained in the `knowledge\n\nSources used:\n- SRC-012: week3_progress.md (chunk 0, score 0.187)\n- SRC-011: week3_assignment_requirements.md (chunk 0, score 0.138)\n- SRC-013: source_register.md (chunk 1, score 0.110)",
+      "latency_seconds": 36.38,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-10",
+      "type": "Answerable",
+      "question": "What is the difference between Week 2 and Week 3?",
+      "expected_sources": [],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 0,
+          "score": 0.246
+        },
+        {
+          "source_id": "SRC-009",
+          "source": "week1_progress.md",
+          "chunk_id": 2,
+          "score": 0.105
+        },
+        {
+          "source_id": "SRC-011",
+          "source": "week3_assignment_requirements.md",
+          "chunk_id": 0,
+          "score": 0.093
+        }
+      ],
+      "answer": "The difference between Week 2 and Week 3\n\nSources used:\n- SRC-012: week3_progress.md (chunk 0, score 0.246)\n- SRC-009: week1_progress.md (chunk 2, score 0.105)\n- SRC-011: week3_assignment_requirements.md (chunk 0, score 0.093)",
+      "latency_seconds": 44.4,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-11",
+      "type": "Partially answerable",
+      "question": "What tool execution is currently implemented?",
+      "expected_sources": [
+        "ai_boundary_matrix.md",
+        "user_stories.md"
+      ],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-003",
+          "source": "ai_boundary_matrix.md",
+          "chunk_id": 0,
+          "score": 0.12
+        }
+      ],
+      "answer": "The project documentation does not explicitly state what tool execution\n\nSources used:\n- SRC-003: ai_boundary_matrix.md (chunk 0, score 0.120)",
+      "latency_seconds": 22.46,
+      "automatic_judgement": "Review"
+    },
+    {
+      "id": "RAG-12",
+      "type": "Answerable",
+      "question": "What is the QA workflow described by the project?",
+      "expected_sources": [
+        "project_charter.md",
+        "user_stories.md"
+      ],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-010",
+          "source": "week2_progress.md",
+          "chunk_id": 5,
+          "score": 0.157
+        },
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 2,
+          "score": 0.086
+        }
+      ],
+      "answer": "The QA workflow described by the project includes the following\n\nSources used:\n- SRC-010: week2_progress.md (chunk 5, score 0.157)\n- SRC-001: project_charter.md (chunk 2, score 0.086)",
+      "latency_seconds": 38.27,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-13",
+      "type": "Answerable",
+      "question": "Which model is selected for the project?",
+      "expected_sources": [
+        "model_selection.md"
+      ],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-010",
+          "source": "week2_progress.md",
+          "chunk_id": 0,
+          "score": 0.199
+        },
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 3,
+          "score": 0.112
+        },
+        {
+          "source_id": "SRC-004",
+          "source": "model_selection.md",
+          "chunk_id": 0,
+          "score": 0.107
+        }
+      ],
+      "answer": "The model selected for the project is Qwen3\n\nSources used:\n- SRC-010: week2_progress.md (chunk 0, score 0.199)\n- SRC-001: project_charter.md (chunk 3, score 0.112)\n- SRC-004: model_selection.md (chunk 0, score 0.107)",
+      "latency_seconds": 54.47,
+      "automatic_judgement": "Pass"
+    },
+    {
+      "id": "RAG-14",
+      "type": "Answerable",
+      "question": "What is the role of human approval?",
+      "expected_sources": [
+        "ai_boundary_matrix.md",
+        "user_stories.md"
+      ],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 2,
+          "score": 0.136
+        },
+        {
+          "source_id": "SRC-011",
+          "source": "week3_assignment_requirements.md",
+          "chunk_id": 1,
+          "score": 0.136
+        },
+        {
+          "source_id": "SRC-006",
+          "source": "prompt_v1.1.md",
+          "chunk_id": 0,
+          "score": 0.109
+        }
+      ],
+      "answer": "The role of human approval is to provide final authorization\n\nSources used:\n- SRC-001: project_charter.md (chunk 2, score 0.136)\n- SRC-011: week3_assignment_requirements.md (chunk 1, score 0.136)\n- SRC-006: prompt_v1.1.md (chunk 0, score 0.109)",
+      "latency_seconds": 40.47,
+      "automatic_judgement": "Review"
+    },
+    {
+      "id": "RAG-15",
+      "type": "Unanswerable",
+      "question": "What were the exact test results from a missing sandbox run?",
+      "expected_sources": [],
+      "grounded": true,
+      "sources": [
+        {
+          "source_id": "SRC-002",
+          "source": "user_stories.md",
+          "chunk_id": 2,
+          "score": 0.145
+        },
+        {
+          "source_id": "SRC-002",
+          "source": "user_stories.md",
+          "chunk_id": 1,
+          "score": 0.142
+        },
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 2,
+          "score": 0.118
+        }
+      ],
+      "answer": "I could not find sufficient information in the project documentation\n\nSources used:\n- SRC-002: user_stories.md (chunk 2, score 0.145)\n- SRC-002: user_stories.md (chunk 1, score 0.142)\n- SRC-001: project_charter.md (chunk 2, score 0.118)",
+      "latency_seconds": 53.75,
+      "automatic_judgement": "Pass"
+    }
+  ]
+}

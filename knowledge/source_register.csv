@@ -9,3 +9,6 @@ SRC-007,Prompt Evaluation,knowledge/corpus/prompt_evaluation.md,Evaluation docum
 SRC-008,Baseline Model Interaction,knowledge/corpus/baseline_model_interaction.md,Test evidence,Project team,Primary,Records baseline Qwen3 model interaction and performance evidence,Authorized
 SRC-009,Week 1 Progress Report,knowledge/corpus/week1_progress.md,Progress report,Project team,Primary,Records Week 1 project progress decisions and evidence,Authorized
 SRC-010,Week 2 Progress Report,knowledge/corpus/week2_progress.md,Progress report,Project team,Primary,Records Week 2 model integration prompt engineering and evaluation progress,Authorized
+SRC-011,BSE4104 Week 3 Context Engineering and RAG Requirements,knowledge/corpus/week3_assignment_requirements.md,Course assignment brief,Course instructor,Primary,Defines Week 3 activities deliverables and safety expectations,Authorized
+SRC-012,Week 3 Progress Record,knowledge/corpus/week3_progress.md,Progress report,Project team,Primary,Records Week 3 RAG implementation status completed deliverables and known limitations,Authorized
+SRC-013,Controlled Corpus Source Register,knowledge/corpus/source_register.md,Project metadata,Project team,Primary,Provides a searchable inventory of authorized corpus sources,Authorized

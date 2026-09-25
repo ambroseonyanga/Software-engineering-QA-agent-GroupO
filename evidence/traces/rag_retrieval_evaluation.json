@@ -1,0 +1,358 @@
+{
+  "run_at_utc": "2026-09-25T10:52:27.769512+00:00",
+  "mode": "retrieval_only",
+  "test_count": 15,
+  "results": [
+    {
+      "id": "RAG-01",
+      "type": "Answerable",
+      "question": "What is the project about?",
+      "grounded": true,
+      "latency_milliseconds": 38.77,
+      "sources": [
+        {
+          "source_id": "SRC-004",
+          "source": "model_selection.md",
+          "chunk_id": 1,
+          "score": 0.145
+        },
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 3,
+          "score": 0.14
+        },
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 1,
+          "score": 0.126
+        }
+      ]
+    },
+    {
+      "id": "RAG-02",
+      "type": "Answerable",
+      "question": "What is the user's main task and target problem?",
+      "grounded": true,
+      "latency_milliseconds": 1.55,
+      "sources": [
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 0,
+          "score": 0.124
+        },
+        {
+          "source_id": "SRC-009",
+          "source": "week1_progress.md",
+          "chunk_id": 0,
+          "score": 0.096
+        }
+      ]
+    },
+    {
+      "id": "RAG-03",
+      "type": "Answerable",
+      "question": "What is the Week 2 baseline model?",
+      "grounded": true,
+      "latency_milliseconds": 2.19,
+      "sources": [
+        {
+          "source_id": "SRC-004",
+          "source": "model_selection.md",
+          "chunk_id": 2,
+          "score": 0.222
+        },
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 0,
+          "score": 0.146
+        },
+        {
+          "source_id": "SRC-008",
+          "source": "baseline_model_interaction.md",
+          "chunk_id": 0,
+          "score": 0.145
+        }
+      ]
+    },
+    {
+      "id": "RAG-04",
+      "type": "Answerable",
+      "question": "What does the AI boundary matrix define?",
+      "grounded": true,
+      "latency_milliseconds": 1.7,
+      "sources": [
+        {
+          "source_id": "SRC-009",
+          "source": "week1_progress.md",
+          "chunk_id": 0,
+          "score": 0.125
+        },
+        {
+          "source_id": "SRC-003",
+          "source": "ai_boundary_matrix.md",
+          "chunk_id": 0,
+          "score": 0.109
+        },
+        {
+          "source_id": "SRC-009",
+          "source": "week1_progress.md",
+          "chunk_id": 2,
+          "score": 0.09
+        }
+      ]
+    },
+    {
+      "id": "RAG-05",
+      "type": "Answerable",
+      "question": "What are the key deliverables for Week 3?",
+      "grounded": true,
+      "latency_milliseconds": 1.41,
+      "sources": [
+        {
+          "source_id": "SRC-013",
+          "source": "source_register.md",
+          "chunk_id": 1,
+          "score": 0.221
+        },
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 0,
+          "score": 0.132
+        },
+        {
+          "source_id": "SRC-011",
+          "source": "week3_assignment_requirements.md",
+          "chunk_id": 0,
+          "score": 0.103
+        }
+      ]
+    },
+    {
+      "id": "RAG-06",
+      "type": "Partially answerable",
+      "question": "What is the current status of Week 3?",
+      "grounded": true,
+      "latency_milliseconds": 1.36,
+      "sources": [
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 0,
+          "score": 0.152
+        },
+        {
+          "source_id": "SRC-013",
+          "source": "source_register.md",
+          "chunk_id": 1,
+          "score": 0.121
+        }
+      ]
+    },
+    {
+      "id": "RAG-07",
+      "type": "Unanswerable",
+      "question": "What is the payment gateway API secret?",
+      "grounded": true,
+      "latency_milliseconds": 1.27,
+      "sources": [
+        {
+          "source_id": "SRC-004",
+          "source": "model_selection.md",
+          "chunk_id": 0,
+          "score": 0.096
+        }
+      ]
+    },
+    {
+      "id": "RAG-08",
+      "type": "Unanswerable",
+      "question": "What is the exact production deployment command?",
+      "grounded": true,
+      "latency_milliseconds": 1.38,
+      "sources": [
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 3,
+          "score": 0.155
+        }
+      ]
+    },
+    {
+      "id": "RAG-09",
+      "type": "Answerable",
+      "question": "Which documents are in the controlled project corpus?",
+      "grounded": true,
+      "latency_milliseconds": 1.44,
+      "sources": [
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 0,
+          "score": 0.187
+        },
+        {
+          "source_id": "SRC-011",
+          "source": "week3_assignment_requirements.md",
+          "chunk_id": 0,
+          "score": 0.138
+        },
+        {
+          "source_id": "SRC-013",
+          "source": "source_register.md",
+          "chunk_id": 1,
+          "score": 0.11
+        }
+      ]
+    },
+    {
+      "id": "RAG-10",
+      "type": "Answerable",
+      "question": "What is the difference between Week 2 and Week 3?",
+      "grounded": true,
+      "latency_milliseconds": 1.31,
+      "sources": [
+        {
+          "source_id": "SRC-012",
+          "source": "week3_progress.md",
+          "chunk_id": 0,
+          "score": 0.246
+        },
+        {
+          "source_id": "SRC-009",
+          "source": "week1_progress.md",
+          "chunk_id": 2,
+          "score": 0.105
+        },
+        {
+          "source_id": "SRC-011",
+          "source": "week3_assignment_requirements.md",
+          "chunk_id": 0,
+          "score": 0.093
+        }
+      ]
+    },
+    {
+      "id": "RAG-11",
+      "type": "Partially answerable",
+      "question": "What tool execution is currently implemented?",
+      "grounded": true,
+      "latency_milliseconds": 1.43,
+      "sources": [
+        {
+          "source_id": "SRC-003",
+          "source": "ai_boundary_matrix.md",
+          "chunk_id": 0,
+          "score": 0.12
+        }
+      ]
+    },
+    {
+      "id": "RAG-12",
+      "type": "Answerable",
+      "question": "What is the QA workflow described by the project?",
+      "grounded": true,
+      "latency_milliseconds": 1.46,
+      "sources": [
+        {
+          "source_id": "SRC-010",
+          "source": "week2_progress.md",
+          "chunk_id": 5,
+          "score": 0.157
+        },
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 2,
+          "score": 0.086
+        }
+      ]
+    },
+    {
+      "id": "RAG-13",
+      "type": "Answerable",
+      "question": "Which model is selected for the project?",
+      "grounded": true,
+      "latency_milliseconds": 1.25,
+      "sources": [
+        {
+          "source_id": "SRC-010",
+          "source": "week2_progress.md",
+          "chunk_id": 0,
+          "score": 0.199
+        },
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 3,
+          "score": 0.112
+        },
+        {
+          "source_id": "SRC-004",
+          "source": "model_selection.md",
+          "chunk_id": 0,
+          "score": 0.107
+        }
+      ]
+    },
+    {
+      "id": "RAG-14",
+      "type": "Answerable",
+      "question": "What is the role of human approval?",
+      "grounded": true,
+      "latency_milliseconds": 1.92,
+      "sources": [
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 2,
+          "score": 0.136
+        },
+        {
+          "source_id": "SRC-011",
+          "source": "week3_assignment_requirements.md",
+          "chunk_id": 1,
+          "score": 0.136
+        },
+        {
+          "source_id": "SRC-006",
+          "source": "prompt_v1.1.md",
+          "chunk_id": 0,
+          "score": 0.109
+        }
+      ]
+    },
+    {
+      "id": "RAG-15",
+      "type": "Unanswerable",
+      "question": "What were the exact test results from a missing sandbox run?",
+      "grounded": true,
+      "latency_milliseconds": 1.67,
+      "sources": [
+        {
+          "source_id": "SRC-002",
+          "source": "user_stories.md",
+          "chunk_id": 2,
+          "score": 0.145
+        },
+        {
+          "source_id": "SRC-002",
+          "source": "user_stories.md",
+          "chunk_id": 1,
+          "score": 0.142
+        },
+        {
+          "source_id": "SRC-001",
+          "source": "project_charter.md",
+          "chunk_id": 2,
+          "score": 0.118
+        }
+      ]
+    }
+  ]
+}

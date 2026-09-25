@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QA Agent</title>
+    <title>Software Engineering QA Agent</title>
     <style>
         * { box-sizing: border-box; }
-
         body {
             margin: 0;
             min-height: 100vh;
@@ -14,19 +13,25 @@
             font-family: Arial, sans-serif;
             color: #111827;
         }
-
         .container {
-            max-width: 760px;
-            margin: 60px auto;
-            padding: 0 20px;
+            max-width: 980px;
+            margin: 48px auto;
+            padding: 0 20px 40px;
         }
-
         h1 {
-            margin: 0 0 24px;
+            margin: 0 0 8px;
             font-size: 2.2rem;
             font-weight: 700;
         }
-
+        .subtitle {
+            margin: 0 0 24px;
+            color: #4b5563;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
         .box {
             background: white;
             border: 1px solid #e5e7eb;
@@ -34,16 +39,13 @@
             padding: 20px;
             box-shadow: 0 4px 14px rgba(17, 24, 39, 0.04);
         }
-
         label {
             display: block;
             font-weight: 600;
             margin-bottom: 10px;
         }
-
-        textarea {
+        textarea, input {
             width: 100%;
-            min-height: 160px;
             padding: 14px 16px;
             border: 1px solid #d1d5db;
             border-radius: 10px;
@@ -51,18 +53,18 @@
             resize: vertical;
             outline: none;
         }
-
-        textarea:focus {
+        textarea {
+            min-height: 160px;
+        }
+        textarea:focus, input:focus {
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
         }
-
         .button-row {
             margin-top: 16px;
             display: flex;
             justify-content: flex-end;
         }
-
         button {
             border: none;
             border-radius: 10px;
@@ -73,12 +75,10 @@
             font-weight: 600;
             cursor: pointer;
         }
-
         button:disabled {
             opacity: 0.7;
             cursor: wait;
         }
-
         .loading {
             margin-top: 20px;
             padding: 16px 18px;
@@ -87,11 +87,7 @@
             border: 1px solid #e5e7eb;
             display: none;
         }
-
-        .loading.visible {
-            display: block;
-        }
-
+        .loading.visible { display: block; }
         .thinking {
             display: inline-flex;
             align-items: center;
@@ -100,14 +96,12 @@
             font-size: 0.95rem;
             margin: 0;
         }
-
         .dots {
             display: inline-flex;
             gap: 4px;
             align-items: center;
             min-width: 24px;
         }
-
         .dots span {
             width: 6px;
             height: 6px;
@@ -116,15 +110,12 @@
             display: inline-block;
             animation: blink 1.2s infinite ease-in-out;
         }
-
         .dots span:nth-child(2) { animation-delay: 0.2s; }
         .dots span:nth-child(3) { animation-delay: 0.4s; }
-
         @keyframes blink {
             0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
             40% { opacity: 1; transform: scale(1); }
         }
-
         .result {
             margin-top: 24px;
             background: white;
@@ -132,12 +123,10 @@
             border-radius: 14px;
             padding: 20px;
         }
-
         .result h2 {
             margin: 0 0 12px;
             font-size: 1.1rem;
         }
-
         pre {
             margin: 0;
             white-space: pre-wrap;
@@ -146,22 +135,39 @@
             line-height: 1.6;
             color: #111827;
         }
+        ul {
+            margin: 12px 0 0 18px;
+            padding: 0;
+        }
+        li { margin-bottom: 8px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>QA Agent</h1>
+        <h1>Software Engineering QA Agent</h1>
+        <p class="subtitle">Two-stage workflow: requirement analysis and grounded project-document retrieval.</p>
 
-        <form method="POST" id="qa-form">
+        <div class="grid">
             <div class="box">
-                <label for="requirement">Requirement</label>
-                <textarea id="requirement" name="requirement" placeholder="Enter your requirement here...">{{ requirement }}</textarea>
-
-                <div class="button-row">
-                    <button type="submit">Analyze It</button>
-                </div>
+                <form method="POST" action="/" id="qa-form">
+                    <label for="requirement">Requirement analysis</label>
+                    <textarea id="requirement" name="requirement" placeholder="Enter a software requirement...">{{ requirement }}</textarea>
+                    <div class="button-row">
+                        <button type="submit">Analyze requirement</button>
+                    </div>
+                </form>
             </div>
-        </form>
+
+            <div class="box">
+                <form method="POST" action="/ask" id="rag-form">
+                    <label for="rag_question">Project knowledge retrieval</label>
+                    <input id="rag_question" name="rag_question" type="text" value="{{ rag_question }}" placeholder="Ask about the project, scope, workflow, or deliverables...">
+                    <div class="button-row">
+                        <button type="submit">Ask project corpus</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <div class="loading" id="loading" aria-live="polite">
             <p class="thinking">
@@ -172,26 +178,38 @@
 
         {% if result %}
         <section class="result" id="result-panel">
-            <h2>Answer</h2>
+            <h2>Requirement analysis output</h2>
             <pre>{{ result }}</pre>
+        </section>
+        {% endif %}
+
+        {% if rag_answer %}
+        <section class="result">
+            <h2>Grounded project answer</h2>
+            <pre>{{ rag_answer }}</pre>
+            {% if rag_grounded and rag_sources %}
+            <h2>Sources used</h2>
+            <ul>
+                {% for source in rag_sources %}
+                <li>{{ source.source }} (chunk {{ source.chunk_id }}, score {{ '%.3f'|format(source.score) }})</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </section>
         {% endif %}
     </div>
 
     <script>
         const form = document.getElementById('qa-form');
+        const ragForm = document.getElementById('rag-form');
         const loading = document.getElementById('loading');
-        const button = form.querySelector('button');
-        const resultPanel = document.getElementById('result-panel');
 
-        form.addEventListener('submit', function () {
-            if (resultPanel) {
-                resultPanel.style.display = 'none';
-            }
+        function showLoading() {
             loading.classList.add('visible');
-            button.disabled = true;
-            button.textContent = 'Analyzing...';
-        });
+        }
+
+        form.addEventListener('submit', showLoading);
+        ragForm.addEventListener('submit', showLoading);
     </script>
 </body>
 </html>
