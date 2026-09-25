@@ -210,12 +210,13 @@ class RagPipeline:
         self.chunks = build_chunks(self.documents)
         self.vectorizer, self.matrix = build_index(self.chunks)
 
-    def answer(self, question, generate=True):
+    def answer(self, question, generate=True, top_k=TOP_K):
         results = retrieve(
             question,
             self.chunks,
             self.vectorizer,
             self.matrix,
+            top_k=top_k,
         )
 
         grounded_results = [
@@ -289,5 +290,5 @@ def get_pipeline():
     return _pipeline
 
 
-def answer_question(question, generate=True):
-    return get_pipeline().answer(question, generate=generate)
+def answer_question(question, generate=True, top_k=TOP_K):
+    return get_pipeline().answer(question, generate=generate, top_k=top_k)

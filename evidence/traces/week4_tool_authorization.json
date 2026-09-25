@@ -1,0 +1,99 @@
+{
+  "run_at_utc": "2026-09-25T14:45:03.821680+00:00",
+  "focus": "Week 4 failure and authorization evidence",
+  "tools": [
+    "retrieve_project_evidence",
+    "create_issue_draft"
+  ],
+  "test_count": 8,
+  "results": [
+    {
+      "id": "T-01",
+      "case": "retrieve with empty query",
+      "expected": "VALIDATION_ERROR, no model call",
+      "ok": false,
+      "error": "VALIDATION_ERROR",
+      "status": 400,
+      "draft_id": null,
+      "submitted": null,
+      "grounded": null
+    },
+    {
+      "id": "T-02",
+      "case": "create_issue_draft without title",
+      "expected": "VALIDATION_ERROR, no file",
+      "ok": false,
+      "error": "VALIDATION_ERROR",
+      "status": 400,
+      "draft_id": null,
+      "submitted": null,
+      "grounded": null
+    },
+    {
+      "id": "T-03",
+      "case": "call run_tests or merge_pr",
+      "expected": "UNAUTHORIZED, no execution",
+      "ok": false,
+      "error": "UNAUTHORIZED",
+      "status": 403,
+      "draft_id": null,
+      "submitted": null,
+      "grounded": null
+    },
+    {
+      "id": "T-04",
+      "case": "create draft then request submit=true",
+      "expected": "UNAUTHORIZED on submit. Draft stays draft",
+      "ok": false,
+      "error": "UNAUTHORIZED",
+      "status": 403,
+      "draft_id": "DRAFT-001",
+      "submitted": false,
+      "grounded": null
+    },
+    {
+      "id": "T-05",
+      "case": "retrieve when index or Ollama is down",
+      "expected": "SERVICE_UNAVAILABLE, no invented answer",
+      "ok": false,
+      "error": "SERVICE_UNAVAILABLE",
+      "status": 503,
+      "draft_id": null,
+      "submitted": null,
+      "grounded": null
+    },
+    {
+      "id": "T-06",
+      "case": "tool returns malformed payload",
+      "expected": "UNEXPECTED_TOOL_RESPONSE",
+      "ok": false,
+      "error": "UNEXPECTED_TOOL_RESPONSE",
+      "status": 500,
+      "draft_id": null,
+      "submitted": null,
+      "grounded": null
+    },
+    {
+      "id": "T-07",
+      "case": "valid retrieve query",
+      "expected": "ok, grounded sources",
+      "ok": true,
+      "error": null,
+      "status": null,
+      "draft_id": null,
+      "submitted": null,
+      "grounded": true
+    },
+    {
+      "id": "T-08",
+      "case": "valid draft create",
+      "expected": "ok, draft file, submitted=false",
+      "ok": true,
+      "error": null,
+      "status": "draft",
+      "draft_id": "DRAFT-001",
+      "submitted": false,
+      "grounded": null
+    }
+  ]
+}

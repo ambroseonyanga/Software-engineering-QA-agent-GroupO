@@ -56,6 +56,21 @@
         textarea {
             min-height: 160px;
         }
+        textarea.short {
+            min-height: 72px;
+        }
+        .section-title {
+            margin: 28px 0 12px;
+            font-size: 1.15rem;
+        }
+        .hint {
+            margin: 0 0 16px;
+            color: #4b5563;
+            font-size: 0.95rem;
+        }
+        .field {
+            margin-top: 12px;
+        }
         textarea:focus, input:focus {
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
@@ -145,7 +160,7 @@
 <body>
     <div class="container">
         <h1>Software Engineering QA Agent</h1>
-        <p class="subtitle">Two-stage workflow: requirement analysis and grounded project-document retrieval.</p>
+        <p class="subtitle">Week 2 requirement analysis, Week 3 grounded retrieval, and Week 4 approved tools.</p>
 
         <div class="grid">
             <div class="box">
@@ -164,6 +179,45 @@
                     <input id="rag_question" name="rag_question" type="text" value="{{ rag_question }}" placeholder="Ask about the project, scope, workflow, or deliverables...">
                     <div class="button-row">
                         <button type="submit">Ask project corpus</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <h2 class="section-title">Week 4 tools</h2>
+        <p class="hint">These calls go through the tool allow-list. Retrieval reads the project corpus. Issue notes are stored as local drafts only.</p>
+
+        <div class="grid">
+            <div class="box">
+                <form method="POST" action="/tool" id="retrieve-form">
+                    <input type="hidden" name="tool_name" value="retrieve_project_evidence">
+                    <label for="query">retrieve_project_evidence</label>
+                    <input id="query" name="query" type="text" value="{{ retrieve_query }}" placeholder="Ask for current project evidence...">
+                    <div class="button-row">
+                        <button type="submit">Retrieve evidence</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="box">
+                <form method="POST" action="/tool" id="draft-form">
+                    <input type="hidden" name="tool_name" value="create_issue_draft">
+                    <label for="title">create_issue_draft</label>
+                    <input id="title" name="title" type="text" value="{{ draft_title }}" placeholder="Draft title">
+                    <div class="field">
+                        <input id="failed_test" name="failed_test" type="text" value="{{ draft_failed_test }}" placeholder="Failed test or observed problem">
+                    </div>
+                    <div class="field">
+                        <textarea class="short" id="expected" name="expected" placeholder="Expected behaviour (optional)">{{ draft_expected }}</textarea>
+                    </div>
+                    <div class="field">
+                        <textarea class="short" id="actual" name="actual" placeholder="Actual behaviour (optional)">{{ draft_actual }}</textarea>
+                    </div>
+                    <div class="field">
+                        <textarea class="short" id="notes" name="notes" placeholder="Additional notes (optional)">{{ draft_notes }}</textarea>
+                    </div>
+                    <div class="button-row">
+                        <button type="submit">Save draft</button>
                     </div>
                 </form>
             </div>
@@ -197,11 +251,31 @@
             {% endif %}
         </section>
         {% endif %}
+
+        {% if tool_result %}
+        <section class="result">
+            <h2>Tool result: {{ tool_name }}</h2>
+            {% if not tool_result.ok %}
+            <pre>{{ tool_result.error }}: {{ tool_result.message }}</pre>
+            {% endif %}
+            <pre>{{ tool_result_text }}</pre>
+            {% if tool_result.sources %}
+            <h2>Sources used</h2>
+            <ul>
+                {% for source in tool_result.sources %}
+                <li>{{ source.source_id }} {{ source.source }} (chunk {{ source.chunk_id }}, score {{ '%.3f'|format(source.score) }})</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </section>
+        {% endif %}
     </div>
 
     <script>
         const form = document.getElementById('qa-form');
         const ragForm = document.getElementById('rag-form');
+        const retrieveForm = document.getElementById('retrieve-form');
+        const draftForm = document.getElementById('draft-form');
         const loading = document.getElementById('loading');
 
         function showLoading() {
@@ -210,6 +284,8 @@
 
         form.addEventListener('submit', showLoading);
         ragForm.addEventListener('submit', showLoading);
+        retrieveForm.addEventListener('submit', showLoading);
+        draftForm.addEventListener('submit', showLoading);
     </script>
 </body>
 </html>
