@@ -42,3 +42,12 @@ Failure behaviour: missing title or failed_test returns VALIDATION_ERROR and wri
 ## Orchestration rule
 
 All tool calls pass through the application tool service. That module applies the allow-list, validates the input schema, executes only approved tools, and records a trace for Week 4 evidence.
+
+The Week 4 QA-request form now uses Qwen3 to select one tool and its arguments.
+The versioned routing prompt is tool-router-v1.0.txt. Application-side JSON Schema
+validation rejects invalid types and unknown fields before dispatch. Model-routed
+requests save full decisions and results under evidence/traces/tool_requests.
+Draft IDs use a unique random suffix. Only registered corpus records marked
+Authorized and resolving inside the corpus folder are ingested. Restart the app
+after changing the register. Higher-impact actions are blocked entirely; there
+is no approval-and-execution path yet. The multi-step agent loop is Week 5 work.

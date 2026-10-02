@@ -20,7 +20,7 @@ TIMEOUT_SECONDS = 90
 TOP_K = 3
 MIN_SCORE = 0.08
 CHUNK_SIZE = 180
-MAX_RESPONSE_TOKENS = 10
+MAX_RESPONSE_TOKENS = 400
 
 
 def load_source_register():
@@ -33,8 +33,7 @@ def load_source_register():
         reader = csv.DictReader(handle)
         for row in reader:
             path = (row.get("file_path") or "").replace("\\", "/")
-            name = Path(path).name
-            register[name] = row
+            register[path] = row
 
     return register
 
@@ -42,7 +41,13 @@ def load_source_register():
 def load_documents():
     documents = []
 
-    for file_path in sorted(CORPUS_DIR.glob("*.md")):
+    for row in load_source_register().values():
+        if row.get("access_status") != "Authorized":
+            continue
+        file_path = (PROJECT_ROOT / row["file_path"].replace("\\", "/")).resolve()
+        # Resolve before checking containment so symlinks cannot escape the corpus.
+        if not file_path.is_relative_to(CORPUS_DIR.resolve()) or file_path.suffix != ".md":
+            continue
         text = file_path.read_text(encoding="utf-8").strip()
         if not text:
             continue
@@ -224,7 +229,7 @@ class RagPipeline:
         ]
 
         for result in grounded_results:
-            meta = self.register.get(result["source"], {})
+            meta = self.register.get(result["path"], {})
             result["source_id"] = meta.get("source_id", "")
             result["authority"] = meta.get("authority", "")
 

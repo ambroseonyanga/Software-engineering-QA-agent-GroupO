@@ -68,7 +68,7 @@ Authorization: Creating a draft is allowed. Submitting, merging, deploying or ru
 | Field | Type | Meaning |
 | --- | --- | --- |
 | ok | boolean | True when a draft record was stored |
-| draft_id | string | Identifier such as DRAFT-001 |
+| draft_id | string | Unique identifier such as DRAFT-a3b4c5d6e7f8 |
 | status | string | Always `draft` |
 | path | string | Relative path under `evidence/drafts` |
 | submitted | boolean | Always false |
@@ -84,4 +84,22 @@ Authorization: Creating a draft is allowed. Submitting, merging, deploying or ru
 
 ## Orchestration rule
 
-All tool calls pass through `src/tool_service.py`. That module is the application orchestration layer. It applies the allow-list, validates the input schema, executes only approved tools, and records a trace in `evidence/traces/week4_tool_calls.json`.
+All tool calls pass through `src/tool_service.py`. Executable input schemas in
+`src/tool_contracts.py` reject incorrect types and unknown fields. Optional draft
+strings have a 2,000-character limit; `failed_test` is nonempty and has the same
+limit. The `submit`, `merge`, `deploy` and `execute` flags are booleans.
+
+`src/tool_router.py` uses a versioned prompt to request one structured model
+decision, validates it, and invokes at most one approved tool. A `none` decision
+asks for clarification or declines unsupported work. Invalid JSON/decisions
+return `UNEXPECTED_TOOL_RESPONSE`; model unavailability returns
+`SERVICE_UNAVAILABLE`. There is no retry/re-planning loop.
+
+Model-routed calls store full request/decision/result traces under
+`evidence/traces/tool_requests`. Direct manual calls retain the summary log at
+`evidence/traces/week4_tool_calls.json`. Higher-impact actions are blocked;
+there is no executable approval path in Week 4.
+
+The model API uses structured JSON output supported by the
+[Ollama generate endpoint](https://docs.ollama.com/api/generate).
+Application-side JSON Schema validation is authoritative, regardless of model output.

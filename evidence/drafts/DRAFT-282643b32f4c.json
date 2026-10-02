@@ -1,0 +1,12 @@
+{
+  "title": "Cart total stays zero",
+  "failed_test": "TC-CART-04",
+  "expected": "cart total updates after quantity change",
+  "actual": "displayed total stayed at zero",
+  "notes": "",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-02T15:18:27.959647+00:00",
+  "draft_id": "DRAFT-282643b32f4c",
+  "path": "evidence/drafts/DRAFT-282643b32f4c.json"
+}

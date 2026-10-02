@@ -1,12 +1,16 @@
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from uuid import uuid4
+from jsonschema import ValidationError, validate
 
 
 try:
     from .rag_service import answer_question
+    from .tool_contracts import TOOL_SCHEMAS, RETRIEVAL_SCHEMA
 except ImportError:  # pragma: no cover - allows running as a script from src/
     from rag_service import answer_question
+    from tool_contracts import TOOL_SCHEMAS, RETRIEVAL_SCHEMA
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -43,27 +47,10 @@ def _error(code, message, status=400, **extra):
     return result
 
 
-def _truthy(value):
-    if isinstance(value, bool):
-        return value
-    if value is None:
-        return False
-    return str(value).strip().lower() in {"1", "true", "yes", "on"}
-
-
 def _as_int(value, default):
     if value is None or value == "":
         return default
     return int(value)
-
-
-def _next_draft_id(draft_dir):
-    highest = 0
-    for path in draft_dir.glob("DRAFT-*.json"):
-        suffix = path.stem.replace("DRAFT-", "", 1)
-        if suffix.isdigit():
-            highest = max(highest, int(suffix))
-    return f"DRAFT-{highest + 1:03d}"
 
 
 def _append_trace(record):
@@ -157,8 +144,14 @@ def retrieve_project_evidence(arguments, generate=True, retrieve_fn=None):
             status=503,
         )
 
-    if not isinstance(rag_result, dict):
-        return normalize_tool_result("retrieve_project_evidence", rag_result)
+    try:
+        validate(rag_result, RETRIEVAL_SCHEMA)
+        if rag_result["grounded"] != bool(rag_result["sources"]):
+            raise ValueError("Grounding and source evidence disagree.")
+        if generate and rag_result["grounded"] and not rag_result["answer"].strip():
+            raise ValueError("Grounded generation returned an empty answer.")
+    except (ValidationError, ValueError):
+        return _error("UNEXPECTED_TOOL_RESPONSE", "Retrieval returned invalid evidence.", status=500)
 
     sources = []
     for item in rag_result.get("sources") or []:
@@ -218,14 +211,15 @@ def create_issue_draft(arguments, draft_dir=None):
 
     try:
         draft_dir.mkdir(parents=True, exist_ok=True)
-        draft_id = _next_draft_id(draft_dir)
+        draft_id = f"DRAFT-{uuid4().hex[:12]}"
         path = draft_dir / f"{draft_id}.json"
         record["draft_id"] = draft_id
         try:
             record["path"] = str(path.resolve().relative_to(PROJECT_ROOT)).replace("\\", "/")
         except ValueError:
             record["path"] = str(path)
-        path.write_text(json.dumps(record, indent=2), encoding="utf-8")
+        with path.open("x", encoding="utf-8") as handle:
+            json.dump(record, handle, indent=2)
     except OSError as error:
         return _error(
             "SERVICE_UNAVAILABLE",
@@ -251,10 +245,18 @@ def invoke_tool(
     draft_dir=None,
     record_trace=True,
 ):
-    arguments = dict(arguments or {})
+    arguments = {} if arguments is None else arguments
     tool_name = str(tool_name or "").strip()
 
-    higher_impact_requested = any(_truthy(arguments.get(flag)) for flag in HIGHER_IMPACT_FLAGS)
+    validation_error = None
+    if tool_name in ALLOWED_TOOLS:
+        try:
+            validate(arguments, TOOL_SCHEMAS[tool_name])
+        except ValidationError as error:
+            validation_error = _error("VALIDATION_ERROR", error.message)
+    higher_impact_requested = isinstance(arguments, dict) and any(
+        arguments.get(flag) is True for flag in HIGHER_IMPACT_FLAGS
+    )
 
     if tool_name in BLOCKED_TOOLS or tool_name not in ALLOWED_TOOLS:
         result = _error(
@@ -266,6 +268,8 @@ def invoke_tool(
             status=403,
             tool=tool_name,
         )
+    elif validation_error:
+        result = validation_error
     elif tool_name == "retrieve_project_evidence":
         result = retrieve_project_evidence(
             arguments,
@@ -300,7 +304,7 @@ def invoke_tool(
             "tool": tool_name,
             "arguments": {
                 key: arguments[key]
-                for key in arguments
+                for key in (arguments if isinstance(arguments, dict) else {})
                 if key in {
                     "query",
                     "top_k",

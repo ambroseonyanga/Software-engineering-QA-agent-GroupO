@@ -1,0 +1,33 @@
+{
+  "request_id": "8a15ac65001a4c7f8072042e504ba41b",
+  "timestamp_utc": "2026-10-02T15:17:11.228274+00:00",
+  "model": "qwen3:8b",
+  "prompt_version": "tool-router-v1.0.txt",
+  "request": "Create a local issue draft titled Cart total stays zero. Failed test: TC-CART-04. Expected: cart total updates after quantity change. Actual: displayed total stayed at zero. Do not submit it.",
+  "max_tool_calls": 1,
+  "state": "finished",
+  "decision": {
+    "tool": "create_issue_draft",
+    "arguments": {
+      "title": "Cart total stays zero",
+      "failed_test": "TC-CART-04",
+      "expected": "cart total updates after quantity change",
+      "actual": "displayed total stayed at zero",
+      "notes": "",
+      "submit": false,
+      "merge": false,
+      "deploy": false,
+      "execute": false
+    },
+    "message": "Issue draft created successfully."
+  },
+  "elapsed_seconds": 76.732,
+  "result": {
+    "ok": true,
+    "draft_id": "DRAFT-282643b32f4c",
+    "status": "draft",
+    "path": "evidence/drafts/DRAFT-282643b32f4c.json",
+    "submitted": false,
+    "title": "Cart total stays zero"
+  }
+}

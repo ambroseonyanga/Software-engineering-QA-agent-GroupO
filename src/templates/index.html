@@ -185,6 +185,14 @@
         </div>
 
         <h2 class="section-title">Week 4 tools</h2>
+        <div class="box">
+            <form method="POST" action="/tool-request" id="tool-request-form">
+                <label for="qa-request">Ask for project evidence or a local issue draft</label>
+                <textarea id="qa-request" name="request" required minlength="3" maxlength="2000" placeholder="For example: What actions require human approval in this project?"></textarea>
+                <p class="hint">The model can choose one approved tool. Drafts remain local. Test execution, publishing, merging and deployment are unavailable.</p>
+                <button type="submit">Process QA request</button>
+            </form>
+        </div>
         <p class="hint">These calls go through the tool allow-list. Retrieval reads the project corpus. Issue notes are stored as local drafts only.</p>
 
         <div class="grid">
@@ -286,6 +294,7 @@
         ragForm.addEventListener('submit', showLoading);
         retrieveForm.addEventListener('submit', showLoading);
         draftForm.addEventListener('submit', showLoading);
+        document.getElementById('tool-request-form').addEventListener('submit', showLoading);
     </script>
 </body>
 </html>

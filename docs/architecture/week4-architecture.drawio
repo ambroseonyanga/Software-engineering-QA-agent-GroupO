@@ -1,0 +1,168 @@
+<mxfile host="Electron" pages="2">
+  <diagram name="Week 4 context" id="week4-context">
+    <mxGraphModel dx="1407" dy="1022" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;spacing=10;" value="WEEK 4 — IMPLEMENTED SYSTEM CONTEXT" vertex="1">
+          <mxGeometry height="55" width="700" x="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="user" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;spacing=10;" value="Developer / QA engineer&#xa;Authorized or synthetic requests" vertex="1">
+          <mxGeometry height="100" width="170" x="10" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="app" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;spacing=10;" value="Local QA application&#xa;Flask + deterministic tool dispatcher&#xa;One model decision, at most one tool call" vertex="1">
+          <mxGeometry height="120" width="330" x="420" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="model" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;spacing=10;" value="Local Ollama / Qwen3 8B&#xa;Tool selection and grounded answers" vertex="1">
+          <mxGeometry height="80" width="310" x="440" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="corpus" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;spacing=10;" value="Authorized source register&#xa;Controlled Markdown corpus" vertex="1">
+          <mxGeometry height="100" width="250" x="900" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="drafts" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;spacing=10;" value="Local draft records&#xa;evidence/drafts&#xa;submitted = false" vertex="1">
+          <mxGeometry height="100" width="250" x="900" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="traces" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;spacing=10;" value="Local execution evidence&#xa;Request, decision, result and timing" vertex="1">
+          <mxGeometry height="100" width="250" x="900" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="boundary" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;spacing=10;" value="BOUNDARY&#xa;Loopback-only trusted local demo. No shell, test execution, issue submission, merge or deployment.&#xa;No approval-to-execution path. Multi-step agency is Week 5 work." vertex="1">
+          <mxGeometry height="110" width="700" x="270" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;startArrow=block;startFill=1;" target="app" value="Request / review results">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="app" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;startArrow=block;startFill=1;" target="model" value="Structured decision / generated answer">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="280" />
+              <mxPoint x="640" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="corpus" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="app" value="Registered evidence">
+          <mxGeometry relative="1" x="0.6364" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="490" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="app" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="drafts" value="Create local draft">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="800" y="350" />
+              <mxPoint x="800" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="app" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="traces" value="Record outcome">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1025" y="390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Week 4 tool flow" id="week4-tool-flow">
+    <mxGraphModel dx="1407" dy="1022" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;spacing=10;" value="WEEK 4 — MODEL-SELECTED TOOL FLOW" vertex="1">
+          <mxGeometry height="50" width="700" x="250" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ui" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;spacing=10;" value="Local Flask interface&#xa;POST /tool-request" vertex="1">
+          <mxGeometry height="65" width="280" x="460" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="prompt" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;spacing=10;" value="Versioned router prompt&#xa;Executable JSON schemas" vertex="1">
+          <mxGeometry height="75" width="270" x="40" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="router" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;spacing=10;" value="Single-decision router&#xa;Check audit storage before dispatch" vertex="1">
+          <mxGeometry height="75" width="280" x="460" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="model" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;spacing=10;" value="Local Qwen3 8B / Ollama&#xa;Structured JSON decision" vertex="1">
+          <mxGeometry height="75" width="260" x="900" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="validate" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;spacing=10;" value="Deterministic validation&#xa;Decision, tool allow-list, arguments" vertex="1">
+          <mxGeometry height="80" width="280" x="460" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="stop" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#f8cecc;strokeColor=#b85450;fontSize=14;spacing=10;" value="No tool, invalid or prohibited&#xa;Clarification / refusal / safe error&#xa;STOP" vertex="1">
+          <mxGeometry height="90" width="260" x="900" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="retrieve" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;spacing=10;" value="retrieve_project_evidence&#xa;Registered-document retrieval" vertex="1">
+          <mxGeometry height="75" width="300" x="200" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="draft" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;spacing=10;" value="create_issue_draft&#xa;Write unique local draft" vertex="1">
+          <mxGeometry height="75" width="300" x="760" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="corpus" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;spacing=10;" value="Authorized register + corpus&#xa;Resolved paths inside corpus only" vertex="1">
+          <mxGeometry height="75" width="280" x="30" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="generate" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;spacing=10;" value="Generate grounded answer&#xa;Local Qwen3 via Ollama" vertex="1">
+          <mxGeometry height="75" width="290" x="360" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="store" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;spacing=10;" value="evidence/drafts&#xa;status=draft; submitted=false" vertex="1">
+          <mxGeometry height="75" width="300" x="760" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="output" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;spacing=10;" value="Validate retrieval evidence&#xa;Return answer + source excerpts" vertex="1">
+          <mxGeometry height="75" width="290" x="360" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="result" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;spacing=10;" value="Display actual tool result&#xa;Return to developer; STOP" vertex="1">
+          <mxGeometry height="75" width="320" x="540" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="trace" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;spacing=10;" value="Per-request trace&#xa;Decision, arguments, full result, timing&#xa;evidence/traces/tool_requests" vertex="1">
+          <mxGeometry height="100" width="350" x="30" y="880" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="ui" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="router" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="prompt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="router" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;startArrow=block;startFill=1;" target="model" value="Request / decision">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="router" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="validate" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="validate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="retrieve" value="Read approved evidence">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="validate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="draft" value="Local draft only">
+          <mxGeometry relative="1" x="-0.3794" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="910" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="corpus" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="retrieve" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="retrieve" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="generate" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="generate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="output" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="draft" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="store" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="store" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="result" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="output" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="result" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="result" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" target="trace" value="Record actual outcome">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;spacing=10;" value="Manual /tool forms call the same dispatcher.&#xa;Model failures stop before dispatch. Audit storage is checked before any side effect." vertex="1">
+          <mxGeometry height="60" width="740" x="400" y="1010" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

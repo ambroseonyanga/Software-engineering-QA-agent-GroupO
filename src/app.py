@@ -6,13 +6,16 @@ try:
     from .qa_service import analyse_requirement
     from .rag_service import answer_question
     from .tool_service import invoke_tool
+    from .tool_router import handle_tool_request
 except ImportError:  # pragma: no cover - allows running as a script from src/
     from qa_service import analyse_requirement
     from rag_service import answer_question
     from tool_service import invoke_tool
+    from tool_router import handle_tool_request
 
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 16384
 
 
 def page_context(**overrides):
@@ -93,9 +96,14 @@ def tool():
     tool_name = request.form.get("tool_name", "").strip()
 
     if tool_name == "retrieve_project_evidence":
+        top_k = request.form.get("top_k", "3")
+        try:
+            top_k = int(top_k)
+        except ValueError:
+            pass  # The dispatcher returns a schema validation error.
         arguments = {
             "query": request.form.get("query", ""),
-            "top_k": request.form.get("top_k") or 3,
+            "top_k": top_k,
         }
         result = invoke_tool(tool_name, arguments, generate=True)
         return render_template(
@@ -115,7 +123,7 @@ def tool():
             "expected": request.form.get("expected", ""),
             "actual": request.form.get("actual", ""),
             "notes": request.form.get("notes", ""),
-            "submit": request.form.get("submit", ""),
+            "submit": request.form.get("submit", "").lower() in {"true", "1", "on"},
         }
         result = invoke_tool(tool_name, arguments)
         return render_template(
@@ -143,5 +151,14 @@ def tool():
     )
 
 
+@app.route("/tool-request", methods=["POST"])
+def tool_request():
+    result = handle_tool_request(request.form.get("request", ""))
+    return render_template("index.html", **page_context(
+        tool_name="QA request", tool_result=result,
+        tool_result_text=json.dumps(result, indent=2),
+    ))
+
+
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(host="127.0.0.1", port=5000)
