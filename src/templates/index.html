@@ -160,7 +160,7 @@
 <body>
     <div class="container">
         <h1>Software Engineering QA Agent</h1>
-        <p class="subtitle">Week 2 requirement analysis, Week 3 grounded retrieval, and Week 4 approved tools.</p>
+        <p class="subtitle">Week 2 requirement analysis, Week 3 grounded retrieval, Week 4 approved tools, and Week 5 bounded agent.</p>
 
         <div class="grid">
             <div class="box">
@@ -231,12 +231,49 @@
             </div>
         </div>
 
+        <h2 class="section-title">Week 5 bounded agent</h2>
+        <div class="box">
+            <form method="POST" action="/agent" id="agent-form">
+                <label for="agent-title">Failure triage agent</label>
+                <p class="hint">Give one observed failure. The agent may retrieve project evidence and then save one local draft, within fixed limits. It cannot run tests, submit, merge or deploy. It stops and hands off to you when unsure.</p>
+                <input id="agent-title" name="title" type="text" required minlength="8" maxlength="120" value="{{ agent_form.get('title', '') }}" placeholder="Failure title (8 to 120 characters)">
+                <div class="field"><input name="failed_test" type="text" required maxlength="200" value="{{ agent_form.get('failed_test', '') }}" placeholder="Failed test ID or observed problem"></div>
+                <div class="field"><textarea class="short" name="expected" maxlength="1000" placeholder="Expected behaviour (optional)">{{ agent_form.get('expected', '') }}</textarea></div>
+                <div class="field"><textarea class="short" name="actual" maxlength="1000" placeholder="Actual behaviour (optional)">{{ agent_form.get('actual', '') }}</textarea></div>
+                <div class="button-row"><button type="submit">Run triage agent</button></div>
+            </form>
+        </div>
+
         <div class="loading" id="loading" aria-live="polite">
             <p class="thinking">
                 <span>Thinking</span>
                 <span class="dots"><span></span><span></span><span></span></span>
             </p>
         </div>
+
+        {% if agent_result %}
+        <section class="result">
+            <h2>Agent outcome: {{ agent_result.stop_reason }}</h2>
+            <pre>{{ agent_result.message }}</pre>
+            {% if agent_result.human_handoff %}<p class="hint"><strong>Human hand-off:</strong> the agent stopped without completing the goal. Review the steps below.</p>{% endif %}
+            {% if agent_result.draft %}<p class="hint">Local draft: {{ agent_result.draft.path }} (submitted = false). Review it before any submission.</p>{% endif %}
+            <h2>Steps ({{ agent_result.iterations_used }} used, {{ agent_result.retrievals_used }} retrievals)</h2>
+            <ul>
+                {% for step in agent_result.steps %}
+                <li>#{{ step.iteration }} {{ step.action or 'no valid action' }}: {{ step.outcome }}{% if step.detail %} ({{ step.detail }}){% endif %}</li>
+                {% endfor %}
+            </ul>
+            {% if agent_result.linked_sources %}
+            <h2>Linked evidence</h2>
+            <ul>
+                {% for source in agent_result.linked_sources %}
+                <li>{{ source.source_id }} {{ source.source }} (chunk {{ source.chunk_id }}, score {{ '%.3f'|format(source.score) }})</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if agent_result.trace_path %}<p class="hint">Trace: {{ agent_result.trace_path }}</p>{% endif %}
+        </section>
+        {% endif %}
 
         {% if result %}
         <section class="result" id="result-panel">
@@ -295,6 +332,7 @@
         retrieveForm.addEventListener('submit', showLoading);
         draftForm.addEventListener('submit', showLoading);
         document.getElementById('tool-request-form').addEventListener('submit', showLoading);
+        document.getElementById('agent-form').addEventListener('submit', showLoading);
     </script>
 </body>
 </html>

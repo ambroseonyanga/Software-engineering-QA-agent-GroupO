@@ -46,6 +46,29 @@ Each model call has a timeout; CPU inference can be slow. Failure is recorded
 as failure, without substituting a mocked success. Requests, decisions and full
 tool results are retained locally in `evidence/traces/tool_requests/`.
 
+## Week 5 bounded agent
+
+The **Run triage agent** form (route `/agent`) runs one goal-directed loop on a failure you report:
+Sense, Decide, Validate, Act, Observe, then Stop or Re-plan. The model only picks the next action
+(`retrieve_project_evidence`, `create_issue_draft` or `ask_human`). Code enforces the limits (6 iterations,
+3 retrievals, 1 draft, 2 consecutive tool failures, 2 invalid decisions, 900 s), saves one local draft,
+and hands off to a human on any other stop. It cannot run tests, submit, merge or deploy.
+
+```powershell
+# Offline guard tests: scripted decisions, real retrieval and draft writes (28 tests incl. Week 4)
+.\.venv\Scripts\python.exe -B -m unittest discover -s tests -v
+
+# Capture the three live traces with local qwen3:8b (slow on CPU; results are kept as observed)
+.\.venv\Scripts\python.exe scripts\capture_week5_traces.py
+```
+
+Traces are written to `evidence/traces/agent_runs/` and summarised in `evidence/traces/week5_live_demo.json`.
+Trace 3 uses a labelled fault injection (the first retrieval raises) to show recovery.
+
+- [Agent architecture](docs/architecture/week5-agent-architecture.drawio) ([SVG](docs/architecture/week5-agent-architecture.svg))
+- [Agent task contract](docs/architecture/agent-task-contract.md) (limits are executable in `src/agent_contracts.py`)
+- [Planner prompt](prompts/agent-planner-v1.0.txt)
+
 ## Evidence and design
 
 - [Week 4 architecture](docs/architecture/week4-architecture.drawio)

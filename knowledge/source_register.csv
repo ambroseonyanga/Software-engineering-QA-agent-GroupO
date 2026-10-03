@@ -13,3 +13,4 @@ SRC-011,BSE4104 Week 3 Context Engineering and RAG Requirements,knowledge/corpus
 SRC-012,Week 3 Progress Record,knowledge/corpus/week3_progress.md,Progress report,Project team,Primary,Records Week 3 RAG implementation status completed deliverables and known limitations,Authorized
 SRC-013,Controlled Corpus Source Register,knowledge/corpus/source_register.md,Project metadata,Project team,Primary,Provides a searchable inventory of authorized corpus sources,Authorized
 SRC-014,Week 4 Tool Catalogue,knowledge/corpus/tool_catalogue.md,Architecture document,Project team,Primary,Defines Week 4 tool contracts schemas authorization and failure behaviour,Authorized
+SRC-015,Week 5 Agent Task Contract,knowledge/corpus/agent_task_contract.md,Architecture document,Project team,Primary,Defines the Week 5 bounded agent task goal tools state limits stop conditions and human hand-off,Authorized

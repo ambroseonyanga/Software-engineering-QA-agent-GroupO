@@ -7,11 +7,13 @@ try:
     from .rag_service import answer_question
     from .tool_service import invoke_tool
     from .tool_router import handle_tool_request
+    from .agent import run_agent
 except ImportError:  # pragma: no cover - allows running as a script from src/
     from qa_service import analyse_requirement
     from rag_service import answer_question
     from tool_service import invoke_tool
     from tool_router import handle_tool_request
+    from agent import run_agent
 
 
 app = Flask(__name__)
@@ -35,6 +37,8 @@ def page_context(**overrides):
         "draft_expected": "",
         "draft_actual": "",
         "draft_notes": "",
+        "agent_result": None,
+        "agent_form": {},
     }
     context.update(overrides)
     return context
@@ -158,6 +162,14 @@ def tool_request():
         tool_name="QA request", tool_result=result,
         tool_result_text=json.dumps(result, indent=2),
     ))
+
+
+@app.route("/agent", methods=["POST"])
+def agent():
+    form = {key: request.form.get(key, "").strip() for key in ("title", "failed_test", "expected", "actual")}
+    task = {key: value for key, value in form.items() if value or key in ("title", "failed_test")}
+    result = run_agent(task)
+    return render_template("index.html", **page_context(agent_result=result, agent_form=form))
 
 
 if __name__ == "__main__":

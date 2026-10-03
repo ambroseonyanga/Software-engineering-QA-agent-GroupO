@@ -16,3 +16,4 @@ This record is the searchable text representation of `knowledge/source_register.
 - SRC-012: Week 3 Progress Record. Records the Group O Week 3 implementation status and completed deliverables.
 - SRC-013: Controlled Corpus Source Register. Provides the searchable inventory of authorised corpus sources.
 - SRC-014: Week 4 Tool Catalogue. Defines the Week 4 tool contracts, schemas, authorization and failure behaviour.
+- SRC-015: Week 5 Agent Task Contract. Defines the Week 5 bounded agent task, goal, tools, state, limits, stop conditions and human hand-off.
