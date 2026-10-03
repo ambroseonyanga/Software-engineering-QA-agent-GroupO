@@ -76,6 +76,7 @@ Trace 3 uses a labelled fault injection (the first retrieval raises) to show rec
 - [Executable JSON schemas](src/tool_contracts.py)
 - [Failure/authorization evidence](docs/evaluation/tool-authorization.md)
 - [Week 4 progress report (Word)](docs/weekly-reports/Week4-ProgressReport.docx)
+- [Week 5 progress report (Word)](docs/weekly-reports/Week5-ProgressReport.docx)
 
 The Markdown catalogue/evaluation documents are the current specifications.
 Earlier Word copies and the broad context/DFD diagrams are historical snapshots;
