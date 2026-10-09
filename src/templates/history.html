@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Previous triage reports</title>
+<style>
+body{font:16px/1.5 Arial,sans-serif;max-width:1050px;margin:40px auto;padding:0 20px;color:#172033;background:#f8fafc}
+input,button{padding:10px;font:inherit}input{width:min(75%,500px)}
+article{background:white;border:1px solid #d1d5db;border-radius:10px;padding:20px;margin:16px 0;overflow-wrap:anywhere}
+dt{font-weight:bold}dd{margin:0 0 8px}button{cursor:pointer}a{color:#1646a0}
+</style></head>
+<body><a href="/">Back to QA agent</a><h1>Previous triage reports</h1>
+<p>Look up an exact test identifier to revisit earlier reports. These records describe reported failures, not tests executed by this application.</p>
+<form method="get" action="/history"><label for="failed_test">Test identifier</label><br>
+<input id="failed_test" name="failed_test" value="{{ failed_test }}" required maxlength="200">
+<button type="submit">Find history</button></form>
+<p>Summaries are kept for up to 90 days, with at most 500 across the project. Deleting a summary removes it from future history lookups; the separate draft and audit trace remain.</p>
+{% if history %}
+{% if not history.ok %}<p role="alert">{{ history.message }}</p>
+{% else %}<h2>{{ history.run_count }} previous report(s)</h2>
+{% if not history.runs %}<p>No saved reports match this identifier.</p>{% endif %}
+{% for run in history.runs %}<article>
+<h3>{{ run.failed_test }}</h3><dl>
+<dt>Recorded</dt><dd>{{ run.recorded_utc }}</dd>
+<dt>Outcome</dt><dd>{{ run.stop_reason }}</dd>
+<dt>Run ID</dt><dd>{{ run.run_id }}</dd>
+<dt>Local draft ID</dt><dd>{{ run.draft_id or 'No draft saved' }}</dd>
+<dt>Source references</dt><dd>{{ run.linked_source_ids|join(', ') or 'None' }}</dd>
+</dl><form method="post" action="/history/delete">
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<input type="hidden" name="run_id" value="{{ run.run_id }}">
+<input type="hidden" name="failed_test" value="{{ failed_test }}">
+<button type="submit">Delete this summary</button></form></article>{% endfor %}
+{% endif %}{% endif %}</body></html>

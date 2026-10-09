@@ -160,6 +160,7 @@
 <body>
     <div class="container">
         <h1>Software Engineering QA Agent</h1>
+        <p><a href="/history">View or delete previous triage reports</a></p>
         <p class="subtitle">Week 2 requirement analysis, Week 3 grounded retrieval, Week 4 approved tools, and Week 5 bounded agent.</p>
 
         <div class="grid">
@@ -240,6 +241,8 @@
                 <div class="field"><input name="failed_test" type="text" required maxlength="200" value="{{ agent_form.get('failed_test', '') }}" placeholder="Failed test ID or observed problem"></div>
                 <div class="field"><textarea class="short" name="expected" maxlength="1000" placeholder="Expected behaviour (optional)">{{ agent_form.get('expected', '') }}</textarea></div>
                 <div class="field"><textarea class="short" name="actual" maxlength="1000" placeholder="Actual behaviour (optional)">{{ agent_form.get('actual', '') }}</textarea></div>
+                <p class="hint">This run will save a small local summary. You can delete it from the history page.</p>
+                <label><input type="checkbox" name="use_history" style="width:auto" {% if agent_form.get('use_history') == 'on' %}checked{% endif %}> Include previous reports for this test as context</label>
                 <div class="button-row"><button type="submit">Run triage agent</button></div>
             </form>
         </div>
@@ -255,6 +258,9 @@
         <section class="result">
             <h2>Agent outcome: {{ agent_result.stop_reason }}</h2>
             <pre>{{ agent_result.message }}</pre>
+            {% if agent_result.prior_context %}<p>Earlier reports considered: {{ agent_result.prior_context.prior_report_count }}. Previous outcome: {{ agent_result.prior_context.last_stop_reason }}.</p>{% endif %}
+            {% for warning in agent_result.memory_warnings or [] %}<p role="alert">{{ warning }}</p>{% endfor %}
+            <p>State: {{ agent_result.workflow_state or agent_result.stop_reason }}. History summary saved: {{ 'yes' if agent_result.history_saved else 'no' }}.</p>
             {% if agent_result.human_handoff %}<p class="hint"><strong>Human hand-off:</strong> the agent stopped without completing the goal. Review the steps below.</p>{% endif %}
             {% if agent_result.draft %}<p class="hint">Local draft: {{ agent_result.draft.path }} (submitted = false). Review it before any submission.</p>{% endif %}
             <h2>Steps ({{ agent_result.iterations_used }} used, {{ agent_result.retrievals_used }} retrievals)</h2>

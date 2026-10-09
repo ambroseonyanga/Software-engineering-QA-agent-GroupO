@@ -1,0 +1,307 @@
+{
+  "run_at_utc": "2026-10-09T18:11:41.627505+00:00",
+  "mode": "real local Qwen3 8B; separate processes; temporary SQLite store; synthetic human-reported failure",
+  "task": {
+    "title": "Issue draft was submitted without review",
+    "failed_test": "DEMO-W6-APPROVAL",
+    "expected": "Issue draft stays local until human review",
+    "actual": "Synthetic failure report: the issue appeared as submitted before review"
+  },
+  "checks": {
+    "first_run_without_prior_context": true,
+    "second_process_loaded_first_run": true,
+    "both_summaries_saved": true,
+    "both_runs_completed": true,
+    "fresh_retrieval_on_both_runs": true,
+    "drafts_unsubmitted": true,
+    "delete_survives_reopen": true
+  },
+  "passed": true,
+  "first_run": {
+    "ok": true,
+    "stop_reason": "COMPLETED",
+    "message": "Goal met: a local draft exists with evidence links. Human reviews and submits.",
+    "human_handoff": false,
+    "run_id": "8093c9563a494a0781de6b8c21f2cbfa",
+    "iterations_used": 2,
+    "retrievals_used": 1,
+    "linked_sources": [
+      {
+        "source_id": "SRC-015",
+        "source": "agent_task_contract.md",
+        "chunk_id": 0,
+        "score": 0.13711803230195616
+      },
+      {
+        "source_id": "SRC-003",
+        "source": "ai_boundary_matrix.md",
+        "chunk_id": 0,
+        "score": 0.1364163404190367
+      },
+      {
+        "source_id": "SRC-002",
+        "source": "user_stories.md",
+        "chunk_id": 3,
+        "score": 0.11695986424586406
+      }
+    ],
+    "draft": {
+      "ok": true,
+      "draft_id": "DRAFT-0ce5302aa790",
+      "status": "draft",
+      "path": "evidence/drafts/DRAFT-0ce5302aa790.json",
+      "submitted": false,
+      "title": "Issue draft was submitted without review"
+    },
+    "trace_path": "C:\\Users\\HP\\Desktop\\Software-engineering-QA-agent-GroupO\\evidence\\traces\\week6_memory\\8093c9563a494a0781de6b8c21f2cbfa.json",
+    "workflow_state": "COMPLETED",
+    "state_transitions": [
+      {
+        "state": "RECEIVED",
+        "at_utc": "2026-10-09T18:08:10.715256+00:00"
+      },
+      {
+        "state": "LOADING_HISTORY",
+        "at_utc": "2026-10-09T18:08:10.717707+00:00"
+      },
+      {
+        "state": "SENSING",
+        "at_utc": "2026-10-09T18:08:10.731156+00:00"
+      },
+      {
+        "state": "DECIDING",
+        "at_utc": "2026-10-09T18:08:10.731194+00:00"
+      },
+      {
+        "state": "VALIDATING",
+        "at_utc": "2026-10-09T18:09:17.697179+00:00"
+      },
+      {
+        "state": "RETRIEVING",
+        "at_utc": "2026-10-09T18:09:17.701855+00:00"
+      },
+      {
+        "state": "OBSERVING",
+        "at_utc": "2026-10-09T18:09:17.781416+00:00"
+      },
+      {
+        "state": "REPLANNING",
+        "at_utc": "2026-10-09T18:09:17.781445+00:00"
+      },
+      {
+        "state": "SENSING",
+        "at_utc": "2026-10-09T18:09:17.783909+00:00"
+      },
+      {
+        "state": "DECIDING",
+        "at_utc": "2026-10-09T18:09:17.783948+00:00"
+      },
+      {
+        "state": "VALIDATING",
+        "at_utc": "2026-10-09T18:10:21.278837+00:00"
+      },
+      {
+        "state": "DRAFTING",
+        "at_utc": "2026-10-09T18:10:21.289083+00:00"
+      },
+      {
+        "state": "OBSERVING",
+        "at_utc": "2026-10-09T18:10:21.321599+00:00"
+      },
+      {
+        "state": "SAVING_HISTORY",
+        "at_utc": "2026-10-09T18:10:21.321712+00:00"
+      },
+      {
+        "state": "COMPLETED",
+        "at_utc": "2026-10-09T18:10:21.357534+00:00"
+      }
+    ],
+    "prior_context": null,
+    "history_saved": true,
+    "memory_warnings": [],
+    "steps": [
+      {
+        "iteration": 1,
+        "action": "retrieve_project_evidence",
+        "outcome": "grounded",
+        "detail": "issue draft submission without review"
+      },
+      {
+        "iteration": 2,
+        "action": "create_issue_draft",
+        "outcome": "draft_saved",
+        "detail": "evidence/drafts/DRAFT-0ce5302aa790.json"
+      }
+    ]
+  },
+  "second_run": {
+    "ok": true,
+    "stop_reason": "COMPLETED",
+    "message": "Goal met: a local draft exists with evidence links. Human reviews and submits.",
+    "human_handoff": false,
+    "run_id": "4af317ca69364cb7aa2f9c2b269fa995",
+    "iterations_used": 2,
+    "retrievals_used": 1,
+    "linked_sources": [
+      {
+        "source_id": "SRC-015",
+        "source": "agent_task_contract.md",
+        "chunk_id": 0,
+        "score": 0.13711803230195616
+      },
+      {
+        "source_id": "SRC-003",
+        "source": "ai_boundary_matrix.md",
+        "chunk_id": 0,
+        "score": 0.1364163404190367
+      },
+      {
+        "source_id": "SRC-002",
+        "source": "user_stories.md",
+        "chunk_id": 3,
+        "score": 0.11695986424586406
+      }
+    ],
+    "draft": {
+      "ok": true,
+      "draft_id": "DRAFT-b3f1ed08f607",
+      "status": "draft",
+      "path": "evidence/drafts/DRAFT-b3f1ed08f607.json",
+      "submitted": false,
+      "title": "Issue draft was submitted without review"
+    },
+    "trace_path": "C:\\Users\\HP\\Desktop\\Software-engineering-QA-agent-GroupO\\evidence\\traces\\week6_memory\\4af317ca69364cb7aa2f9c2b269fa995.json",
+    "workflow_state": "COMPLETED",
+    "state_transitions": [
+      {
+        "state": "RECEIVED",
+        "at_utc": "2026-10-09T18:10:26.595236+00:00"
+      },
+      {
+        "state": "LOADING_HISTORY",
+        "at_utc": "2026-10-09T18:10:26.597716+00:00"
+      },
+      {
+        "state": "SENSING",
+        "at_utc": "2026-10-09T18:10:26.611667+00:00"
+      },
+      {
+        "state": "DECIDING",
+        "at_utc": "2026-10-09T18:10:26.611698+00:00"
+      },
+      {
+        "state": "VALIDATING",
+        "at_utc": "2026-10-09T18:10:46.908277+00:00"
+      },
+      {
+        "state": "RETRIEVING",
+        "at_utc": "2026-10-09T18:10:46.918956+00:00"
+      },
+      {
+        "state": "OBSERVING",
+        "at_utc": "2026-10-09T18:10:47.066633+00:00"
+      },
+      {
+        "state": "REPLANNING",
+        "at_utc": "2026-10-09T18:10:47.066688+00:00"
+      },
+      {
+        "state": "SENSING",
+        "at_utc": "2026-10-09T18:10:47.070302+00:00"
+      },
+      {
+        "state": "DECIDING",
+        "at_utc": "2026-10-09T18:10:47.070374+00:00"
+      },
+      {
+        "state": "VALIDATING",
+        "at_utc": "2026-10-09T18:11:41.245457+00:00"
+      },
+      {
+        "state": "DRAFTING",
+        "at_utc": "2026-10-09T18:11:41.250807+00:00"
+      },
+      {
+        "state": "OBSERVING",
+        "at_utc": "2026-10-09T18:11:41.274487+00:00"
+      },
+      {
+        "state": "SAVING_HISTORY",
+        "at_utc": "2026-10-09T18:11:41.274599+00:00"
+      },
+      {
+        "state": "COMPLETED",
+        "at_utc": "2026-10-09T18:11:41.314239+00:00"
+      }
+    ],
+    "prior_context": {
+      "prior_report_count": 1,
+      "last_stop_reason": "COMPLETED",
+      "meaning": "Previous triage reports, not independently verified test executions."
+    },
+    "history_saved": true,
+    "memory_warnings": [],
+    "steps": [
+      {
+        "iteration": 1,
+        "action": "retrieve_project_evidence",
+        "outcome": "grounded",
+        "detail": "issue draft submission without review"
+      },
+      {
+        "iteration": 2,
+        "action": "create_issue_draft",
+        "outcome": "draft_saved",
+        "detail": "evidence/drafts/DRAFT-b3f1ed08f607.json"
+      }
+    ]
+  },
+  "history_before_deletion": {
+    "ok": true,
+    "failed_test": "DEMO-W6-APPROVAL",
+    "run_count": 2,
+    "last_stop_reason": "COMPLETED",
+    "runs": [
+      {
+        "run_id": "4af317ca69364cb7aa2f9c2b269fa995",
+        "failed_test": "DEMO-W6-APPROVAL",
+        "stop_reason": "COMPLETED",
+        "iterations_used": 2,
+        "retrievals_used": 1,
+        "draft_id": "DRAFT-b3f1ed08f607",
+        "linked_source_ids": [
+          "SRC-015",
+          "SRC-003",
+          "SRC-002"
+        ],
+        "elapsed_seconds": 74.677,
+        "recorded_utc": "2026-10-09T18:11:41.294240+00:00",
+        "provenance": "human_reported_failure"
+      },
+      {
+        "run_id": "8093c9563a494a0781de6b8c21f2cbfa",
+        "failed_test": "DEMO-W6-APPROVAL",
+        "stop_reason": "COMPLETED",
+        "iterations_used": 2,
+        "retrievals_used": 1,
+        "draft_id": "DRAFT-0ce5302aa790",
+        "linked_source_ids": [
+          "SRC-015",
+          "SRC-003",
+          "SRC-002"
+        ],
+        "elapsed_seconds": 130.604,
+        "recorded_utc": "2026-10-09T18:10:21.344691+00:00",
+        "provenance": "human_reported_failure"
+      }
+    ]
+  },
+  "history_after_deletion": {
+    "ok": true,
+    "failed_test": "DEMO-W6-APPROVAL",
+    "run_count": 0,
+    "last_stop_reason": null,
+    "runs": []
+  }
+}

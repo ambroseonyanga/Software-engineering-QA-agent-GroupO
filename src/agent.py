@@ -24,6 +24,7 @@ try:
     )
     from .qa_service import MODEL, OLLAMA_URL
     from .tool_service import BLOCKED_TOOLS, HIGHER_IMPACT_FLAGS, invoke_tool
+    from .memory_service import HistoryStore, MemoryUnavailable
 except ImportError:  # pragma: no cover - allows running as a script from src/
     from agent_contracts import (
         AGENT_ACTIONS, DECISION_SCHEMA, LIMITS, MODEL_FORMAT_SCHEMA,
@@ -31,9 +32,10 @@ except ImportError:  # pragma: no cover - allows running as a script from src/
     )
     from qa_service import MODEL, OLLAMA_URL
     from tool_service import BLOCKED_TOOLS, HIGHER_IMPACT_FLAGS, invoke_tool
+    from memory_service import HistoryStore, MemoryUnavailable
 
 ROOT = Path(__file__).resolve().parents[1]
-PROMPT_PATH = ROOT / "prompts" / "agent-planner-v1.0.txt"
+PROMPT_PATH = ROOT / "prompts" / "agent-planner-v1.1.txt"
 TRACE_DIR = ROOT / "evidence" / "traces" / "agent_runs"
 
 GOAL = "Link one reported test failure to project requirements and prepare one local draft issue for human review."
@@ -69,7 +71,7 @@ def decide_with_model(digest):
 def _sense(state):
     """Build the compact state the model is allowed to see."""
     limits = state["limits"]
-    return {
+    digest = {
         "goal": GOAL,
         "failure_report": state["task"],  # untrusted data
         "limits_remaining": {
@@ -78,6 +80,9 @@ def _sense(state):
         },
         "history": state["history"][-4:],
     }
+    if state.get("prior_context"):
+        digest["prior_context"] = state["prior_context"]
+    return digest
 
 
 def _compact_sources(sources, chars=EXCERPT_CHARS_FOR_PROMPT):
@@ -114,7 +119,8 @@ def _persist(path, record):
 
 # --------------------------------------------------------------------------- Run
 def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_dir=None,
-              limits=None, clock=time.monotonic, fault_injection=None):
+              limits=None, clock=time.monotonic, fault_injection=None,
+              memory_store=None, use_history=False):
     """Run one bounded triage. Always returns a dict with stop_reason; never raises for expected faults."""
     limits = {**LIMITS, **(limits or {})}
     try:
@@ -133,7 +139,12 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
         "model": MODEL if decide_fn is None else "test double",
         "prompt_version": PROMPT_PATH.name, "goal": GOAL, "task": task, "limits": limits,
         "fault_injection": fault_injection, "state": "started", "steps": [],
+        "state_transitions": [], "history_requested": use_history is True,
     }
+    def transition(stage):
+        record["workflow_state"] = stage
+        record["state_transitions"].append({"state": stage, "at_utc": datetime.now(timezone.utc).isoformat()})
+    transition("RECEIVED")
     # Audit first: if the trace cannot be written, no tool may run.
     try:
         trace_dir.mkdir(parents=True, exist_ok=True)
@@ -148,6 +159,22 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
         "evidence": [], "completed_queries": set(), "consecutive_failures": 0,
         "invalid_decisions": 0, "draft": None,
     }
+    store = memory_store if memory_store is not None else HistoryStore()
+    memory_warnings = []
+    prior_context = None
+    transition("LOADING_HISTORY")
+    if use_history is True:
+        try:
+            prior = store.query(task["failed_test"])
+            if prior["run_count"]:
+                # Only counts/outcomes reach the model. Prior notes and source text never do.
+                prior_context = {"prior_report_count": prior["run_count"],
+                                 "last_stop_reason": prior["last_stop_reason"],
+                                 "meaning": "Previous triage reports, not independently verified test executions."}
+                state["prior_context"] = prior_context
+        except MemoryUnavailable as error:
+            memory_warnings.append(str(error))
+    record["prior_context"] = prior_context
     stop_reason, message = None, ""
     audit_warning = None
 
@@ -159,13 +186,16 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
             stop_reason, message = "STOPPED_TIME_BUDGET", STOP_REASONS["STOPPED_TIME_BUDGET"]
             break
 
+        transition("SENSING")
         step = {"iteration": state["iteration"], "tool": None}
         digest = _sense(state)                                              # SENSE
-        step["sense"] = {"limits_remaining": digest["limits_remaining"], "history_items": len(digest["history"])}
+        step["sense"] = {"limits_remaining": digest["limits_remaining"], "history_items": len(digest["history"]),
+                         "prior_context": prior_context}
         obs = {"iteration": state["iteration"]}
 
         t0 = clock()
         try:                                                                # DECIDE
+            transition("DECIDING")
             decision = decide(digest)
         except (OSError, RuntimeError) as error:
             detail = f"{type(error).__name__}: {error}"[:300]
@@ -181,6 +211,7 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
         step["decision"] = decision
 
         # VALIDATE (deterministic guards; the model has no authority here)
+        transition("VALIDATING")
         action, guard = None, None
         if decision is None:
             guard = "invalid: no parseable decision"
@@ -214,6 +245,7 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
                 obs.update(action=action, outcome="handoff", detail=message[:300])
                 guard = "accepted"
             elif action == "retrieve_project_evidence":
+                transition("RETRIEVING")
                 query = decision["query"].strip()
                 if state["retrievals"] >= limits["max_retrievals"]:
                     guard = "blocked: retrieval budget exhausted"
@@ -247,6 +279,7 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
                         obs.update(action=action, query=query, outcome="tool_error",
                                    detail=f"{result.get('error')}: {result.get('message')}"[:300])
             elif action == "create_issue_draft":
+                transition("DRAFTING")
                 if state["draft"] is not None:
                     guard = "blocked: draft limit reached"
                     obs.update(action=action, outcome="blocked", detail="A draft already exists.")
@@ -273,12 +306,14 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
             if stop_reason is None and state["consecutive_failures"] >= limits["max_consecutive_failures"]:
                 stop_reason, message = "STOPPED_TOOL_FAILURE", STOP_REASONS["STOPPED_TOOL_FAILURE"]
 
+        transition("OBSERVING")
         step["guard"] = guard
         step["observation"] = {**obs, "stop_reason": stop_reason}
         record["steps"].append(step)
         state["history"].append({k: v for k, v in obs.items() if v is not None})
         state["iteration"] += 1
         if stop_reason is None:
+            transition("REPLANNING")
             try:
                 _persist(trace_path, record)
             except OSError:
@@ -290,6 +325,19 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
                   iterations_used=len(record["steps"]), retrievals_used=state["retrievals"],
                   elapsed_seconds=round(clock() - started, 3), linked_sources=linked,
                   draft=state["draft"], finished_utc=datetime.now(timezone.utc).isoformat())
+    transition("SAVING_HISTORY")
+    history_saved = False
+    try:
+        store.save({"run_id": run_id, "failed_test": task["failed_test"], "stop_reason": stop_reason,
+                    "iterations_used": len(record["steps"]), "retrievals_used": state["retrievals"],
+                    "draft_id": (state["draft"] or {}).get("draft_id"),
+                    "linked_source_ids": list(dict.fromkeys(s["source_id"] for s in linked))[:5],
+                    "elapsed_seconds": record["elapsed_seconds"]})
+        history_saved = True
+    except (MemoryUnavailable, ValidationError, ValueError):
+        memory_warnings.append("The run finished, but its summary could not be saved. Inspect the draft before retrying.")
+    transition("COMPLETED" if stop_reason == "COMPLETED" else "HANDED_OFF")
+    record.update(history_saved=history_saved, memory_warnings=memory_warnings)
     try:
         _persist(trace_path, record)
     except OSError:
@@ -299,6 +347,8 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
         "human_handoff": handoff, "run_id": run_id, "iterations_used": len(record["steps"]),
         "retrievals_used": state["retrievals"], "linked_sources": linked, "draft": state["draft"],
         "trace_path": str(trace_path),
+        "workflow_state": record["workflow_state"], "state_transitions": record["state_transitions"],
+        "prior_context": prior_context, "history_saved": history_saved, "memory_warnings": memory_warnings,
         "steps": [{"iteration": s["iteration"], "action": (s.get("decision") or {}).get("action") if isinstance(s.get("decision"), dict) else None,
                    "outcome": s["observation"].get("outcome"), "detail": s["observation"].get("detail") or s["observation"].get("query")}
                   for s in record["steps"]],
@@ -310,4 +360,6 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
 
 def _finish_early(stop_reason, message):
     return {"ok": False, "stop_reason": stop_reason, "message": message, "human_handoff": True,
+            "workflow_state": "REJECTED" if stop_reason == "REJECTED_INPUT" else "HANDED_OFF",
+            "state_transitions": [], "history_saved": False, "prior_context": None, "memory_warnings": [],
             "iterations_used": 0, "retrievals_used": 0, "linked_sources": [], "draft": None, "steps": []}

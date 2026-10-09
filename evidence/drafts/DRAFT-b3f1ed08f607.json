@@ -1,0 +1,12 @@
+{
+  "title": "Issue draft was submitted without review",
+  "failed_test": "DEMO-W6-APPROVAL",
+  "expected": "Issue draft stays local until human review",
+  "actual": "Synthetic failure report: the issue appeared as submitted before review",
+  "notes": "Requirement evidence (retrieved by the application):\n- SRC-015 agent_task_contract.md chunk 0 (score 0.137)\n- SRC-003 ai_boundary_matrix.md chunk 0 (score 0.136)\n- SRC-002 user_stories.md chunk 3 (score 0.117)\nModel-suggested analysis (unverified; not a confirmed cause): The failure may relate to the requirement that issue drafts must stay local until human review. However, the exact cause is uncertain due to insufficient evidence from the retrieval step.\nAgent run: 4af317ca69364cb7aa2f9c2b269fa995. Draft only; a human must review before any submission.",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-09T18:11:41.268954+00:00",
+  "draft_id": "DRAFT-b3f1ed08f607",
+  "path": "evidence/drafts/DRAFT-b3f1ed08f607.json"
+}

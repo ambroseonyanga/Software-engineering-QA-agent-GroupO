@@ -1,7 +1,7 @@
 # Software Engineering QA Agent — Group O
 
-BSE4104 capstone, Makerere University. Week 4 adds two approved tools and a
-single model-selected tool call to the requirement-analysis and RAG application.
+BSE4104 capstone, Makerere University. The application combines requirement analysis,
+RAG, approved tools, a bounded triage agent and optional persistent triage context.
 
 ## Run locally (Windows PowerShell)
 
@@ -36,7 +36,7 @@ The two direct forms remain available for manual tool testing. The QA app does
 not execute tests, publish issues, merge, deploy or provide an approval bypass.
 
 ```powershell
-# Run the eight retained tool tests
+# Run the current test suite
 .\.venv\Scripts\python.exe -B -m unittest discover -s tests -v
 ```
 
@@ -55,11 +55,8 @@ Sense, Decide, Validate, Act, Observe, then Stop or Re-plan. The model only pick
 and hands off to a human on any other stop. It cannot run tests, submit, merge or deploy.
 
 ```powershell
-# Offline guard tests: scripted decisions, real retrieval and draft writes (28 tests incl. Week 4)
+# Offline checks: scripted decisions, real retrieval, draft writes and SQLite (46 tests)
 .\.venv\Scripts\python.exe -B -m unittest discover -s tests -v
-
-# Capture the three live traces with local qwen3:8b (slow on CPU; results are kept as observed)
-.\.venv\Scripts\python.exe scripts\capture_week5_traces.py
 ```
 
 Traces are written to `evidence/traces/agent_runs/` and summarised in `evidence/traces/week5_live_demo.json`.
@@ -67,7 +64,41 @@ Trace 3 uses a labelled fault injection (the first retrieval raises) to show rec
 
 - [Agent architecture](docs/architecture/week5-agent-architecture.drawio) ([SVG](docs/architecture/week5-agent-architecture.svg))
 - [Agent task contract](docs/architecture/agent-task-contract.md) (limits are executable in `src/agent_contracts.py`)
-- [Planner prompt](prompts/agent-planner-v1.0.txt)
+- [Current planner prompt](prompts/agent-planner-v1.1.txt) (v1.0 retained for earlier traces)
+
+## Week 6 memory and state demonstration
+
+Each triage run that reaches final processing saves a small local summary in `memory/run_history.sqlite3`.
+The database is excluded from Git. Reuse is optional: select **use history** in the
+triage form to include the prior report count and last outcome for the exact test ID.
+Reports are human-supplied; a repeated report does not prove a repeated test failure.
+
+1. Enter a synthetic failure with a unique test ID and run the triage agent with history selected.
+2. Restart the application and repeat the same test ID with history selected. Inspect
+   the previous report count and the trace's fresh retrieval before drafting.
+3. Open **Run history**, search that identifier and delete a summary. Search again to
+   verify its removal. Deleting summaries does not delete separate traces or drafts.
+
+The saved [live demonstration](evidence/traces/week6_memory_demo.json) used real local
+Qwen3:8b in two separate processes. Both runs completed with fresh retrieval and
+unsubmitted drafts; the second loaded one prior report. All seven demonstration
+checks passed, including deletion after reopening the store. Its temporary database
+was cleared; the retained synthetic traces and drafts are the evidence.
+
+History retains up to 90 days and 500 summaries. Expiry is checked on access, and the
+record cap is applied on save. The app is for a trusted local operator, with loopback
+hosting, Host/Origin checks and CSRF-protected deletion, but no multi-user login.
+Storage failures produce warnings without granting new authority or discarding an
+already-created draft. The [46-test result](evidence/traces/week6_verification.json)
+includes persistence, concurrency, retention, deletion and guard checks.
+
+- [Editable state model](docs/architecture/week6-state-model.drawio)
+- [Memory design and data handling](docs/architecture/week6-memory-design.md)
+- [MCP-style interface specification (Word)](docs/architecture/Week6_Interface_Specification.docx)
+- [Week 6 progress report (Word)](docs/weekly-reports/Week6-ProgressReport.docx)
+
+The implemented query adapter is `GET /api/history?failed_test=YOUR-TEST-ID&limit=5`.
+This is a local HTTP endpoint and documented MCP-style capability, not a live MCP server.
 
 ## Evidence and design
 
@@ -86,7 +117,6 @@ Maintain weekly reports directly as editable Word (`.docx`) documents and
 architecture diagrams as editable draw.io (`.drawio`) files. Update the Word report directly after
 confirming individual contributions and Week 4 ClickUp task links.
 
-The saved 19-test verification is a historical result. Only the original eight
-tests remain in `tests/`; the expanded suite must be restored to reproduce all
-19 checks. Running the retained tests updates `week4_tool_authorization.json`.
-The assignment-required AI Engineering Log still needs to be supplied.
+Earlier verification files are historical snapshots. The current suite contains 46
+checks; a direct test run also updates the older test modules' evidence files.
+Human code review and confirmed individual contribution records remain outstanding.

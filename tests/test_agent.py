@@ -2,6 +2,7 @@ import json
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -10,6 +11,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from agent import run_agent  # noqa: E402
 from rag_service import answer_question  # noqa: E402
+from memory_service import HistoryStore
 
 EVIDENCE_PATH = ROOT / "evidence" / "traces" / "week5_agent_tests.json"
 TASK = {
@@ -54,6 +56,14 @@ class FlakyRetrieve:
 
 class AgentTests(unittest.TestCase):
     evidence = []
+
+    def setUp(self):
+        directory = tempfile.TemporaryDirectory(prefix="qa-agent-test-")
+        self.addCleanup(directory.cleanup)
+        store = HistoryStore(Path(directory.name) / "history.sqlite3")
+        patcher = patch("agent.HistoryStore", return_value=store)
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def run_case(self, case_id, case, expected, task=TASK, **kwargs):
         with tempfile.TemporaryDirectory() as tmp:
