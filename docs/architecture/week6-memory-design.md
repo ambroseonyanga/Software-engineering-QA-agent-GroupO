@@ -140,10 +140,10 @@ Memory is **never** used to:
 | Agent (write) | Yes — append after run | **No** |
 | Human operator (read) | Yes, through `/history` or the local query API | Not implemented |
 | Human operator (write) | Individual deletion through `/history/delete` | Not implemented |
-| External services | No | No |
+| Groq model service | Receives only report count and last outcome when reuse is selected; no direct database access | No |
 | Web interface (`/agent` route) | Reads run history to show recurrence count to user | No |
 
-The SQLite database is local and excluded from Git through `memory/` in `.gitignore`. It is not synced externally. The app binds to loopback and checks Host and browser POST Origin headers. This is a trusted single-operator application, without multi-user authentication; filesystem access depends on the operating-system account.
+The SQLite database is local and excluded from Git through `memory/` in `.gitignore`. The database is not synced externally. When reuse is selected, its count-and-outcome digest is sent to Groq with the current failure report and retrieved context. The app binds to loopback and checks Host and browser POST Origin headers. This is a trusted single-operator application, without multi-user authentication; filesystem access depends on the operating-system account.
 
 ---
 
@@ -194,7 +194,7 @@ To demonstrate that memory improves the task without controlling critical decisi
 
 Every decision the agent makes is still validated by the same deterministic guards from Week 5. Prior-run context is advisory input to the model — it does not grant the model any additional authority or bypass any approval control.
 
-The saved [live demonstration](../../evidence/traces/week6_memory_demo.json) used a synthetic report in two separate Qwen3:8b processes. The second loaded one previous report; both retrieved fresh evidence and created unsubmitted drafts. Deletion survived reopening the store. All seven demonstration checks passed. The [46-test result](../../evidence/traces/week6_verification.json) also covers retention, concurrency, corruption and guards. This demonstrates continuity, not a measured improvement in diagnosis.
+The historical [live demonstration](../../evidence/traces/week6_memory_demo.json) used a synthetic report in two separate Qwen3:8b processes. The second loaded one previous report; both retrieved fresh evidence and created unsubmitted drafts. Deletion survived reopening the store. All seven demonstration checks passed. The [46-test result](../../evidence/traces/week6_verification.json) also covers retention, concurrency, corruption and guards. This demonstrates continuity, not a measured improvement in diagnosis.
 
 ---
 
@@ -277,3 +277,7 @@ Query access performs housekeeping: it initialises an absent store and prunes ex
 | How is it deleted? | Expiry on access, record cap on save, or individual operator deletion; traces remain separate |
 | Does it control decisions? | No — it is advisory input to the Sense step only; all guards still apply |
 | Is it synced externally? | No — local files only, listed in `.gitignore` |
+
+## 11. Verification after the model change
+
+Updated 16 October 2026. The current provider is Groq (`qwen/qwen3.8-27b`). The earlier Qwen3:8b demonstration remains evidence for that earlier setup only. The new live run generated one baseline QA response, then stopped at HTTP 429 on the first RAG call. It did not reach the memory scenarios; empty history arrays in that run are not a successful memory demonstration. Current offline verification is recorded in `evidence/traces/offline_verification_20261016.json`. The Groq memory demonstration remains pending.

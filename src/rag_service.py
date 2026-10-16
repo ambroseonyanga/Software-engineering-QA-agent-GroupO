@@ -12,11 +12,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 CORPUS_DIR = PROJECT_ROOT / "knowledge" / "corpus"
 SOURCE_REGISTER = PROJECT_ROOT / "knowledge" / "source_register.csv"
 
-MODEL = "qwen3:8b"
-OLLAMA_URL = "http://localhost:11434/api/generate"
-# Local CPU inference can exceed the Week 2 baseline latency of 43 seconds.
-# Allow enough time for grounded answers instead of reporting a false timeout.
-TIMEOUT_SECONDS = 90
+try:
+    from .model_service import MODEL, complete, load_prompt
+except ImportError:
+    from model_service import MODEL, complete, load_prompt
+
 TOP_K = 3
 MIN_SCORE = 0.08
 CHUNK_SIZE = 180
@@ -130,82 +130,11 @@ def build_context(results):
 
 
 def build_prompt(question, context):
-    return f"""
-You are a Software Engineering QA Assistant.
-
-Answer the user's question using only the project documentation
-provided in the context below.
-
-If the answer cannot be found in the provided context, say:
-"I could not find sufficient information in the project documentation."
-
-Do not invent information.
-If the context only covers part of the question, say what is supported
-and what is missing.
-Name the source file(s) you used.
-
-PROJECT CONTEXT:
-----------------
-{context}
-
-USER QUESTION:
---------------
-{question}
-
-ANSWER:
-"""
+    return json.dumps({"question": question, "project_excerpts": context}, ensure_ascii=False)
 
 
-def ask_ollama(prompt, model=MODEL):
-    payload = {
-        "model": model,
-        "prompt": prompt,
-        # The UI assembles the complete answer before rendering it, so a
-        # non-streaming response is more reliable on the local Ollama setup.
-        "stream": False,
-        "think": False,
-        "options": {
-            "num_predict": MAX_RESPONSE_TOKENS,
-            "num_ctx": 2048,
-            "temperature": 0.2,
-        },
-    }
-
-    request = urllib.request.Request(
-        OLLAMA_URL,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-
-    chunks = []
-
-    try:
-        with urllib.request.urlopen(request, timeout=TIMEOUT_SECONDS) as response:
-            for raw_line in response:
-                line = raw_line.decode("utf-8").strip()
-                if not line:
-                    continue
-
-                data = json.loads(line)
-                if data.get("error"):
-                    raise RuntimeError(data["error"])
-
-                chunks.append(data.get("response") or "")
-                if data.get("done"):
-                    break
-    except TimeoutError as error:
-        raise RuntimeError("Qwen timed out while generating a response.") from error
-    except urllib.error.URLError as error:
-        raise RuntimeError(
-            "Could not reach Ollama. Start Ollama and confirm qwen3:8b is installed."
-        ) from error
-
-    answer = "".join(chunks).strip()
-    if not answer:
-        raise RuntimeError("Qwen returned an empty response.")
-
-    return answer
+def ask_model(prompt):
+    return complete(load_prompt("rag-answer-v1.0.txt"), prompt, max_tokens=1200)["text"]
 
 
 class RagPipeline:
@@ -213,6 +142,8 @@ class RagPipeline:
         self.register = load_source_register()
         self.documents = load_documents()
         self.chunks = build_chunks(self.documents)
+        if not self.chunks:
+            raise RuntimeError("No authorised project documents are available. Check the source register.")
         self.vectorizer, self.matrix = build_index(self.chunks)
 
     def answer(self, question, generate=True, top_k=TOP_K):
@@ -256,7 +187,7 @@ class RagPipeline:
                 "context": context,
             }
 
-        answer = ask_ollama(prompt)
+        answer = ask_model(prompt)
         source_lines = []
         seen = set()
 
@@ -272,7 +203,7 @@ class RagPipeline:
 
         sourced_answer = answer.strip()
         if "Source:" not in sourced_answer and "source" not in sourced_answer.lower():
-            sourced_answer = sourced_answer + "\n\nSources used:\n" + "\n".join(source_lines)
+            sourced_answer = sourced_answer + "\n\nRetrieved context (not proof that every excerpt supports the answer):\n" + "\n".join(source_lines)
 
         return {
             "question": question,

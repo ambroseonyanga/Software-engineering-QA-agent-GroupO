@@ -1,5 +1,5 @@
 {
-  "run_at_utc": "2026-09-25T14:45:03.821680+00:00",
+  "run_at_utc": "2026-10-16T16:16:47.311810+00:00",
   "focus": "Week 4 failure and authorization evidence",
   "tools": [
     "retrieve_project_evidence",
@@ -47,7 +47,7 @@
       "ok": false,
       "error": "UNAUTHORIZED",
       "status": 403,
-      "draft_id": "DRAFT-001",
+      "draft_id": "DRAFT-b0faeeea7526",
       "submitted": false,
       "grounded": null
     },
@@ -91,7 +91,7 @@
       "ok": true,
       "error": null,
       "status": "draft",
-      "draft_id": "DRAFT-001",
+      "draft_id": "DRAFT-c4f75860aa09",
       "submitted": false,
       "grounded": null
     }

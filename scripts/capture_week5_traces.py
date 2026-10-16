@@ -1,8 +1,9 @@
-"""Capture the three Week 5 execution traces with the REAL local model.
+"""Legacy Week 5 scenario runner; offline dry-run only.
 
-Run from the repository root with Ollama serving qwen3:8b:
+For live Groq evidence use verify_groq_workflows.py, which enforces a request budget.
+For offline plumbing checks:
 
-    python scripts/capture_week5_traces.py
+    python scripts/capture_week5_traces.py --dry-run
 
 Writes full traces to evidence/traces/agent_runs/ and a summary to
 evidence/traces/week5_live_demo.json. Results are recorded as observed: a failed or
@@ -21,6 +22,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from agent import run_agent  # noqa: E402
 from rag_service import answer_question  # noqa: E402
+from memory_service import HistoryStore
 
 CART = {
     "title": "Cart total stays zero after quantity change",
@@ -65,6 +67,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true", help="scripted decisions, temp output, nothing written to evidence/")
     args = parser.parse_args()
+    if not args.dry_run:
+        parser.error("Use scripts/verify_groq_workflows.py for budgeted live Groq checks; this legacy runner is dry-run only.")
     tmp = tempfile.TemporaryDirectory() if args.dry_run else None
     out = {"captured_utc": datetime.now(timezone.utc).isoformat(), "dry_run": args.dry_run, "runs": []}
     for scenario in SCENARIOS:
@@ -72,7 +76,7 @@ def main():
         if kwargs.get("retrieve_fn") == "FAIL_ONCE":
             kwargs["retrieve_fn"] = FailOnce()
         if args.dry_run:
-            kwargs.update(decide_fn=dry_decider(), trace_dir=Path(tmp.name) / "traces", draft_dir=Path(tmp.name) / "drafts")
+            kwargs.update(decide_fn=dry_decider(), trace_dir=Path(tmp.name) / "traces", draft_dir=Path(tmp.name) / "drafts", memory_store=HistoryStore(Path(tmp.name) / "history.sqlite3"))
         print(f"{scenario['id']} ({scenario['kind']}) ...", flush=True)
         result = run_agent(scenario["task"], **kwargs)
         print(f"  -> {result['stop_reason']} in {result['iterations_used']} iterations", flush=True)
@@ -84,6 +88,7 @@ def main():
             "trace_path": result.get("trace_path"), "steps": result["steps"]})
     if args.dry_run:
         print(json.dumps(out, indent=2)[:1500])
+        tmp.cleanup()
         return
     target = ROOT / "evidence" / "traces" / "week5_live_demo.json"
     target.write_text(json.dumps(out, indent=2), encoding="utf-8")

@@ -1,3 +1,5 @@
+Source: docs/architecture/agent-task-contract.md
+
 # Agent Task Contract
 
 Project: Software Engineering QA Agent
@@ -27,7 +29,7 @@ One failure report supplied by a human. It is untrusted data. Unknown fields are
 
 ## Actions
 
-The model chooses one action per iteration. Constrained decoding offers only these three, and the application re-validates every decision.
+The model chooses one action per iteration. Groq JSON mode requests a JSON object. The application validates the action and its fields against the schema before executing anything.
 
 | Action | Kind | Contract |
 | --- | --- | --- |
@@ -39,7 +41,7 @@ The model chooses one action per iteration. Constrained decoding offers only the
 
 ## State
 
-Held by the orchestrator for the current run only. It is not persisted between runs; persistent memory is Week 6 work.
+Held by the orchestrator for the current run only. Working state is rebuilt for each run. Week 6 also stores a small SQLite history summary; optional prior context cannot bypass fresh retrieval.
 
 | Field | Purpose |
 | --- | --- |
@@ -58,7 +60,7 @@ Held by the orchestrator for the current run only. It is not persisted between r
 Sense, Decide, Validate, Act, Observe, then Stop or Re-plan.
 
 1. **Sense.** Build a compact state: goal, failure report, limits remaining, last four observations.
-2. **Decide.** The model returns one JSON decision under `prompts/agent-planner-v1.0.txt`.
+2. **Decide.** The model returns one JSON decision under `prompts/agent-planner-v1.1.txt`.
 3. **Validate.** Deterministic guards check the decision (see Guards).
 4. **Act.** Execute the approved tool through `invoke_tool`, which re-applies the Week 4 allow-list and argument schemas.
 5. **Observe.** Record the outcome as one of grounded, not_grounded, tool_error, blocked, invalid_decision, draft_saved or handoff.
@@ -108,11 +110,11 @@ Every stop other than COMPLETED is a human hand-off. The agent never overrides a
 
 - Trace per run: `evidence/traces/agent_runs/<run_id>.json`. It records model, prompt version, limits, each step's sensed state, raw decision, guard result, tool arguments, tool result, timings and the final stop reason.
 - Offline guard tests: `tests/test_agent.py`, with results in `evidence/traces/week5_agent_tests.json`. Model decisions in these tests are scripted; retrieval and draft writes are real.
-- Live traces: `scripts/capture_week5_traces.py` runs three scenarios with the local Qwen3 model and writes `evidence/traces/week5_live_demo.json`.
+- Live traces: `scripts/verify_groq_workflows.py` prepares normal, adversarial and injected-failure scenarios. The 16 October run stopped at a Groq rate limit before these scenarios, so current live agent traces remain pending.
 
 ## Known limitations
 
 - The agent does not execute tests. It triages a failure that a human reports, because test execution stays blocked until the approval path exists.
-- Retrieval is TF-IDF keyword matching over about 15 documents. A grounded result means a chunk scored above the threshold, not that it is the correct requirement.
+- Retrieval is TF-IDF keyword matching over five registered documents. A grounded result means a chunk scored above the threshold, not that it is the correct requirement.
 - The model analysis is unverified opinion and is labelled so in the draft.
-- CPU inference is slow, so a run can take several minutes.
+- Cloud calls have a 90-second timeout. Groq rate limits and network failures can stop a run; no automatic API retry is made.

@@ -1,3 +1,5 @@
+Source: docs/architecture/tool-catalogue.md
+
 # Tool Catalogue and Tool/API Schemas
 
 Project: Software Engineering QA Agent
@@ -10,44 +12,100 @@ This catalogue defines the first two explicit tools for the Software Engineering
 
 Approved tools:
 
-- retrieve_project_evidence
-- create_issue_draft
+- `retrieve_project_evidence`
+- `create_issue_draft`
 
-Requests for run_tests, submit_issue, merge_pr, deploy or shell are rejected before any side effect. These remain higher-impact actions and require human approval in a later week.
+Requests for `run_tests`, `submit_issue`, `merge_pr`, `deploy` or `shell` are rejected before any side effect. These remain higher-impact actions and require human approval in a later week.
 
 ## Tool 1: retrieve_project_evidence
 
-Purpose: Retrieve current authorized project documentation from the Week 3 controlled corpus and return source-grounded evidence. This satisfies the Week 4 requirement that at least one tool retrieves current application data.
+Purpose: Retrieve current authorized project documentation from the Week 3 controlled corpus and return retrieved project evidence. This satisfies the Week 4 requirement that at least one tool retrieves current application data.
 
-Authorization: Allowed for a local developer session. Read-only. The tool may use only files listed in the source register. It must not access secrets, modify the repository, or run shell commands.
+Authorization: Allowed for a local developer session. Read-only. The tool may use only files listed in `knowledge/source_register.csv`. It must not access secrets, modify the repository, or run shell commands.
 
-Input schema: query is a required string of 3 to 300 characters. top_k is an optional integer from 1 to 5 and defaults to 3.
+### Input schema
 
-Output schema: ok, grounded, sources and answer. Sources include source id, file name, chunk id, score and excerpt. If the corpus does not support the question, the tool uses the Week 3 insufficient-information message.
+| Field | Type | Required | Rules |
+| --- | --- | --- | --- |
+| query | string | Yes | 3 to 300 characters |
+| top_k | integer | No | 1 to 5. Default 3 |
 
-Failure behaviour: a missing or short query returns VALIDATION_ERROR without calling the model. An unavailable corpus, index or model returns SERVICE_UNAVAILABLE and does not invent an answer. An unexpected retrieval payload returns UNEXPECTED_TOOL_RESPONSE.
+### Output schema
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| ok | boolean | True when the tool completed validation and retrieval |
+| grounded | boolean | True when at least one chunk met the retrieval threshold |
+| sources | array | Source id, file name, chunk id, score and excerpt |
+| answer | string | Model answer from retrieved context, or the insufficient-information message. Individual claims still need review. |
+
+### Failure behaviour
+
+| Condition | Error | Behaviour |
+| --- | --- | --- |
+| Missing or short query | VALIDATION_ERROR | No retrieval and no model call |
+| Invalid top_k | VALIDATION_ERROR | No retrieval |
+| Corpus, index or model unavailable | SERVICE_UNAVAILABLE | No invented answer |
+| Unexpected retrieval payload | UNEXPECTED_TOOL_RESPONSE | Safe error, no write |
 
 ## Tool 2: create_issue_draft
 
 Purpose: Create a low-risk simulated side effect by writing a draft issue or pull-request note as a local record. This implements user story US-09. The record remains a draft. It is not posted to GitHub and is not treated as an approved defect decision.
 
-Authorization: Creating a draft is allowed. Submitting, merging, deploying or running tests is not allowed. If a caller requests submit, merge, deploy or execute, the tool refuses that higher-impact action. A valid draft may still be stored, but submitted remains false.
+Authorization: Creating a draft is allowed. Submitting, merging, deploying or running tests is not allowed. If a caller requests `submit`, `merge`, `deploy` or `execute`, the tool refuses that higher-impact action. A valid draft may still be stored, but `submitted` remains false.
 
-Input schema: title is required and must be 8 to 120 characters. failed_test is required. expected, actual and notes are optional.
+### Input schema
 
-Output schema: ok, draft_id, status, path and submitted. Status is always draft. submitted is always false.
+| Field | Type | Required | Rules |
+| --- | --- | --- | --- |
+| title | string | Yes | 8 to 120 characters |
+| failed_test | string | Yes | Identifies the failed test or observed problem |
+| expected | string | No | Expected behaviour when known |
+| actual | string | No | Actual behaviour when known |
+| notes | string | No | Additional QA notes |
+| submit | boolean | No | If true, the submit request is rejected |
 
-Failure behaviour: missing title or failed_test returns VALIDATION_ERROR and writes no file. A submit or merge request returns UNAUTHORIZED. A write failure returns SERVICE_UNAVAILABLE.
+### Output schema
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| ok | boolean | True when a draft record was stored |
+| draft_id | string | Unique identifier such as DRAFT-a3b4c5d6e7f8 |
+| status | string | Always `draft` |
+| path | string | Relative path under `evidence/drafts` |
+| submitted | boolean | Always false |
+
+### Failure behaviour
+
+| Condition | Error | Behaviour |
+| --- | --- | --- |
+| Missing title or failed_test | VALIDATION_ERROR | No file is written |
+| Submit, merge, deploy or execute requested | UNAUTHORIZED | Draft may be stored; it is not submitted |
+| Draft folder cannot be written | SERVICE_UNAVAILABLE | No silent success |
+| Unexpected write payload | UNEXPECTED_TOOL_RESPONSE | No silent success |
 
 ## Orchestration rule
 
-All tool calls pass through the application tool service. That module applies the allow-list, validates the input schema, executes only approved tools, and records a trace for Week 4 evidence.
+All tool calls pass through `src/tool_service.py`. Executable input schemas in
+`src/tool_contracts.py` reject incorrect types and unknown fields. Optional draft
+strings have a 2,000-character limit; `failed_test` is nonempty and has the same
+limit. The `submit`, `merge`, `deploy` and `execute` flags are booleans.
 
-The Week 4 QA-request form now uses Qwen3 to select one tool and its arguments.
-The versioned routing prompt is tool-router-v1.0.txt. Application-side JSON Schema
-validation rejects invalid types and unknown fields before dispatch. Model-routed
-requests save full decisions and results under evidence/traces/tool_requests.
-Draft IDs use a unique random suffix. Only registered corpus records marked
-Authorized and resolving inside the corpus folder are ingested. Restart the app
-after changing the register. Higher-impact actions are blocked entirely; there
-is no approval-and-execution path yet. The multi-step agent loop is Week 5 work.
+`src/tool_router.py` uses a versioned prompt to request one structured model
+decision, validates it, and invokes at most one approved tool. A `none` decision
+asks for clarification or declines unsupported work. Invalid JSON/decisions
+return `UNEXPECTED_TOOL_RESPONSE`; model unavailability returns
+`SERVICE_UNAVAILABLE`. There is no retry/re-planning loop.
+
+Model-routed calls store full request/decision/result traces under
+`evidence/traces/tool_requests`. Direct manual calls retain the summary log at
+`evidence/traces/week4_tool_calls.json`. Higher-impact actions are blocked;
+there is no executable approval path in Week 4.
+
+The shared Groq client requests JSON mode for the routing decision.
+The system prompt includes the decision schema; JSON mode alone does not enforce it.
+Application-side JSON Schema validation is authoritative, regardless of model output.
+
+## Current deployment
+
+Updated 16 October 2026. Model calls use `qwen/qwen3.8-27b` through Groq. The router reads `prompts/tool-router-v1.0.txt`; answer generation reads `prompts/rag-answer-v1.0.txt`. Requirements, queries and selected excerpts used in these calls leave the local machine. The API key is read from the environment. A rate-limit response fails safely without an automatic retry. No current Groq tool demonstration is claimed: the live verification stopped before tool cases.

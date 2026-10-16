@@ -1,0 +1,49 @@
+{
+  "mode": "Flask test client; scripted model; no browser visual check",
+  "checks": [
+    {
+      "route": "/?view=tests",
+      "status": 200
+    },
+    {
+      "route": "/ask",
+      "status": 200
+    },
+    {
+      "route": "/?view=triage",
+      "status": 200
+    },
+    {
+      "route": "/?view=tools",
+      "status": 200
+    },
+    {
+      "route": "/history",
+      "status": 200
+    },
+    {
+      "route": "/static/workspace.css",
+      "status": 200
+    },
+    {
+      "route": "/static/workspace.js",
+      "status": 200
+    },
+    {
+      "case": "candidate table and escaped model HTML",
+      "passed": true
+    },
+    {
+      "case": "model error visible",
+      "passed": true
+    },
+    {
+      "case": "real scripted agent result renders",
+      "passed": true
+    },
+    {
+      "case": "saved history renders",
+      "passed": true
+    }
+  ]
+}

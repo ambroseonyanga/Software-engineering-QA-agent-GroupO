@@ -11,7 +11,7 @@ LIMITS = {
     "max_drafts": 1,                 # create_issue_draft calls per run
     "max_consecutive_failures": 2,   # tool errors in a row before stopping
     "max_invalid_decisions": 2,      # malformed/unknown model decisions per run
-    "time_budget_seconds": 900,      # wall-clock budget (CPU inference is slow)
+    "time_budget_seconds": 900,      # wall-clock budget across model and tool calls
 }
 
 AGENT_ACTIONS = ("retrieve_project_evidence", "create_issue_draft", "ask_human")
@@ -25,7 +25,7 @@ STOP_REASONS = {
     "STOPPED_TIME_BUDGET": "Wall-clock budget exhausted.",
     "STOPPED_TOOL_FAILURE": "Repeated tool failures. No further attempts without a human.",
     "STOPPED_INVALID_DECISIONS": "The model repeatedly returned decisions the application rejected.",
-    "STOPPED_MODEL_UNAVAILABLE": "The local model was unavailable or timed out.",
+    "STOPPED_MODEL_UNAVAILABLE": "The model service was unavailable, rate-limited or timed out.",
     "REJECTED_INPUT": "The failure report failed validation. The agent did not start.",
     "SERVICE_UNAVAILABLE": "Audit trace storage was unavailable. The agent did not start.",
 }
@@ -57,7 +57,7 @@ DECISION_SCHEMA = {
     "additionalProperties": False,
 }
 
-# Schema sent to the model so constrained decoding can only emit approved actions.
+# Schema included in the model instructions; application validation enforces allowed actions.
 MODEL_FORMAT_SCHEMA = {
     **DECISION_SCHEMA,
     "properties": {

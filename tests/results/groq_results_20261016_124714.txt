@@ -1,0 +1,344 @@
+=================================================================
+TC01 | Functional
+=================================================================
+
+REQUIREMENT
+An active registered user requests a password reset. Send a single-use link to their verified email. The link is valid for 15 minutes and expires at 15 minutes. A valid link lets the user set a new password. After success, the old password no longer works and the user must log in again.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover link delivery, a valid reset, expiry just before and at 15 minutes, reuse after success, rejection of the old password and no automatic login. Ask about password rules if needed; do not invent them.
+
+GENERATED TEST CASES
+Requirement note
+The requirement is sufficiently clear for testing the core password reset flow, including link validity, expiration, and post-reset authentication behavior. No major gaps affect the proposed tests.
+
+Candidate tests
+| Test ID | Test type | Scenario | Input or action | Expected result |
+| :--- | :--- | :--- | :--- | :--- |
+| TC-01 | Normal | Valid link usage within time limit | User clicks a valid reset link sent to their verified email within 15 minutes and submits a new password. | The new password is set successfully. The old password no longer works. The user is logged out and must log in again with the new password. |
+| TC-02 | Negative | Expired link usage | User clicks a reset link after 15 minutes have passed since it was generated. | The system rejects the link as expired. The password is not changed. The user is prompted to request a new reset link. |
+| TC-03 | Boundary | Link usage at exact expiration | User clicks a reset link at exactly 15 minutes and 0 seconds after generation. | The system rejects the link as expired (based on "expires at 15 minutes"). The password is not changed. |
+| TC-04 | Negative | Reuse of single-use link | User successfully resets password using a valid link, then attempts to use the same link again. | The system rejects the link as already used. The password remains the newly set one. |
+| TC-05 | Negative | Unverified email address | User requests a password reset, but the email address on file is not verified. | The system does not send a reset link (or sends a generic message not revealing account existence). No password change is possible via this flow. |
+| TC-06 | Normal | Login with old password after reset | After successfully resetting the password, the user attempts to log in with the old password. | Login fails. The system indicates invalid credentials. |
+| TC-07 | Normal | Login with new password after reset | After successfully resetting the password, the user attempts to log in with the new password. | Login succeeds. The user is authenticated. |
+
+Questions, if needed
+- What is the behavior if a user requests multiple password resets in quick succession? Does the system invalidate previous links or allow multiple active links?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 3.31 seconds
+Tokens: 926
+
+=================================================================
+TC02 | Functional
+=================================================================
+
+REQUIREMENT
+A guest can use a cart. Adding a new product sets quantity to 1; adding it again increases quantity by 1. Quantities are whole numbers from 1 to 10. Updating to 0 removes the product. Other invalid quantities are rejected without changing the cart. Total equals unit price times quantity, summed across items; no tax, shipping or discounts apply.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover guest access, first and repeat addition, quantity updates, removal at zero, invalid quantities and recalculated totals. Use labelled example prices with correct arithmetic. Do not require login.
+
+GENERATED TEST CASES
+Requirement note
+The requirement is sufficiently clear for testing core cart logic, though it lacks specific details on how "invalid quantities" are communicated to the user (e.g., error message vs. silent ignore) and whether the 1-10 limit applies to the initial add or only updates.
+
+Candidate tests
+
+| Test ID | Test type | Scenario | Input or action | Expected result |
+| :--- | :--- | :--- | :--- | :--- |
+| TC-01 | Normal | Add new product | Add Product A (not in cart) | Product A added with quantity 1 |
+| TC-02 | Normal | Add existing product | Add Product A (already in cart with qty 1) | Product A quantity increases to 2 |
+| TC-03 | Boundary | Max quantity limit | Update Product A quantity to 10 | Quantity is set to 10 |
+| TC-04 | Boundary | Min quantity limit | Update Product A quantity to 1 | Quantity is set to 1 |
+| TC-05 | Negative | Remove product | Update Product A quantity to 0 | Product A is removed from the cart |
+| TC-06 | Negative | Invalid quantity (below min) | Update Product A quantity to -1 | Quantity remains unchanged; error/rejection indicated |
+| TC-07 | Negative | Invalid quantity (above max) | Update Product A quantity to 11 | Quantity remains unchanged; error/rejection indicated |
+| TC-08 | Normal | Total calculation (single item) | Cart contains Product A (qty 2, price $5.00) | Total is $10.00 |
+| TC-09 | Normal | Total calculation (multiple items) | Cart contains Product A (qty 1, $5.00) and Product B (qty 3, $2.00) | Total is $11.00 |
+| TC-10 | Negative | Non-integer quantity | Update Product A quantity to 1.5 | Quantity remains unchanged; error/rejection indicated |
+
+Questions, if needed
+1. How should the system communicate that an invalid quantity was rejected (e.g., specific error message, UI shake, silent failure)?
+2. Does the 1-10 quantity limit apply when *adding* a product (e.g., can a user add 15 units at once), or only when *updating* an existing item?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 1.58 seconds
+Tokens: 965
+
+=================================================================
+TC03 | Boundary
+=================================================================
+
+REQUIREMENT
+An upload accepts PDF files only, with a maximum size of 5,000,000 bytes inclusive. Empty files are rejected. A rejected file must not be stored. Other file-validation rules are outside this requirement.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover a non-empty PDF below and exactly at the limit, a PDF one byte above it, an empty PDF and a non-PDF. Rejected files must not be stored. Do not invent MIME-detection methods or error wording.
+
+GENERATED TEST CASES
+Requirement note
+The requirement is sufficiently clear for testing file format, size, and empty file validation. The main gap is the specific error message or status code expected for rejections, which is not defined.
+
+Candidate tests
+
+| Test ID | Test type | Scenario | Input or action | Expected result |
+| :--- | :--- | :--- | :--- | :--- |
+| TC-01 | Normal | Valid PDF within size limit | Upload a valid PDF file of 100,000 bytes | File is accepted and stored |
+| TC-02 | Boundary | PDF at maximum size | Upload a valid PDF file of exactly 5,000,000 bytes | File is accepted and stored |
+| TC-03 | Boundary | PDF exceeding maximum size | Upload a valid PDF file of 5,000,001 bytes | File is rejected and not stored |
+| TC-04 | Negative | Non-PDF file type | Upload a valid text file (.txt) of 100 bytes | File is rejected and not stored |
+| TC-05 | Negative | Empty PDF file | Upload a PDF file with 0 bytes | File is rejected and not stored |
+| TC-06 | Negative | Empty non-PDF file | Upload a text file with 0 bytes | File is rejected and not stored |
+| TC-07 | Negative | Corrupted PDF | Upload a file with .pdf extension but invalid PDF header | File is rejected and not stored |
+
+Questions, if needed
+1. What specific error message or HTTP status code should be returned for each rejection type (wrong type, too large, empty)?
+2. Is the file extension check sufficient, or must the system validate the file content/magic bytes to ensure it is a genuine PDF?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 27.39 seconds
+Tokens: 799
+
+=================================================================
+TC04 | Access control
+=================================================================
+
+REQUIREMENT
+In a project, an owner may invite members and remove other members. A member may view the member list but cannot invite or remove anyone. An unauthorised invite or removal must leave membership unchanged. The owner cannot remove their own membership.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover owner permissions, member viewing, blocked member invite/removal, unchanged membership after denial and blocked owner self-removal. Do not prescribe an HTTP status or interface unless supplied.
+
+GENERATED TEST CASES
+Requirement note
+The requirement is sufficiently clear for testing core permission logic and state integrity. The main gap is the definition of "unauthorised" (e.g., does it include non-members or members attempting owner-only actions) and the specific error handling expected for failed operations.
+
+Candidate tests
+
+| Test ID | Test type | Scenario | Input or action | Expected result |
+| :--- | :--- | :--- | :--- | :--- |
+| TC-01 | Normal | Owner invites a new member | Owner sends invite to User A | User A is added to the member list |
+| TC-02 | Normal | Owner removes a member | Owner removes User B from the project | User B is no longer in the member list |
+| TC-03 | Normal | Member views member list | Member requests the member list | The current member list is returned successfully |
+| TC-04 | Negative | Member attempts to invite | Member sends invite to User C | Invite is rejected; User C is not added to the member list |
+| TC-05 | Negative | Member attempts to remove | Member attempts to remove User D | Removal is rejected; User D remains in the member list |
+| TC-06 | Boundary | Owner attempts to remove self | Owner attempts to remove their own membership | Removal is rejected; Owner remains in the member list |
+| TC-07 | Negative | Unauthorised user invites | Non-member (or invalid token) sends invite | Invite is rejected; membership list remains unchanged |
+| TC-08 | Negative | Unauthorised user removes | Non-member (or invalid token) attempts removal | Removal is rejected; membership list remains unchanged |
+
+Questions, if needed
+1. What is the expected system response (e.g., error code, message) when an unauthorised action is attempted?
+2. Does "unauthorised" strictly refer to non-members, or does it also include members attempting owner-only actions (which are already covered in TC-04/05)?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 1.66 seconds
+Tokens: 841
+
+=================================================================
+TC05 | State rules
+=================================================================
+
+REQUIREMENT
+A booking starts as Pending. Only Pending bookings may be confirmed or cancelled. Confirming changes the state to Confirmed; cancelling changes it to Cancelled. Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover both allowed transitions and both actions from each terminal state. Check that rejected actions leave the state unchanged. Do not add refund or notification behaviour.
+
+GENERATED TEST CASES
+Requirement note
+The requirement is sufficiently clear for testing the state transition logic. No major gaps identified, though specific error messages for rejected requests are not defined.
+
+Candidate tests
+
+| Test ID | Test type | Scenario | Input or action | Expected result |
+| :--- | :--- | :--- | :--- | :--- |
+| TC-01 | Normal | Confirm a Pending booking | Call confirm on a booking with state "Pending" | State changes to "Confirmed" |
+| TC-02 | Normal | Cancel a Pending booking | Call cancel on a booking with state "Pending" | State changes to "Cancelled" |
+| TC-03 | Negative | Confirm a Confirmed booking | Call confirm on a booking with state "Confirmed" | State remains "Confirmed"; request is rejected |
+| TC-04 | Negative | Cancel a Confirmed booking | Call cancel on a booking with state "Confirmed" | State remains "Confirmed"; request is rejected |
+| TC-05 | Negative | Confirm a Cancelled booking | Call confirm on a booking with state "Cancelled" | State remains "Cancelled"; request is rejected |
+| TC-06 | Negative | Cancel a Cancelled booking | Call cancel on a booking with state "Cancelled" | State remains "Cancelled"; request is rejected |
+| TC-07 | Boundary | Confirm a booking in an unknown/invalid state | Call confirm on a booking with state "Unknown" (if applicable) | State remains unchanged; request is rejected |
+
+Questions, if needed
+- What specific error code or message should be returned when a confirmation or cancellation request is rejected?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 26.13 seconds
+Tokens: 756
+
+=================================================================
+TC06 | Missing procedure
+=================================================================
+
+REQUIREMENT
+A staff member can download an existing invoice as a PDF. The PDF must show the same invoice number and total as the stored invoice. The interface, download procedure and storage location will be supplied later.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Propose high-level download and content checks with a staff member and existing invoice as preconditions. Retain the known PDF and matching-value outcomes; ask for execution details without inventing buttons, URLs or paths.
+
+GENERATED TEST CASES
+Requirement note
+The core functional requirement is clear, but the specific UI interaction, file naming convention, and storage location are missing, which limits the scope of interface-specific tests.
+
+Candidate tests
+
+| Test ID | Test type | Scenario | Input or action | Expected result |
+| :--- | :--- | :--- | :--- | :--- |
+| TC-01 | Normal | Download valid invoice | Select an existing invoice with a known number and total; trigger the download action. | A PDF file is generated and downloaded successfully. |
+| TC-02 | Normal | Verify PDF content accuracy | Open the downloaded PDF from TC-01. | The PDF displays the exact same invoice number and total amount as the stored invoice record. |
+| TC-03 | Negative | Download non-existent invoice | Attempt to trigger a download for an invoice ID that does not exist in the system. | The system displays an appropriate error message; no PDF is generated. |
+| TC-04 | Boundary | Invoice with maximum length fields | Select an invoice with the maximum allowed character length for the invoice number and total. | The PDF renders correctly without truncating or overlapping the invoice number and total. |
+| TC-05 | Boundary | Invoice with zero total | Select an existing invoice with a total of 0.00. | The PDF displays the total as 0.00 (or equivalent format) matching the stored record. |
+
+Questions, if needed
+1. What is the expected file naming convention for the downloaded PDF?
+2. Are there specific formatting requirements for the currency or number format in the PDF (e.g., decimal places, currency symbol)?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 24.16 seconds
+Tokens: 756
+
+=================================================================
+TC07 | Missing rule
+=================================================================
+
+REQUIREMENT
+A user can submit an expense claim with an amount and receipt. A positive amount and attached receipt are required; otherwise reject the claim without storing it. Valid claims are stored as Pending. Treatment of a second submission with the same receipt has not been decided.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover valid Pending storage, non-positive amounts and missing receipts with no storage. Ask what should happen to duplicate receipts; do not prescribe rejection or acceptance for duplicates.
+
+GENERATED TEST CASES
+Requirement note
+The requirement is sufficiently clear for testing validation logic and state transitions, but the handling of duplicate receipts is undefined, preventing tests for that specific scenario.
+
+Candidate tests
+| Test ID | Test type | Scenario | Input or action | Expected result |
+| :--- | :--- | :--- | :--- | :--- |
+| TC-01 | Normal | Valid claim submission | Submit claim with amount 50.00 and a valid receipt file | Claim is stored with status "Pending" |
+| TC-02 | Negative | Zero amount | Submit claim with amount 0.00 and a valid receipt file | Claim is rejected and not stored |
+| TC-03 | Negative | Negative amount | Submit claim with amount -10.00 and a valid receipt file | Claim is rejected and not stored |
+| TC-04 | Negative | Missing receipt | Submit claim with amount 50.00 and no receipt file | Claim is rejected and not stored |
+| TC-05 | Boundary | Minimum positive amount | Submit claim with the smallest valid positive amount (e.g., 0.01) and a valid receipt | Claim is stored with status "Pending" |
+| TC-06 | Boundary | Maximum valid amount | Submit claim with the maximum allowed amount (if defined) and a valid receipt | Claim is stored with status "Pending" |
+
+Questions, if needed
+1. What is the maximum allowed amount for an expense claim?
+2. What is the expected behavior when a user submits a second claim with the same receipt ID?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 13.05 seconds
+Tokens: 753
+
+=================================================================
+TC08 | Conflicting rules
+=================================================================
+
+REQUIREMENT
+Two current documents describe report access. Requirement A says only managers may download monthly reports. Requirement B says all signed-in users may download them. No precedence is specified. Both documents agree that signed-out users must be denied access.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Test manager access and signed-out denial where the sources agree. Identify the conflict for signed-in non-managers and ask which rule applies. Leave that outcome unresolved rather than choosing a document.
+
+GENERATED TEST CASES
+Requirement note
+The requirement is insufficiently clear for testing because there is a direct conflict between Requirement A and Requirement B regarding who can download reports, with no precedence defined. The only unambiguous behavior is that signed-out users must be denied access.
+
+Candidate tests
+| Test ID | Test type | Scenario | Input or action | Expected result |
+| :--- | :--- | :--- | :--- | :--- |
+| TC-01 | Negative | Signed-out user attempts download | User is not authenticated; clicks "Download Monthly Report" | Access is denied; user is prompted to sign in or receives an error message. |
+| TC-02 | Normal | Manager attempts download | User is authenticated as a Manager; clicks "Download Monthly Report" | Report downloads successfully (based on Req A). *Note: Conflicts with Req B, but valid under Req A.* |
+| TC-03 | Normal | Non-manager signed-in user attempts download | User is authenticated as a Standard User (not Manager); clicks "Download Monthly Report" | Report downloads successfully (based on Req B). *Note: Conflicts with Req A, but valid under Req B.* |
+
+Questions, if needed
+1. Which requirement takes precedence: Requirement A (Managers only) or Requirement B (All signed-in users)?
+2. Are there any specific roles other than "Manager" and "Standard User" that need to be considered?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 23.9 seconds
+Tokens: 709
+
+=================================================================
+TC09 | Performance
+=================================================================
+
+REQUIREMENT
+In staging with 10,000 seeded products, run 100 concurrent virtual users for 10 minutes after a 2-minute warm-up. Each user sends one catalogue-search request every 5 seconds. During the measured 10 minutes, the 95th-percentile response time must be at most 800 ms and fewer than 1% of requests may fail.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Preserve the dataset, concurrency, request interval, warm-up and measured duration. Use p95 <= 800 ms and failure rate < 1%, not averages or altered boundaries. Ask for endpoint and failure definition if absent. Do not claim measured results.
+
+GENERATED TEST CASES
+Requirement note
+The requirement is sufficiently clear for testing performance metrics and load parameters. The main gap is the definition of "failure" (e.g., HTTP 5xx vs. timeout) and the specific search query parameters used by the virtual users.
+
+Candidate tests
+| Test ID | Test type | Scenario | Input or action | Expected result |
+| :--- | :--- | :--- | :--- | :--- |
+| TC-01 | Performance | 95th-percentile response time compliance | Run 100 concurrent users for 10 minutes (after 2-min warm-up) with 1 request/user/5s against 10k seeded products. | 95th-percentile response time is ≤ 800 ms. |
+| TC-02 | Reliability | Request failure rate compliance | Run 100 concurrent users for 10 minutes (after 2-min warm-up) with 1 request/user/5s against 10k seeded products. | Fewer than 1% of total requests result in a failure. |
+| TC-03 | Boundary | Warm-up exclusion verification | Monitor system metrics during the first 2 minutes of the test run. | Response times and failure rates from the first 2 minutes are excluded from the final 95th-percentile and failure rate calculations. |
+| TC-04 | Negative | System stability under sustained load | Observe system resource usage (CPU, Memory, DB connections) during the 10-minute measured period. | No system crashes, OOM errors, or connection pool exhaustion occurs; service remains available. |
+
+Questions, if needed
+1. What specific HTTP status codes or error conditions define a "failed" request for the <1% threshold?
+2. What are the specific search query parameters (e.g., keyword, category, pagination) used by the virtual users?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 16.2 seconds
+Tokens: 848
+
+=================================================================
+TC10 | Insufficient evidence
+=================================================================
+
+REQUIREMENT
+The checkout service should be reliable and easy to use. No workflows, measurable targets, implementation or execution evidence are supplied. Suggest what is needed to test it and say whether its quality can currently be confirmed.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Ask for checkout workflows, operating conditions, reliability targets and usability criteria. State that quality cannot yet be confirmed. Do not invent thresholds, payment methods, test results or an executable test table.
+
+GENERATED TEST CASES
+No response
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: None seconds
+Tokens: None
+
+ERROR
+Error code: 429 - {'error': {'message': "Request too large for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Requested 1500. The request's expected output tokens exceed the enforced limit; reduce max_tokens (or the request's expected output) and try again. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing", 'type': 'tokens', 'code': 'rate_limit_exceeded'}}
+

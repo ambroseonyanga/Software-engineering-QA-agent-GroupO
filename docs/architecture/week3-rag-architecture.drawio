@@ -1,0 +1,61 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="week3-rag" name="RAG pipeline">
+    <mxGraphModel grid="1" gridSize="10" page="1" pageWidth="1100" pageHeight="850">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Week 3 RAG architecture&#10;Current implementation ? 16 October 2026" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#000000;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="70" y="20" width="900" height="65" />
+        </mxCell>
+        <mxCell id="corpus" value="Authorised source register&#10;5 project documents&#10;Local Markdown retrieval copies" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#000000;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="70" y="140" width="230" height="90" />
+        </mxCell>
+        <mxCell id="ingest" value="Ingestion and index&#10;180-word chunks, TF-IDF&#10;26 chunks in current snapshot" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#000000;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="390" y="140" width="230" height="90" />
+        </mxCell>
+        <mxCell id="query" value="User question&#10;Flask knowledge view" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#000000;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="70" y="320" width="230" height="90" />
+        </mxCell>
+        <mxCell id="retrieve" value="Retrieve and filter&#10;Top 3 cosine matches&#10;Keep scores ? 0.08" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#000000;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="390" y="320" width="230" height="90" />
+        </mxCell>
+        <mxCell id="context" value="Build model context&#10;Question + labelled excerpts&#10;Grounding prompt" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#000000;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="710" y="320" width="230" height="90" />
+        </mxCell>
+        <mxCell id="empty" value="No retained evidence&#10;Return insufficient information&#10;No model request" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#000000;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="390" y="510" width="230" height="90" />
+        </mxCell>
+        <mxCell id="model" value="Groq cloud model&#10;qwen/qwen3.8-27b&#10;90-second timeout; no retry" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#000000;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="710" y="510" width="230" height="90" />
+        </mxCell>
+        <mxCell id="response" value="Response and evidence&#10;Show answer and source excerpts&#10;Claims still need review" style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#000000;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="710" y="680" width="230" height="90" />
+        </mxCell>
+        <mxCell id="note" value="Local retrieval; cloud generation. The question and selected excerpts are sent to Groq.&#10;HTTP 429 or other model failures return an error; sources are not proof of answer correctness." style="rounded=0;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#000000;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry as="geometry" x="70" y="680" width="570" height="90" />
+        </mxCell>
+        <mxCell id="e1" value="Registered files" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="corpus" target="ingest">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e2" value="Index" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="ingest" target="retrieve">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e3" value="Query" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="query" target="retrieve">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e4" value="Retained excerpts" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="retrieve" target="context">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e5" value="No matches" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="retrieve" target="empty">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e6" value="HTTPS request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="context" target="model">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+        <mxCell id="e7" value="Answer or error" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="model" target="response">
+          <mxGeometry as="geometry" relative="1" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

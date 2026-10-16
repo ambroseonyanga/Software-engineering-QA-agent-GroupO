@@ -34,7 +34,7 @@ If validation fails, the run stops immediately with `REJECTED_INPUT` and no tool
 
 ## 3. Approved Tools / Actions
 
-The model chooses **one action per iteration**. The application re-validates every decision; constrained decoding via Ollama's `format` field additionally restricts what the model can emit structurally.
+The model chooses **one action per iteration**. The application re-validates every decision; Groq JSON mode requests an object, and application-side schema validation rejects invalid decisions before tool execution.
 
 | Action | Kind | Contract |
 |---|---|---|
@@ -61,7 +61,7 @@ Sense → Decide → Validate → Act → Observe → Stop / Re-plan
 
 The model never sees internal counters, completed queries, or raw evidence scores.
 
-**Step 2 — Decide:** The digest is sent to the local Qwen3:8b model via Ollama's `/api/generate` endpoint with `format: MODEL_FORMAT_SCHEMA`. Temperature = 0, max 350 tokens, 120-second timeout. The model returns one JSON object: `{ "action", "query", "analysis", "message" }`.
+**Step 2 — Decide:** The digest is sent to Groq using `qwen/qwen3.8-27b`, JSON mode and a schema included in the system instructions. Temperature = 0, maximum completion tokens = 1,000, timeout = 90 seconds. Application-side schema validation remains authoritative. The model returns one JSON object: `{ "action", "query", "analysis", "message" }`.
 
 **Step 3 — Validate (deterministic guards):** The application independently validates:
 - `HIGHER_IMPACT_FLAGS` (`submit`, `merge`, `deploy`, `execute`) → `HANDOFF_APPROVAL_REQUIRED`
@@ -161,6 +161,6 @@ Every stop reason other than `COMPLETED` is a **human hand-off**. The agent neve
 ## 10. Known Limitations
 
 - The agent does not execute tests. It triages a failure a human reports; test execution remains blocked until an approval path is built.
-- Retrieval is TF-IDF keyword matching over ~15 documents. A grounded result means a chunk scored above 0.08 cosine similarity, not that it is the correct requirement.
+- Retrieval is TF-IDF keyword matching over five registered documents. A grounded result means a chunk scored above 0.08 cosine similarity, not that it is the correct requirement.
 - The model analysis in the draft is labelled "unverified opinion" and cannot be treated as a confirmed diagnosis.
-- CPU inference with Qwen3:8b can be slow; a run may take several minutes within the 900-second budget.
+- Groq calls can fail through network errors or rate limits. Each call has a 90-second timeout; the 900-second run budget is checked between iterations.

@@ -1,0 +1,31 @@
+=================================================================
+TC10 | Insufficient evidence
+=================================================================
+
+REQUIREMENT
+The checkout service should be reliable and easy to use. No workflows, measurable targets, implementation or execution evidence are supplied. Suggest what is needed to test it and say whether its quality can currently be confirmed.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Ask for checkout workflows, operating conditions, reliability targets and usability criteria. State that quality cannot yet be confirmed. Do not invent thresholds, payment methods, test results or an executable test table.
+
+GENERATED TEST CASES
+Requirement note
+The requirement is insufficiently clear for testing because "reliable" and "easy to use" are subjective qualities without measurable criteria, specific functional behaviors, or defined system boundaries. No meaningful test cases can be proposed until concrete acceptance criteria (e.g., response time limits, error handling rules, or usability metrics) are provided.
+
+Candidate tests
+| Test ID | Test type | Scenario | Input or action | Expected result |
+| :--- | :--- | :--- | :--- | :--- |
+| N/A | N/A | N/A | N/A | N/A |
+
+Questions, if needed
+1. What specific functional behaviors define the checkout process (e.g., payment validation, inventory deduction, order confirmation)?
+2. What are the measurable targets for "reliability" (e.g., 99.9% uptime, <200ms response time, zero data loss)?
+3. What specific criteria define "easy to use" (e.g., maximum number of steps, specific UI flow, accessibility standards)?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 2.71 seconds
+Tokens: 628
+

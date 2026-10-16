@@ -9,11 +9,11 @@ from uuid import uuid4
 from jsonschema import ValidationError, validate
 
 try:
-    from .qa_service import MODEL, OLLAMA_URL
+    from .model_service import MODEL, complete
     from .tool_contracts import DECISION_SCHEMA, TOOL_SCHEMAS
     from .tool_service import invoke_tool, _error
 except ImportError:
-    from qa_service import MODEL, OLLAMA_URL
+    from model_service import MODEL, complete
     from tool_contracts import DECISION_SCHEMA, TOOL_SCHEMAS
     from tool_service import invoke_tool, _error
 
@@ -23,24 +23,8 @@ TRACE_DIR = ROOT / "evidence" / "traces" / "tool_requests"
 
 
 def decide_tool(user_request):
-    payload = {
-        "model": MODEL,
-        "system": PROMPT_PATH.read_text(encoding="utf-8") + "\nTool input schemas:\n" + json.dumps(TOOL_SCHEMAS),
-        "prompt": user_request,
-        "format": DECISION_SCHEMA,
-        "stream": False,
-        "think": False,
-        "options": {"temperature": 0, "num_predict": 350, "num_ctx": 4096},
-    }
-    request = urllib.request.Request(
-        OLLAMA_URL, data=json.dumps(payload).encode(),
-        headers={"Content-Type": "application/json"}, method="POST",
-    )
-    with urllib.request.urlopen(request, timeout=120) as response:
-        body = json.load(response)
-    if body.get("error"):
-        raise RuntimeError(body["error"])
-    return json.loads(body["response"])
+    result = complete(PROMPT_PATH.read_text(encoding="utf-8") + "\nTool input schemas:\n" + json.dumps(TOOL_SCHEMAS), user_request, temperature=0, max_tokens=1000, schema=DECISION_SCHEMA)
+    return json.loads(result["text"])
 
 
 def handle_tool_request(user_request, *, decide_fn=None, generate=True, draft_dir=None, trace_dir=None):
@@ -76,7 +60,7 @@ def handle_tool_request(user_request, *, decide_fn=None, generate=True, draft_di
     except (ValidationError, ValueError, KeyError, TypeError):
         result = _error("UNEXPECTED_TOOL_RESPONSE", "The model returned an invalid tool decision.", status=502)
     except (OSError, RuntimeError):
-        result = _error("SERVICE_UNAVAILABLE", "The local model is unavailable or timed out.", status=503)
+        result = _error("SERVICE_UNAVAILABLE", "The model service is unavailable, rate-limited or timed out.", status=503)
     record.update(state="finished", elapsed_seconds=round(time.monotonic() - started, 3), result=result)
     try:
         trace_path.write_text(json.dumps(record, indent=2), encoding="utf-8")

@@ -1,0 +1,62 @@
+{
+  "started_utc": "20261016T153951Z",
+  "model": "qwen/qwen3.8-27b",
+  "request_budget": 35,
+  "requests": [
+    {
+      "number": 1,
+      "settings": {
+        "temperature": 0.3
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.047772052,
+        "prompt_tokens": 1183,
+        "prompt_time": 0.106541332,
+        "completion_tokens": 664,
+        "completion_time": 1.440059562,
+        "total_tokens": 1847,
+        "total_time": 1.546600894
+      },
+      "elapsed_seconds": 3.074,
+      "finish_reason": "stop"
+    },
+    {
+      "number": 2,
+      "settings": {
+        "max_tokens": 1200
+      },
+      "error": "rate_limited"
+    }
+  ],
+  "rag": [
+    {
+      "id": "R01",
+      "question": "What information should a proposed test case contain?",
+      "reference": "user_stories.md",
+      "error": "Groq rate limit reached. Wait before retrying; no automatic retry was made."
+    }
+  ],
+  "tools": [],
+  "agent": [],
+  "memory": [],
+  "qa": {
+    "response": "Requirement note\nHigh-level tests can be proposed for the mandatory fields and local persistence behavior. The main gap is the specific procedure for verifying that an issue remains local and is not submitted automatically.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| T01 | Functional | Create a draft issue with required fields | Precondition: User is in the issue creation interface. Action: Enter a title and a test identifier, then save as draft. | The draft issue is created and includes the title and test identifier. | Supported | \"A draft issue must include a title and test identifier.\" Execution detail needed: Specific UI steps to save as draft and verify field presence. |\n| T02 | Negative | Create a draft issue without a title | Precondition: User is in the issue creation interface. Action: Enter a test identifier but leave the title empty, then attempt to save as draft. | The system prevents saving the draft or indicates the title is missing. | Supported | \"A draft issue must include a title...\" implies the title is mandatory. Execution detail needed: Specific error message or validation behavior. |\n| T03 | Negative | Create a draft issue without a test identifier | Precondition: User is in the issue creation interface. Action: Enter a title but leave the test identifier empty, then attempt to save as draft. | The system prevents saving the draft or indicates the test identifier is missing. | Supported | \"A draft issue must include... test identifier\" implies the identifier is mandatory. Execution detail needed: Specific error message or validation behavior. |\n| T04 | Functional | Verify draft issue remains local | Precondition: A valid draft issue (with title and test identifier) has been created. Action: Check the system state to confirm the issue is not submitted to the central repository or server. | The draft issue exists only locally and is not visible in the submitted issues list or remote database. | Supported | \"It remains local and must not be submitted automatically.\" Execution detail needed: Method to verify local vs. remote status (e.g., checking local storage vs. API response). |\n| T05 | Negative | Verify no automatic submission occurs | Precondition: A valid draft issue has been created. Action: Wait for a reasonable period or trigger any potential auto-save/auto-submit events without explicit user submission action. | The draft issue remains in draft status and is not automatically submitted. | Supported | \"Must not be submitted automatically.\" Execution detail needed: Definition of \"automatically\" (e.g., on page close, timer, or background sync) and how to observe submission status. |\n\nQuestions, if needed\n1. For T04 and T05, what is the specific method to verify that an issue is \"local\" versus \"submitted\"? (e.g., checking a local file, a specific UI badge, or an API endpoint?)\n2. For T02 and T03, is there a specific error message or validation rule expected when mandatory fields are missing, or is any prevention of saving sufficient?"
+  },
+  "history_before_delete": {
+    "ok": true,
+    "failed_test": "QA-MEMORY-LIVE-01",
+    "run_count": 0,
+    "last_stop_reason": null,
+    "runs": []
+  },
+  "history_after_delete": {
+    "ok": true,
+    "failed_test": "QA-MEMORY-LIVE-01",
+    "run_count": 0,
+    "last_stop_reason": null,
+    "runs": []
+  },
+  "rate_limit_stop": true,
+  "finished_utc": "2026-10-16T15:39:55.040803+00:00"
+}

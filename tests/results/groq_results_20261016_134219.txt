@@ -1,0 +1,334 @@
+=================================================================
+TC01 | Functional
+=================================================================
+
+REQUIREMENT
+An active registered user requests a password reset. Send a single-use link to their verified email. The link is valid for 15 minutes and expires at 15 minutes. A valid link lets the user set a new password. After success, the old password no longer works and the user must log in again.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover link delivery, a valid reset, expiry just before and at 15 minutes, reuse after success, rejection of the old password and no automatic login. Ask about password rules if needed; do not invent them.
+
+GENERATED TEST CASES
+Requirement note
+High-level tests can be proposed for the password reset flow, including link validity, expiration, and post-reset authentication behavior. The main gap is the specific mechanism for verifying the email address and the exact interface for setting the new password.
+
+Candidate tests
+
+| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| T01 | Functional | Reset password using a valid link within the time limit | Precondition: An active registered user with a verified email requests a password reset. Action: User clicks the single-use link sent to their verified email within 15 minutes and sets a new password. | The new password is set successfully. The old password no longer works. The user must log in again with the new password. | Supported | "A valid link lets the user set a new password. After success, the old password no longer works and the user must log in again." Execution detail needed: Specific UI steps for setting the new password and verifying the login state. |
+| T02 | Negative | Attempt to use a password reset link after expiration | Precondition: An active registered user requests a password reset. Action: User waits until 15 minutes have passed since the link was sent, then clicks the link. | The link is invalid/expired. The user cannot set a new password using this link. | Supported | "The link is valid for 15 minutes and expires at 15 minutes." Execution detail needed: How the system communicates the expiration (e.g., error message) and whether a new link can be requested immediately. |
+| T03 | Negative | Attempt to reuse a password reset link | Precondition: An active registered user requests a password reset and successfully sets a new password using the link. Action: User attempts to click the same link again. | The link is invalid. The user cannot set a new password using this link. | Supported | "Send a single-use link... After success, the old password no longer works." Execution detail needed: Specific error handling for reused links. |
+| T04 | Boundary | Use a password reset link exactly at the 15-minute mark | Precondition: An active registered user requests a password reset. Action: User clicks the link at exactly 15 minutes after it was sent. | TBD - needs clarification | Needs clarification | Behaviour rule missing: The requirement states the link "expires at 15 minutes," but it is unclear if the link is valid *up to* 15:00:00 or if it becomes invalid *at* 15:00:00. Clarification needed on the exact boundary condition (inclusive vs. exclusive). |
+| T05 | Recommendation | Verify email verification status before sending link | Precondition: A registered user with an unverified email requests a password reset. Action: User requests a password reset. | Proposal requiring agreement: The system should not send a reset link to an unverified email, or should prompt the user to verify their email first. | Recommendation | Common practice suggests ensuring email verification before sensitive actions. The requirement specifies sending to a "verified email," implying unverified emails should be handled differently, but the specific behavior is not defined. |
+
+Questions, if needed
+1. For T04: Does the link expire *at* 15 minutes (meaning it is invalid at 15:00:00) or *after* 15 minutes (meaning it is valid until 15:00:00)?
+2. For T05: What is the expected behavior if a user with an unverified email requests a password reset? Should the system block the request, send a verification email instead, or allow the reset?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 2.97 seconds
+Tokens: 2015
+
+=================================================================
+TC02 | Functional
+=================================================================
+
+REQUIREMENT
+A guest can use a cart. Adding a new product sets quantity to 1; adding it again increases quantity by 1. Quantities are whole numbers from 1 to 10. Updating to 0 removes the product. Other invalid quantities are rejected without changing the cart. Total equals unit price times quantity, summed across items; no tax, shipping or discounts apply.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover guest access, first and repeat addition, quantity updates, removal at zero, invalid quantities and recalculated totals. Use labelled example prices with correct arithmetic. Do not require login.
+
+GENERATED TEST CASES
+Requirement note
+High-level tests can be proposed for cart quantity management and total calculation. The main gap is the specific interface or procedure for updating quantities and viewing the cart state.
+
+Candidate tests
+
+| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| T01 | Functional | Add a new product to an empty cart | Precondition: Guest has an empty cart. Action: Add Product A (unit price $10). | Product A is in the cart with quantity 1. Total is $10. | Supported | "Adding a new product sets quantity to 1"; "Total equals unit price times quantity". Execution detail needed: How the guest adds the product and views the cart. |
+| T02 | Functional | Add an existing product to the cart | Precondition: Guest has Product A in cart with quantity 1. Action: Add Product A again. | Product A quantity is 2. Total is $20. | Supported | "adding it again increases quantity by 1"; "Total equals unit price times quantity". Execution detail needed: How the guest adds the product and views the cart. |
+| T03 | Boundary | Update quantity to maximum limit | Precondition: Guest has Product A in cart with quantity 9. Action: Update quantity to 10. | Product A quantity is 10. Total reflects quantity 10. | Supported | "Quantities are whole numbers from 1 to 10". Execution detail needed: How the guest updates the quantity. |
+| T04 | Boundary | Update quantity to minimum limit | Precondition: Guest has Product A in cart with quantity 2. Action: Update quantity to 1. | Product A quantity is 1. Total reflects quantity 1. | Supported | "Quantities are whole numbers from 1 to 10". Execution detail needed: How the guest updates the quantity. |
+| T05 | Functional | Remove product by setting quantity to 0 | Precondition: Guest has Product A in cart with quantity 1. Action: Update quantity to 0. | Product A is removed from the cart. Total is $0 (or reflects remaining items). | Supported | "Updating to 0 removes the product". Execution detail needed: How the guest updates the quantity and verifies removal. |
+| T06 | Negative | Update quantity to value above maximum | Precondition: Guest has Product A in cart with quantity 1. Action: Update quantity to 11. | Quantity remains 1. Total remains unchanged. | Supported | "Quantities are whole numbers from 1 to 10"; "Other invalid quantities are rejected without changing the cart". Execution detail needed: How the guest attempts the update. |
+| T07 | Negative | Update quantity to non-integer value | Precondition: Guest has Product A in cart with quantity 1. Action: Update quantity to 1.5. | Quantity remains 1. Total remains unchanged. | Supported | "Quantities are whole numbers"; "Other invalid quantities are rejected without changing the cart". Execution detail needed: How the guest attempts the update. |
+| T08 | Functional | Calculate total with multiple items | Precondition: Guest has Product A (qty 2, $10) and Product B (qty 1, $5). Action: View cart total. | Total is $25. | Supported | "Total equals unit price times quantity, summed across items". Execution detail needed: How the guest views the total. |
+| T09 | Negative | Update quantity to negative value | Precondition: Guest has Product A in cart with quantity 1. Action: Update quantity to -1. | Quantity remains 1. Total remains unchanged. | Supported | "Quantities are whole numbers from 1 to 10"; "Other invalid quantities are rejected without changing the cart". Execution detail needed: How the guest attempts the update. |
+
+Questions, if needed
+1. What is the specific interface or procedure for a guest to add products and update quantities (e.g., API endpoint, UI button)?
+2. How does the guest verify the current cart state and total (e.g., specific field or page)?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 2.37 seconds
+Tokens: 2132
+
+=================================================================
+TC03 | Boundary
+=================================================================
+
+REQUIREMENT
+An upload accepts PDF files only, with a maximum size of 5,000,000 bytes inclusive. Empty files are rejected. A rejected file must not be stored. Other file-validation rules are outside this requirement.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover a non-empty PDF below and exactly at the limit, a PDF one byte above it, an empty PDF and a non-PDF. Rejected files must not be stored. Do not invent MIME-detection methods or error wording.
+
+GENERATED TEST CASES
+Requirement note
+High-level tests can be proposed for file type, size, and empty file validation. The main gap is the specific mechanism or interface for performing the upload and verifying storage status.
+
+Candidate tests
+Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail
+T01 | Functional | Upload a valid PDF file within size limit | Precondition: A valid PDF file of 1,000,000 bytes (example data) is available. Action: Upload the file. | The file is accepted and stored. | Supported | "An upload accepts PDF files only... maximum size of 5,000,000 bytes inclusive." Execution detail needed: Upload interface and method to verify storage.
+T02 | Functional | Upload a valid PDF file at maximum size | Precondition: A valid PDF file of exactly 5,000,000 bytes (example data) is available. Action: Upload the file. | The file is accepted and stored. | Supported | "maximum size of 5,000,000 bytes inclusive." Execution detail needed: Upload interface and method to verify storage.
+T03 | Negative | Upload a PDF file exceeding maximum size | Precondition: A valid PDF file of 5,000,001 bytes (example data) is available. Action: Upload the file. | The file is rejected and not stored. | Supported | "maximum size of 5,000,000 bytes inclusive" implies >5,000,000 is invalid; "A rejected file must not be stored." Execution detail needed: Upload interface and method to verify non-storage.
+T04 | Negative | Upload a non-PDF file | Precondition: A valid text file (.txt) of 1,000 bytes (example data) is available. Action: Upload the file. | The file is rejected and not stored. | Supported | "An upload accepts PDF files only"; "A rejected file must not be stored." Execution detail needed: Upload interface and method to verify non-storage.
+T05 | Negative | Upload an empty PDF file | Precondition: An empty file (0 bytes) with .pdf extension (example data) is available. Action: Upload the file. | The file is rejected and not stored. | Supported | "Empty files are rejected"; "A rejected file must not be stored." Execution detail needed: Upload interface and method to verify non-storage.
+T06 | Negative | Upload an empty non-PDF file | Precondition: An empty file (0 bytes) with .txt extension (example data) is available. Action: Upload the file. | The file is rejected and not stored. | Supported | "Empty files are rejected" (general rule); "A rejected file must not be stored." Execution detail needed: Upload interface and method to verify non-storage.
+
+Questions, if needed
+1. What is the specific upload interface (e.g., API endpoint, UI form) and how can storage status be verified for tests T01-T06?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 55.22 seconds
+Tokens: 1847
+
+=================================================================
+TC04 | Access control
+=================================================================
+
+REQUIREMENT
+In a project, an owner may invite members and remove other members. A member may view the member list but cannot invite or remove anyone. An unauthorised invite or removal must leave membership unchanged. The owner cannot remove their own membership.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover owner permissions, member viewing, blocked member invite/removal, unchanged membership after denial and blocked owner self-removal. Do not prescribe an HTTP status or interface unless supplied.
+
+GENERATED TEST CASES
+Requirement note
+High-level tests can be proposed for owner and member permissions regarding invites, removals, and viewing. The main gap is the specific interface or procedure used to perform these actions and verify the member list status.
+
+Candidate tests
+Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail
+T01 | Functional | Owner invites a new member | Precondition: User is the project owner. Action: Invite a new user to the project. | The new user is added to the project membership. | Supported | "an owner may invite members". Execution detail needed: specific UI steps or API call to invite.
+T02 | Functional | Owner removes an existing member | Precondition: User is the project owner and another member exists. Action: Remove the existing member from the project. | The removed user is no longer in the project membership. | Supported | "an owner may ... remove other members". Execution detail needed: specific UI steps or API call to remove.
+T03 | Functional | Member views the member list | Precondition: User is a project member (not owner). Action: View the project member list. | The member list is displayed to the user. | Supported | "A member may view the member list". Execution detail needed: specific UI location or API endpoint for viewing.
+T04 | Negative | Member attempts to invite a member | Precondition: User is a project member (not owner). Action: Attempt to invite a new user. | The invite is rejected and membership remains unchanged. | Supported | "A member ... cannot invite ... An unauthorised invite ... must leave membership unchanged". Execution detail needed: how the system rejects the action (error message, disabled button, etc.).
+T05 | Negative | Member attempts to remove a member | Precondition: User is a project member (not owner) and another member exists. Action: Attempt to remove the existing member. | The removal is rejected and membership remains unchanged. | Supported | "A member ... cannot ... remove anyone. An unauthorised ... removal must leave membership unchanged". Execution detail needed: how the system rejects the action.
+T06 | Negative | Owner attempts to remove their own membership | Precondition: User is the project owner. Action: Attempt to remove their own membership. | The removal is rejected and the owner remains a member. | Supported | "The owner cannot remove their own membership". Execution detail needed: how the system prevents self-removal.
+
+Questions, if needed
+1. What are the specific UI elements or API endpoints used for inviting, removing, and viewing members?
+2. How does the system indicate that an unauthorized action (T04, T05) or self-removal (T06) was rejected? (e.g., specific error message, silent failure, disabled UI control?)
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 1.62 seconds
+Tokens: 1787
+
+=================================================================
+TC05 | State rules
+=================================================================
+
+REQUIREMENT
+A booking starts as Pending. Only Pending bookings may be confirmed or cancelled. Confirming changes the state to Confirmed; cancelling changes it to Cancelled. Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover both allowed transitions and both actions from each terminal state. Check that rejected actions leave the state unchanged. Do not add refund or notification behaviour.
+
+GENERATED TEST CASES
+Requirement note
+High-level tests can be proposed for the state transition logic. The main gap is the specific interface or procedure used to trigger these state changes.
+
+Candidate tests
+
+| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| T01 | Functional | Confirm a Pending booking | Precondition: A booking is in Pending state. Action: Request confirmation. | The booking state changes to Confirmed. | Supported | "Confirming changes the state to Confirmed." Execution detail needed: How the confirmation request is initiated. |
+| T02 | Functional | Cancel a Pending booking | Precondition: A booking is in Pending state. Action: Request cancellation. | The booking state changes to Cancelled. | Supported | "Cancelling changes it to Cancelled." Execution detail needed: How the cancellation request is initiated. |
+| T03 | Negative | Confirm a Confirmed booking | Precondition: A booking is in Confirmed state. Action: Request confirmation. | The booking state remains Confirmed; the request is rejected. | Supported | "Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state." Execution detail needed: How rejection is indicated to the user/system. |
+| T04 | Negative | Cancel a Confirmed booking | Precondition: A booking is in Confirmed state. Action: Request cancellation. | The booking state remains Confirmed; the request is rejected. | Supported | "Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state." Execution detail needed: How rejection is indicated to the user/system. |
+| T05 | Negative | Confirm a Cancelled booking | Precondition: A booking is in Cancelled state. Action: Request confirmation. | The booking state remains Cancelled; the request is rejected. | Supported | "Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state." Execution detail needed: How rejection is indicated to the user/system. |
+| T06 | Negative | Cancel a Cancelled booking | Precondition: A booking is in Cancelled state. Action: Request cancellation. | The booking state remains Cancelled; the request is rejected. | Supported | "Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state." Execution detail needed: How rejection is indicated to the user/system. |
+
+Questions, if needed
+1. What is the specific interface or API endpoint used to trigger confirmation and cancellation requests (referencing T01-T06)?
+2. How does the system indicate that a request has been rejected for a non-Pending booking (referencing T03-T06)?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 54.8 seconds
+Tokens: 1772
+
+=================================================================
+TC06 | Missing procedure
+=================================================================
+
+REQUIREMENT
+A staff member can download an existing invoice as a PDF. The PDF must show the same invoice number and total as the stored invoice. The interface, download procedure and storage location will be supplied later.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Propose high-level download and content checks with a staff member and existing invoice as preconditions. Retain the known PDF and matching-value outcomes; ask for execution details without inventing buttons, URLs or paths.
+
+GENERATED TEST CASES
+Requirement note
+High-level tests can be proposed for the PDF content consistency. The main gaps are the specific interface, download procedure, and storage location, which are required for execution but do not change the expected behavior.
+
+Candidate tests
+Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail
+T01 | Functional | Download an existing invoice as PDF | Precondition: An existing invoice is stored in the system. Action: Staff member initiates the download of the invoice as a PDF using the application's procedure (procedure to be supplied). | The downloaded PDF displays the same invoice number and total as the stored invoice record. | Supported | "The PDF must show the same invoice number and total as the stored invoice." Execution detail needed: Specific UI steps to trigger the download and method to verify the PDF content against the stored record.
+T02 | Negative | Attempt to download a non-existent invoice | Precondition: No invoice exists with the specified identifier. Action: Staff member attempts to download an invoice using an invalid or non-existent invoice ID. | TBD - needs clarification | Needs clarification | Behaviour rule missing: The requirement does not specify the system's behavior (e.g., error message, empty file, 404) when an invoice is not found.
+
+Questions, if needed
+1. For T02, what is the expected system behavior when a staff member attempts to download an invoice that does not exist?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 25.76 seconds
+Tokens: 1487
+
+=================================================================
+TC07 | Missing rule
+=================================================================
+
+REQUIREMENT
+A user can submit an expense claim with an amount and receipt. A positive amount and attached receipt are required; otherwise reject the claim without storing it. Valid claims are stored as Pending. Treatment of a second submission with the same receipt has not been decided.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Cover valid Pending storage, non-positive amounts and missing receipts with no storage. Ask what should happen to duplicate receipts; do not prescribe rejection or acceptance for duplicates.
+
+GENERATED TEST CASES
+Requirement note
+High-level tests can be proposed for valid submissions, invalid amount handling, and missing receipt handling. The main gap is the undefined behavior for duplicate receipt submissions.
+
+Candidate tests
+Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail
+T01 | Functional | Submit a valid expense claim | Precondition: User is authenticated. Action: Submit a claim with a positive amount (e.g., 10.00) and a valid attached receipt. | The claim is stored with status "Pending". | Supported | "Valid claims are stored as Pending." Execution detail needed: Specific UI/API endpoint for submission and how to verify storage status.
+T02 | Negative | Submit a claim with a zero amount | Precondition: User is authenticated. Action: Submit a claim with amount 0.00 and a valid attached receipt. | The claim is rejected and not stored. | Supported | "A positive amount... is required; otherwise reject the claim without storing it." Execution detail needed: How rejection is communicated to the user (e.g., error message) and how to verify non-storage.
+T03 | Negative | Submit a claim with a negative amount | Precondition: User is authenticated. Action: Submit a claim with amount -5.00 and a valid attached receipt. | The claim is rejected and not stored. | Supported | "A positive amount... is required; otherwise reject the claim without storing it." Execution detail needed: How rejection is communicated to the user and how to verify non-storage.
+T04 | Negative | Submit a claim without a receipt | Precondition: User is authenticated. Action: Submit a claim with a positive amount (e.g., 10.00) but no attached receipt. | The claim is rejected and not stored. | Supported | "Attached receipt... is required; otherwise reject the claim without storing it." Execution detail needed: How rejection is communicated to the user and how to verify non-storage.
+T05 | Functional | Submit a second claim with the same receipt | Precondition: A valid claim has already been submitted and stored as Pending using Receipt ID R1. Action: Submit a new claim with a positive amount and the same Receipt ID R1. | TBD - needs clarification | Needs clarification | Behaviour rule missing: "Treatment of a second submission with the same receipt has not been decided."
+
+Questions
+1. For T05, what is the expected behavior when a user submits a claim with a receipt that has already been used in a previous claim? (e.g., reject as duplicate, allow, or link to existing claim?)
+2. For T02, T03, and T04, what specific error message or feedback should the user receive when a claim is rejected?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 4.07 seconds
+Tokens: 1777
+
+=================================================================
+TC08 | Conflicting rules
+=================================================================
+
+REQUIREMENT
+Two current documents describe report access. Requirement A says only managers may download monthly reports. Requirement B says all signed-in users may download them. No precedence is specified. Both documents agree that signed-out users must be denied access.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Test manager access and signed-out denial where the sources agree. Identify the conflict for signed-in non-managers and ask which rule applies. Leave that outcome unresolved rather than choosing a document.
+
+GENERATED TEST CASES
+Requirement note
+High-level tests can be proposed for the agreed denial of signed-out users, but the expected behavior for signed-in non-managers is unresolved due to conflicting requirements.
+
+Candidate tests
+Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail
+T01 | Negative | Signed-out user attempts to download monthly report | Precondition: User is not signed in. Action: Attempt to download the monthly report. | Access is denied | Supported | "Both documents agree that signed-out users must be denied access." Execution detail needed: specific interface or endpoint for the download attempt.
+T02 | Functional | Manager attempts to download monthly report | Precondition: User is signed in and has the Manager role. Action: Attempt to download the monthly report. | The report is downloaded successfully | Supported | Requirement A: "only managers may download monthly reports." Execution detail needed: specific interface or endpoint for the download attempt.
+T03 | Functional | Non-manager signed-in user attempts to download monthly report | Precondition: User is signed in and does not have the Manager role. Action: Attempt to download the monthly report. | TBD - needs clarification | Needs clarification | Behaviour rule missing: Conflict between Requirement A ("only managers") and Requirement B ("all signed-in users"). No precedence specified.
+
+Questions
+1. Which requirement takes precedence for signed-in non-manager users: Requirement A (deny access) or Requirement B (allow access)?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 45.09 seconds
+Tokens: 1494
+
+=================================================================
+TC09 | Performance
+=================================================================
+
+REQUIREMENT
+In staging with 10,000 seeded products, run 100 concurrent virtual users for 10 minutes after a 2-minute warm-up. Each user sends one catalogue-search request every 5 seconds. During the measured 10 minutes, the 95th-percentile response time must be at most 800 ms and fewer than 1% of requests may fail.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Preserve the dataset, concurrency, request interval, warm-up and measured duration. Use p95 <= 800 ms and failure rate < 1%, not averages or altered boundaries. Ask for endpoint and failure definition if absent. Do not claim measured results.
+
+GENERATED TEST CASES
+Requirement note
+High-level performance tests can be proposed based on the explicit load profile and success criteria. The main gap is the specific tooling and environment configuration details required to execute the test.
+
+| Test ID | Test type | Input or action | Expected result | Classification |
+| :--- | :--- | :--- | :--- | :--- |
+| T01 | Performance | Execute load test with 100 concurrent users for 10 minutes (after 2-min warm-up) against staging with 10,000 seeded products. Each user sends one catalogue-search request every 5 seconds. | 95th-percentage response time is ≤ 800 ms. | Supported |
+| T02 | Performance | Execute load test with 100 concurrent users for 10 minutes (after 2-min warm-up) against staging with 10,000 seeded products. Each user sends one catalogue-search request every 5 seconds. | Fewer than 1% of requests fail. | Supported |
+
+**Basis or missing detail for T01 & T02**:
+- **Basis**: "During the measured 10 minutes, the 95th-percentage response time must be at most 800 ms and fewer than 1% of requests may fail."
+- **Execution detail needed**: Specific load testing tool configuration, staging environment access credentials, and method for verifying the "10,000 seeded products" precondition.
+
+**Questions**:
+1. What load testing tool and specific script configuration should be used to generate the 100 concurrent users with the specified request rate?
+2. How is the "staging with 10,000 seeded products" precondition verified before starting the test?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 16.56 seconds
+Tokens: 1604
+
+=================================================================
+TC10 | Insufficient evidence
+=================================================================
+
+REQUIREMENT
+The checkout service should be reliable and easy to use. No workflows, measurable targets, implementation or execution evidence are supplied. Suggest what is needed to test it and say whether its quality can currently be confirmed.
+
+EXPECTED BEHAVIOR (REFERENCE)
+Ask for checkout workflows, operating conditions, reliability targets and usability criteria. State that quality cannot yet be confirmed. Do not invent thresholds, payment methods, test results or an executable test table.
+
+GENERATED TEST CASES
+Requirement note
+High-level tests cannot be proposed because the requirement contains only vague quality goals ("reliable and easy to use") without specific behaviors, measurable targets, or execution evidence. The quality of the checkout service cannot currently be confirmed.
+
+Candidate tests
+Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail
+N/A | N/A | N/A | N/A | N/A | N/A | N/A
+
+Questions, if needed
+To propose test cases, please provide:
+1. Concrete behaviors: What specific actions can a user take in the checkout service (e.g., add to cart, apply coupon, submit payment)?
+2. Assessment criteria: What defines "reliable" (e.g., success rate, error handling for specific failures) and "easy to use" (e.g., number of steps, specific UI flows)?
+3. Relevant context: Are there any existing workflows, error states, or business rules (e.g., inventory checks, payment validation) that should be tested?
+
+EVALUATION STATUS
+NOT EVALUATED
+
+PERFORMANCE
+Response time: 26.63 seconds
+Tokens: 1404
+

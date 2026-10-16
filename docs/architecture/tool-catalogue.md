@@ -17,7 +17,7 @@ Requests for `run_tests`, `submit_issue`, `merge_pr`, `deploy` or `shell` are re
 
 ## Tool 1: retrieve_project_evidence
 
-Purpose: Retrieve current authorized project documentation from the Week 3 controlled corpus and return source-grounded evidence. This satisfies the Week 4 requirement that at least one tool retrieves current application data.
+Purpose: Retrieve current authorized project documentation from the Week 3 controlled corpus and return retrieved project evidence. This satisfies the Week 4 requirement that at least one tool retrieves current application data.
 
 Authorization: Allowed for a local developer session. Read-only. The tool may use only files listed in `knowledge/source_register.csv`. It must not access secrets, modify the repository, or run shell commands.
 
@@ -35,7 +35,7 @@ Authorization: Allowed for a local developer session. Read-only. The tool may us
 | ok | boolean | True when the tool completed validation and retrieval |
 | grounded | boolean | True when at least one chunk met the retrieval threshold |
 | sources | array | Source id, file name, chunk id, score and excerpt |
-| answer | string | Grounded answer, or the Week 3 insufficient-information message |
+| answer | string | Model answer from retrieved context, or the insufficient-information message. Individual claims still need review. |
 
 ### Failure behaviour
 
@@ -100,6 +100,10 @@ Model-routed calls store full request/decision/result traces under
 `evidence/traces/week4_tool_calls.json`. Higher-impact actions are blocked;
 there is no executable approval path in Week 4.
 
-The model API uses structured JSON output supported by the
-[Ollama generate endpoint](https://docs.ollama.com/api/generate).
+The shared Groq client requests JSON mode for the routing decision.
+The system prompt includes the decision schema; JSON mode alone does not enforce it.
 Application-side JSON Schema validation is authoritative, regardless of model output.
+
+## Current deployment
+
+Updated 16 October 2026. Model calls use `qwen/qwen3.8-27b` through Groq. The router reads `prompts/tool-router-v1.0.txt`; answer generation reads `prompts/rag-answer-v1.0.txt`. Requirements, queries and selected excerpts used in these calls leave the local machine. The API key is read from the environment. A rate-limit response fails safely without an automatic retry. No current Groq tool demonstration is claimed: the live verification stopped before tool cases.

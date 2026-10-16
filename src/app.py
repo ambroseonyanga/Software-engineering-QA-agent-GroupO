@@ -6,6 +6,7 @@ from flask import Flask, render_template, request, session, redirect, url_for, a
 from jsonschema import ValidationError
 
 try:
+    from .output_format import render_output
     from .qa_service import analyse_requirement
     from .rag_service import answer_question
     from .tool_service import invoke_tool
@@ -13,6 +14,7 @@ try:
     from .agent import run_agent
     from .memory_service import HistoryStore, MemoryUnavailable, query_run_history
 except ImportError:  # pragma: no cover - allows running as a script from src/
+    from output_format import render_output
     from qa_service import analyse_requirement
     from rag_service import answer_question
     from tool_service import invoke_tool
@@ -22,6 +24,7 @@ except ImportError:  # pragma: no cover - allows running as a script from src/
 
 
 app = Flask(__name__)
+app.jinja_env.filters['qa_output'] = render_output
 app.config["MAX_CONTENT_LENGTH"] = 16384
 app.secret_key = secrets.token_hex(32)
 app.config.update(SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE="Strict", HISTORY_PATH=None)
@@ -47,7 +50,18 @@ def history_token():
 
 
 def page_context(**overrides):
+    selected = request.args.get('view', 'tests')
+    if request.path == '/ask':
+        selected = 'knowledge'
+    elif request.path == '/agent':
+        selected = 'triage'
+    elif request.path in {'/tool', '/tool-request'}:
+        selected = 'tools'
+    if selected not in {'tests', 'knowledge', 'triage', 'tools'}:
+        selected = 'tests'
     context = {
+        "view": selected,
+        "qa_request": request.form.get('request', ''),
         "result": None,
         "requirement": "",
         "rag_question": "",
@@ -203,7 +217,7 @@ def agent():
 def history():
     failed_test = request.args.get("failed_test", "")
     result = query_run_history({"failed_test": failed_test, "limit": 20}, history_store()) if failed_test else None
-    return render_template("history.html", failed_test=failed_test, history=result, csrf_token=history_token())
+    return render_template("history.html", view="history", failed_test=failed_test, history=result, csrf_token=history_token())
 
 
 @app.route("/api/history")

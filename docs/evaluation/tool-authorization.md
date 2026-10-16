@@ -37,9 +37,7 @@ test doubles in this offline suite; actual corpus retrieval and temporary draft
 writes are exercised.
 
 Only the original eight tests in `tests/test_tools.py` are currently retained.
-Run them with `python -B -m unittest discover -s tests -v`. The expanded
-integration test file and verification helper are no longer present, so the
-complete 19-test run is not currently reproducible from this checkout.
+Run them with `python -B -m unittest discover -s tests -v`. The historical expanded 19-test suite is not reproduced exactly by the current checkout. The current full suite has 54 passing checks, including the new Groq integration tests; its result is `evidence/traces/offline_verification_20261016.json`.
 
 Use the three web-interface requests in the README to repeat the real-model
 demonstration. The saved run records three passing cases using local `qwen3:8b`:
@@ -66,7 +64,11 @@ cart test ran; its facts came from the demonstration request.
   or report the outcome. Raw model text remains inspectable in the trace.
 - Groundedness here means retrieved evidence passed the relevance threshold.
   Manual review is still needed to judge every generated claim and citation.
-- Local inference is slow. Service timeouts fail safely. No multi-user
+- The current provider is Groq. Rate limits and service timeouts fail safely. No multi-user
   authorization, publishing or approved test-execution integration is claimed.
 - The final 30-scenario evaluation and multi-step failure/recovery traces remain
   later-week deliverables; these three demonstrations do not substitute for them.
+
+## Current Groq verification
+
+Updated 16 October 2026. The live verification produced a baseline QA response, then stopped at HTTP 429 on the first RAG request. It did not reach the tool cases. The earlier Qwen3:8b timings above are historical and are not Groq performance results. Current model-routed tool verification remains pending.

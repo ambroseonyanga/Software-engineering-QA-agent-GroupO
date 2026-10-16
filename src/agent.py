@@ -22,7 +22,7 @@ try:
         AGENT_ACTIONS, DECISION_SCHEMA, LIMITS, MODEL_FORMAT_SCHEMA,
         STOP_REASONS, TASK_SCHEMA,
     )
-    from .qa_service import MODEL, OLLAMA_URL
+    from .model_service import MODEL, complete
     from .tool_service import BLOCKED_TOOLS, HIGHER_IMPACT_FLAGS, invoke_tool
     from .memory_service import HistoryStore, MemoryUnavailable
 except ImportError:  # pragma: no cover - allows running as a script from src/
@@ -30,7 +30,7 @@ except ImportError:  # pragma: no cover - allows running as a script from src/
         AGENT_ACTIONS, DECISION_SCHEMA, LIMITS, MODEL_FORMAT_SCHEMA,
         STOP_REASONS, TASK_SCHEMA,
     )
-    from qa_service import MODEL, OLLAMA_URL
+    from model_service import MODEL, complete
     from tool_service import BLOCKED_TOOLS, HIGHER_IMPACT_FLAGS, invoke_tool
     from memory_service import HistoryStore, MemoryUnavailable
 
@@ -46,25 +46,8 @@ EXCERPT_CHARS_FOR_PROMPT = 200
 
 # --------------------------------------------------------------------------- Decide
 def decide_with_model(digest):
-    """One constrained-JSON decision from the local model. Raises on failure."""
-    payload = {
-        "model": MODEL,
-        "system": PROMPT_PATH.read_text(encoding="utf-8"),
-        "prompt": "STATE (JSON):\n" + json.dumps(digest, indent=1) + "\n\nChoose the next action.",
-        "format": MODEL_FORMAT_SCHEMA,
-        "stream": False,
-        "think": False,
-        "options": {"temperature": 0, "num_predict": 350, "num_ctx": 4096},
-    }
-    request = urllib.request.Request(
-        OLLAMA_URL, data=json.dumps(payload).encode(),
-        headers={"Content-Type": "application/json"}, method="POST",
-    )
-    with urllib.request.urlopen(request, timeout=120) as response:
-        body = json.load(response)
-    if body.get("error"):
-        raise RuntimeError(body["error"])
-    return json.loads(body["response"])
+    result = complete(PROMPT_PATH.read_text(encoding="utf-8"), "STATE (JSON):\n" + json.dumps(digest, indent=1), temperature=0, max_tokens=1000, schema=MODEL_FORMAT_SCHEMA)
+    return json.loads(result["text"])
 
 
 # --------------------------------------------------------------------------- Sense

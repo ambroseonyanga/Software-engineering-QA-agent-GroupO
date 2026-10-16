@@ -1,3 +1,7 @@
+# project charter
+
+Source: docs/requirements/project_charter.docx
+
 Problem
 
 Software development teams often have requirements and source code but lack a systematic way to quickly determine whether the implemented software satisfies those requirements. The QA process requires developers or testers to manually read requirements, identify testable behaviours, write and execute test cases, inspect failures, determine what went wrong, and document defects. The specific problem this project addresses is the disconnect between software requirements and practical QA activities, where manually translating requirements into tests and interpreting test results can lead to incomplete test coverage, missed edge cases, and inconsistent failure documentation. The proposed system addresses this problem by creating a controlled agent that connects requirements → test proposals → approved test execution → failure analysis → QA documentation into one traceable workflow.
@@ -14,7 +18,7 @@ Inconsistent Test-Case Design. Different developers or testers may interpret the
 
 Manual Failure Investigation. When a test fails, developers or testers must manually examine the test output and logs to identify the affected functionality and determine the possible cause of the failure.
 
-Repetitive QA Documentation. After identifying a failure, developers or testers must manually prepare defect reports containing the failed test, expected behaviour, actual behaviour, and supporting evidence.
+Repetitive QA Documentation. After identifying a failure, developers or testers must manually prepare defect reports containing the failed test, expected behavior, actual behavior, and supporting evidence.
 
 Limited Traceability. The relationship between requirements, test cases, test results, and reported issues is often maintained manually, making it difficult to trace a defect back to the requirement and test that exposed it.
 
