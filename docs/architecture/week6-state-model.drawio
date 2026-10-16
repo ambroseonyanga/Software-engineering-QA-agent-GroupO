@@ -1,139 +1,137 @@
-<mxfile host="app.diagrams.net" type="device">
+<mxfile host="Electron">
   <diagram id="week6-state" name="Workflow and memory">
-    <mxGraphModel dx="1400" dy="1100" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1400" pageHeight="1100">
+    <mxGraphModel dx="1656" dy="618" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1950" pageHeight="1350" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="title" value="Week 6: explicit workflow state and bounded history" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#ffffff;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="170" y="10" width="1060" height="50" />
+        <mxCell id="input" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="Validate input&#xa;and initialise audit" vertex="1">
+          <mxGeometry height="70" width="240" x="70" y="100" as="geometry" />
         </mxCell>
-        <mxCell id="input" value="Validate input&#10;and initialise audit" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="70" y="100" width="240" height="70" />
+        <mxCell id="early" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="REJECTED / HANDED_OFF&#xa;No tools; no history saved" vertex="1">
+          <mxGeometry height="70" width="350" x="560" y="100" as="geometry" />
         </mxCell>
-        <mxCell id="early" value="REJECTED / HANDED_OFF&#10;No tools; no history saved" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#f8cecc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="420" y="100" width="350" height="70" />
+        <mxCell id="received" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="RECEIVED" vertex="1">
+          <mxGeometry height="70" width="240" x="70" y="205" as="geometry" />
         </mxCell>
-        <mxCell id="received" value="RECEIVED" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="70" y="205" width="240" height="70" />
+        <mxCell id="load" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="LOADING_HISTORY&#xa;Reuse only when selected" vertex="1">
+          <mxGeometry height="70" width="240" x="70" y="310" as="geometry" />
         </mxCell>
-        <mxCell id="load" value="LOADING_HISTORY&#10;Reuse only when selected" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="70" y="310" width="240" height="70" />
+        <mxCell id="sense" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="SENSING&#xa;Task + current-run context" vertex="1">
+          <mxGeometry height="70" width="240" x="70" y="415" as="geometry" />
         </mxCell>
-        <mxCell id="sense" value="SENSING&#10;Task + current-run context" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="70" y="415" width="240" height="70" />
+        <mxCell id="decide" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="DECIDING&#xa;Model proposes next action" vertex="1">
+          <mxGeometry height="70" width="240" x="70" y="520" as="geometry" />
         </mxCell>
-        <mxCell id="decide" value="DECIDING&#10;Model proposes next action" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="70" y="520" width="240" height="70" />
+        <mxCell id="valid" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="VALIDATING&#xa;Schema, allow-list, limits" vertex="1">
+          <mxGeometry height="70" width="240" x="70" y="625" as="geometry" />
         </mxCell>
-        <mxCell id="valid" value="VALIDATING&#10;Schema, allow-list, limits" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="70" y="625" width="240" height="70" />
+        <mxCell id="tools" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="RETRIEVING / DRAFTING&#xa;Tool guards still apply" vertex="1">
+          <mxGeometry height="70" width="290" x="70" y="730" as="geometry" />
         </mxCell>
-        <mxCell id="tools" value="RETRIEVING / DRAFTING&#10;Tool guards still apply" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="70" y="730" width="290" height="70" />
+        <mxCell id="observe" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="OBSERVING&#xa;Record outcome / guard" vertex="1">
+          <mxGeometry height="70" width="290" x="70" y="900" as="geometry" />
         </mxCell>
-        <mxCell id="observe" value="OBSERVING&#10;Record outcome / guard" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="70" y="835" width="290" height="70" />
+        <mxCell id="replan" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="REPLANNING&#xa;Persist trace; recheck limits" vertex="1">
+          <mxGeometry height="70" width="310" x="-450" y="900" as="geometry" />
         </mxCell>
-        <mxCell id="replan" value="REPLANNING&#10;Persist trace; recheck limits" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="440" y="730" width="310" height="70" />
+        <mxCell id="save" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="SAVING_HISTORY&#xa;Summary or warning" vertex="1">
+          <mxGeometry height="70" width="290" x="70" y="1040" as="geometry" />
         </mxCell>
-        <mxCell id="save" value="SAVING_HISTORY&#10;Summary or warning" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#dae8fc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="440" y="835" width="310" height="70" />
+        <mxCell id="done" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="COMPLETED / HANDED_OFF&#xa;Local draft still needs review" vertex="1">
+          <mxGeometry height="70" width="350" x="70" y="1170" as="geometry" />
         </mxCell>
-        <mxCell id="done" value="COMPLETED / HANDED_OFF&#10;Local draft still needs review" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#d5e8d4;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="440" y="970" width="350" height="70" />
+        <mxCell id="db" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="SQLite history&#xa;memory/run_history.sqlite3" vertex="1">
+          <mxGeometry height="85" width="390" x="910" y="310" as="geometry" />
         </mxCell>
-        <mxCell id="db" value="SQLite history&#10;memory/run_history.sqlite3" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#fff2cc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="910" y="310" width="390" height="85" />
+        <mxCell id="data" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="Summary fields&#xa;Run ID, UTC time, test ID, provenance&#xa;Outcome, counters, duration&#xa;Draft ID and up to 5 source IDs" vertex="1">
+          <mxGeometry height="125" width="490" x="860" y="460" as="geometry" />
         </mxCell>
-        <mxCell id="data" value="Summary fields&#10;Run ID, UTC time, test ID, provenance&#10;Outcome, counters, duration&#10;Draft ID and up to 5 source IDs" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#fff2cc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="860" y="460" width="490" height="125" />
+        <mxCell id="operator" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="Local operator&#xa;Exact lookup; CSRF-protected delete&#xa;90-day expiry on access&#xa;Newest 500 retained on save" vertex="1">
+          <mxGeometry height="125" width="490" x="860" y="635" as="geometry" />
         </mxCell>
-        <mxCell id="operator" value="Local operator&#10;Exact lookup; CSRF-protected delete&#10;90-day expiry on access&#10;Newest 500 retained on save" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#fff2cc;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="860" y="635" width="490" height="125" />
+        <mxCell id="guard" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="History gives no new authority&#xa;Only report count + last outcome sent to Groq&#xa;Fresh retrieval before draft&#xa;No submission, test execution or deployment" vertex="1">
+          <mxGeometry height="145" width="520" x="840" y="825" as="geometry" />
         </mxCell>
-        <mxCell id="guard" value="History gives no new authority&#10;Only report count + last outcome sent to Groq&#10;Fresh retrieval before draft&#10;No submission, test execution or deployment" style="rounded=1;whiteSpace=wrap;html=0;fillColor=#f5f5f5;strokeColor=#333333;fontSize=17;" vertex="1" parent="1">
-          <mxGeometry as="geometry" x="840" y="825" width="520" height="145" />
+        <mxCell id="e19" edge="1" parent="1" source="input" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" target="received" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="input" target="received">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e20" edge="1" parent="1" source="received" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" target="load" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="received" target="load">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e21" edge="1" parent="1" source="load" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" target="sense" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="load" target="sense">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e22" edge="1" parent="1" source="sense" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" target="decide" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="sense" target="decide">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e23" edge="1" parent="1" source="decide" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" target="valid" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="decide" target="valid">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e24" edge="1" parent="1" source="valid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" target="tools" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="valid" target="tools">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e25" edge="1" parent="1" source="tools" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" target="observe" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="tools" target="observe">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e26" edge="1" parent="1" source="observe" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="save" value="finished / hand off">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="observe" target="save">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e27" edge="1" parent="1" source="save" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.4143;entryY=0;entryDx=0;entryDy=0;" target="done" value="">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="save" target="done">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e28" edge="1" parent="1" source="input" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" target="early" value="invalid input / audit failure">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e28" value="invalid input / audit failure" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="input" target="early">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e29" edge="1" parent="1" source="observe" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=14;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="replan" value="continue">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e29" value="continue" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="observe" target="replan">
-          <mxGeometry as="geometry" relative="1" />
-        </mxCell>
-        <mxCell id="e30" value="next iteration" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="replan" target="sense">
-          <mxGeometry as="geometry" relative="1">
+        <mxCell id="e30" edge="1" parent="1" source="replan" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=14;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="sense" value="next iteration">
+          <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="800" y="765" />
-              <mxPoint x="800" y="450" />
+              <mxPoint x="-450" y="450" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e31" value="optional exact lookup" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="load" target="db">
-          <mxGeometry as="geometry" relative="1" />
+        <mxCell id="e31" edge="1" parent="1" source="load" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" target="db" value="optional exact lookup">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e32" value="save summary" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="save" target="db">
-          <mxGeometry as="geometry" relative="1">
+        <mxCell id="e32" edge="1" parent="1" source="save" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=14;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="db-write" value="save summary">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e33" edge="1" parent="1" source="valid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=14;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="observe" value="ask human / blocked action">
+          <mxGeometry relative="1" x="0.0025" as="geometry">
             <Array as="points">
-              <mxPoint x="810" y="870" />
-              <mxPoint x="810" y="350" />
+              <mxPoint x="400" y="660" />
+              <mxPoint x="400" y="935" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e33" value="ask human / blocked action" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="valid" target="observe">
-          <mxGeometry as="geometry" relative="1">
+        <mxCell id="e34" edge="1" parent="1" source="decide" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=14;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.8;entryY=0;entryDx=0;entryDy=0;" target="save" value="model unavailable">
+          <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="395" y="660" />
-              <mxPoint x="395" y="920" />
-              <mxPoint x="215" y="920" />
+              <mxPoint x="650" y="555" />
+              <mxPoint x="650" y="1000" />
+              <mxPoint x="302" y="1000" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e34" value="model unavailable" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="decide" target="save">
-          <mxGeometry as="geometry" relative="1">
+        <mxCell id="e35" edge="1" parent="1" source="replan" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=14;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="save" value="limit / audit failure">
+          <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="380" y="555" />
-              <mxPoint x="380" y="870" />
+              <mxPoint x="-245" y="1075" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e35" value="limit / audit failure" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="replan" target="save">
-          <mxGeometry as="geometry" relative="1" />
-        </mxCell>
-        <mxCell id="e36" value="inspect / delete" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="operator" target="db">
-          <mxGeometry as="geometry" relative="1">
+        <mxCell id="e36" edge="1" parent="1" source="operator" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;endArrow=block;fontSize=15;labelBackgroundColor=#ffffff;" target="db" value="inspect / delete">
+          <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1380" y="700" />
               <mxPoint x="1380" y="350" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="db-write" parent="1" style="rounded=1;whiteSpace=wrap;html=0;fontSize=17;" value="SQLite history&#xa;Same store as above&#xa;Save summary" vertex="1">
+          <mxGeometry height="85" width="390" x="910" y="1032" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
