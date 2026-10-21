@@ -1,0 +1,21 @@
+User correction request received 21 October 2026
+
+The UI you implemented does not follow the prototype we agreed on. I need you to correct the existing implementation, not redesign it according to your own preferences.
+Use the QA Agent UI Flow Prototype from our earlier conversation as the visual reference.
+
+Mandatory corrections supplied by the user
+1. Global sidebar: only Dashboard, Projects, Recent Activity, Settings.
+2. Dashboard first: summary cards, recent activities, project information; no project forms or testing controls.
+3. Projects: connected project cards and Connect New Project; selecting a project opens its workspace.
+4. Project-only tabs: Overview, Requirements, Test Cases, Executions, Reports as navigable views.
+5. Requirements: document upload or individual entry, extracted records organized by ID.
+6. Test Cases: grouped by requirement; review, edit, approve, reject; approval automatically generates executable code.
+7. Executions: generation/readiness, code and history; run only after explicit Run.
+8. Reports: real results, failure analysis, issue drafts, report generation.
+9. Blue/white/slate styling, light/dark themes; green only for success states.
+10. Short practical labels; remove promotional filler and random feature explanations.
+11. Small collapsible contextual assistant.
+12. Preserve Flask routes, backend integration and existing features.
+
+The user asked for inspection and comparison first, then implementation, running-app verification, and a resulting UI for review.
+Items above summarize the user's actual request. This file records a task request, not a runtime prompt or proof of human implementation review. Actual checks and limitations are in the correction verification trace.

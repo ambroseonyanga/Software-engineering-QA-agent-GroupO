@@ -1,0 +1,7 @@
+Recorded user request received on 21 October 2026
+
+Continuing from Build QA Agent from Scratch: Connect to the user's Software Engineering QA Agent project/repository, inspect its current frontend and architecture, and refine the UI based on the agreed six-screen prototype: Dashboard, Projects, Requirements, Test Review, Execution, Results & Reports. Keep light/dark themes, collapsible AI assistant, requirement upload/manual entry, approval-triggered test-code generation, reviewable generated code/history, sandbox run controls, and failure issue drafts. Preserve functioning backend behavior; implement and verify UI improvements. If project access is not already available, identify the exact repository or folder needed.
+
+This is a task request record, not a model runtime prompt. See the UI verification
+trace for actual checks and their limitations. No human implementation review or
+assignment approval is asserted by this record.

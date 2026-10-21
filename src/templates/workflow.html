@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if state %}
+<div class="page-heading project-heading"><div><a class="back-link" href="{{ url_for('workflow.projects') }}">← Projects</a><h1>{{ state.name }}</h1><span class="muted">{{ 'Django' if state.adapter=='budgetme' else 'Python' }} <span class="separator">·</span> Snapshot {{ state.id[:8] }}</span></div><span class="badge status-{{ state.status }}">{{ state.status|replace('_',' ') }}</span></div>
+<nav class="project-tabs" aria-label="Project workspace">{% for key,label in project_views.items() %}<a href="{{ url_for('workflow.project_view',session_id=state.id,section=key) }}" {% if screen==key %}aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}</nav>
+{% else %}<div class="page-heading"><h1>{{ 'Connect New Project' if connect_form|default(false) else {'dashboard':'Dashboard','projects':'Projects','activity':'Recent Activity','settings':'Settings'}[screen] }}</h1>{% if screen=='projects' and not connect_form|default(false) %}<a class="button" href="{{ url_for('workflow.connect_project') }}">+ Connect New Project</a>{% endif %}</div>{% endif %}
+{% if error %}<p class="notice error" role="alert">{{ error }}</p>{% endif %}
+{% if state and state.error %}<p class="notice error" role="alert">{{ state.error }}</p>{% endif %}
+{% if state %}{% include 'project_' ~ screen ~ '.html' %}{% else %}{% include 'global_' ~ screen ~ '.html' %}{% endif %}
+<div id="loading" class="loading" role="status" aria-live="polite"></div><script src="{{ url_for('static',filename='workflow.js') }}" defer></script>
+{% endblock %}

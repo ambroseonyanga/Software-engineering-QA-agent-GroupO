@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-21",
+  "timezone": "Africa/Nairobi",
+  "request": "Correct existing UI to the specified prototype hierarchy, not an independent redesign",
+  "reference_access": "Referenced conversation returned content-reference placeholders, not the prototype artifact. No local prototype file found. User supplied explicit mandatory corrections.",
+  "comparison": [
+    {
+      "screen": "Global",
+      "before": "Six project tools in sidebar",
+      "after": "Dashboard, Projects, Recent Activity, Settings only"
+    },
+    {
+      "screen": "Dashboard",
+      "before": "Promotional feature panel and workflow explanation",
+      "after": "Recorded summary cards, recent activities, project cards; no project forms or run controls"
+    },
+    {
+      "screen": "Projects",
+      "before": "Session table",
+      "after": "Project cards, snapshot grouping, Connect New Project"
+    },
+    {
+      "screen": "Project workspace",
+      "before": "Project screens exposed globally",
+      "after": "Overview, Requirements, Test Cases, Executions, Reports on separate project routes"
+    },
+    {
+      "screen": "Requirements",
+      "before": "Requirement entry coupled to new session form",
+      "after": "Project connection first; PDF upload or individual ID/title/description entry inside project"
+    },
+    {
+      "screen": "Test Cases",
+      "before": "Flat list with selection only",
+      "after": "Parent requirement grouping, edit, reject/restore, single or batch approval"
+    },
+    {
+      "screen": "Executions",
+      "before": "Standalone globally visible screen",
+      "after": "Project-only statuses, code and history, explicit Run; incremental approvals preserve earlier eligible code"
+    },
+    {
+      "screen": "Reports",
+      "before": "Outputs with draft form leaving the project",
+      "after": "Recorded results, explicitly requested failure analysis, session-linked drafts and existing Word/evidence export"
+    },
+    {
+      "screen": "Visual style",
+      "before": "Green brand and explanatory promotional copy",
+      "after": "Blue/white/slate, light/dark modes, short labels, small collapsible contextual assistant"
+    }
+  ],
+  "automated": {
+    "ran": 69,
+    "passed": 67,
+    "skipped": 2,
+    "reason": "Optional Docker verification not enabled",
+    "model_calls": "Mock fixtures only"
+  },
+  "browser": {
+    "real_data": "Existing BudgetMe snapshots, read-only inspection",
+    "mutations": "Temporary UI verification fixture in storage outside project",
+    "verified": [
+      "Dashboard first on /",
+      "Four global sidebar links",
+      "Project cards open Overview",
+      "Five separate project tab views",
+      "Requirement grouping including acceptance-criterion IDs",
+      "Case edit persisted",
+      "Rejected case lost approval action",
+      "Batch approval generated fixture code and Ready status",
+      "Reports remained empty without explicit execution",
+      "Connect project before adding individual requirement",
+      "Context label in expanded assistant",
+      "Settings theme selection and persistence",
+      "Real previous failure output in Reports"
+    ],
+    "page_overflow": [
+      {
+        "viewport": 390,
+        "scroll_width": 375
+      },
+      {
+        "viewport": 820,
+        "scroll_width": 805
+      },
+      {
+        "viewport": 1280,
+        "scroll_width": 1265
+      }
+    ],
+    "final_console_warnings_errors": []
+  },
+  "limitations": [
+    "No live Groq call",
+    "No new real Docker run",
+    "No full accessibility audit",
+    "Original prototype artifact unavailable",
+    "No human implementation review recorded"
+  ],
+  "provenance": {
+    "assistant": "OpenAI Codex",
+    "request_record": "prompts/ui-prototype-correction-request.txt",
+    "human_review": "Not recorded"
+  }
+}

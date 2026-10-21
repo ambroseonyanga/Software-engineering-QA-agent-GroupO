@@ -42,6 +42,8 @@ def complete(system, user, *, temperature=0.2, max_tokens=2048, schema=None):
         with urllib.request.urlopen(req, timeout=90) as response:
             body = json.load(response)
     except urllib.error.HTTPError as error:
+        if error.code == 413:
+            raise ModelUnavailable("Groq rejected the request as too large (HTTP 413). The PDF and code snapshot are still saved. Use a smaller requirements scope or a smaller request budget; changing your API key is not the fix.") from None
         if error.code == 429:
             raise RateLimited("Groq rate limit reached. Wait before retrying; no automatic retry was made.") from None
         raise ModelUnavailable(f"Groq request failed (HTTP {error.code}). Check model access and account configuration.") from None

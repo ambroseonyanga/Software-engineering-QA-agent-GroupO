@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="intro"><span class="eyebrow">BudgetMe</span><h1>Suggest tests from the SRS</h1><p class="muted">Start with FR-006: validate the planning limit.</p></div>
+{% if error %}<p class="notice error" role="alert">{{ error }}</p>{% endif %}
+{% if target %}
+<section class="panel">
+  <h2>Requirement evidence</h2>
+  <p>{{ target.srs_name }}</p>
+  <pre style="white-space: pre-wrap">{{ target.excerpt }}</pre>
+  <p class="hint">SD means source-derived behaviour, not a verified test result.</p>
+  <details><summary>Calculation source: {{ target.source_name }}</summary><pre style="white-space: pre-wrap">{{ target.code }}</pre></details>
+  <form method="post" action="{{ url_for('budgetme') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <input type="hidden" name="fingerprint" value="{{ target.fingerprint }}">
+    <label for="notes">Additional notes (optional)</label>
+    <textarea id="notes" name="notes" maxlength="2000" rows="3">{{ notes }}</textarea>
+    <p class="hint">Generating sends this requirement excerpt, calculation source and your notes to Groq. No database records or .env files are included.</p>
+    <button type="submit">Suggest FR-006 tests</button>
+  </form>
+</section>
+{% endif %}
+{% if result %}<section class="panel result"><h2>Suggested tests — review required</h2><p class="hint">No tests executed or approved. Suggestions are shown here only; approval and saved proposals are not implemented yet.</p><div class="output">{{ result|qa_output }}</div><p class="hint">Calculation tests alone do not prove that a rejected submission leaves the saved plan unchanged.</p></section>{% endif %}
+<p><a href="{{ url_for('index') }}">Back to general test suggestions</a></p>
+{% endblock %}

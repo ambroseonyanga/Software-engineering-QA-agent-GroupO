@@ -7,6 +7,11 @@ from src.output_format import render_output
 from src.rag_service import load_documents
 
 class IntegrationTests(unittest.TestCase):
+ def test_payload_too_large_has_actionable_error(self):
+  error=urllib.error.HTTPError('https://example.invalid',413,'too large',{},None)
+  with patch.dict(os.environ,{'GROQ_API_KEY':'test-key'}),patch('src.model_service.urllib.request.urlopen',side_effect=error) as call:
+   with self.assertRaisesRegex(model_service.ModelUnavailable,'request as too large'):model_service.complete('s','u')
+   self.assertEqual(call.call_count,1)
  def body(self,text='ready',finish='stop'):
   return io.BytesIO(json.dumps({'choices':[{'message':{'content':text},'finish_reason':finish}],'usage':{'total_tokens':10}}).encode())
  def test_missing_key_makes_no_network_request(self):

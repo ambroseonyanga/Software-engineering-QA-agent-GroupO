@@ -19,5 +19,16 @@
     "ok": true,
     "error": null,
     "status": "draft"
+  },
+  {
+    "timestamp_utc": "2026-10-21T18:59:16.606683+00:00",
+    "tool": "create_issue_draft",
+    "arguments": {
+      "title": "Failure: Verify savings_in_period sums manual and period-end deposits",
+      "failed_test": "T01: Verify savings_in_period sums manual and period-end deposits"
+    },
+    "ok": false,
+    "error": "VALIDATION_ERROR",
+    "status": 400
   }
 ]
