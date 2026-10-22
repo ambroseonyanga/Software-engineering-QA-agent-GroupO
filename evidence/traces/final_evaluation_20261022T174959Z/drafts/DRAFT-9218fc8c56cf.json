@@ -1,0 +1,12 @@
+{
+  "title": "Synthetic planning boundary report",
+  "failed_test": "SYN-FINAL-06",
+  "expected": "The plan must stay within income.",
+  "actual": "Synthetic report of an over-income plan accepted; no real product failure claimed.",
+  "notes": "Retrieved project evidence (not proof of approved requirements or a confirmed cause):\n- SYN-R01 SYN-R01 chunk 0 (score 0.189)\n- SRC-016 budgetme_features.md chunk 0 (score 0.092)\nModel-suggested analysis (unverified; not a confirmed cause): The failure SYN-FINAL-06 reports an over-income plan was accepted, which may relate to requirement SYN-R01 (plan shall accept category allocations plus savings equal to income). The evidence is synthetic and not independent runtime proof; the exact validation rule and whether the boundary is inclusive or exclusive remain uncertain.\nAgent run: f48c5ab3054244f0a668fc7d6a99cfa5. Draft only; a human must review before any submission.",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-22T17:52:08.020132+00:00",
+  "draft_id": "DRAFT-9218fc8c56cf",
+  "path": "evidence/traces/final_evaluation_20261022T174959Z/drafts/DRAFT-9218fc8c56cf.json"
+}

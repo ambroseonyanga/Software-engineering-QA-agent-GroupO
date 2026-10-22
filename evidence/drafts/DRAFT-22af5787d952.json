@@ -1,0 +1,12 @@
+{
+  "title": "Failure: Duplicate email or mismatched password prevents account creation",
+  "failed_test": "T02",
+  "expected": "Submitting a duplicate email, a mismatched password confirmation, or a password rejected by validators displays an error message and does not create a new user account in the database.",
+  "actual": "Traceback (most recent call last):\n  File \"/qa/proposals/case_T02.py\", line 12, in test_duplicate_email_prevents_account_creation\n    User.objects.create_user(email=email, password=password)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: UserManager.create_user() missing 1 required positional argument: 'username'\n\nTraceback (most recent call last):\n  File \"/qa/proposals/case_T02.py\", line 36, in test_mismatched_password_prevents_account_creation\n    self.assertContains(response, \"do not match\")\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true : Couldn't find 'do not match' in the following response\nb'\\n<!DOCTYPE html>\\n<html>\\n    <head>\\n        <meta charset=\"utf-8\">\\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\\n        <title>\\n            \\n    Signup\\n\\n        </title>\\n        \\n        \\n    </head>\\n    <body>\\n        \\n",
+  "notes": "Requirement evidence (retrieved by the application):\n- SRC-002 user_stories.md chunk 0 (score 0.204)\n- SRC-001 project_charter.md chunk 0 (score 0.187)\n- SRC-001 project_charter.md chunk 2 (score 0.132)\n- SRC-002 user_stories.md chunk 4 (score 0.088)\nModel-suggested analysis (unverified; not a confirmed cause): The failure relates to the requirement that account creation must validate duplicate emails and password confirmation, displaying an error and preventing user creation. The test T02 failed due to a TypeError in the test setup (missing 'username' argument) and an assertion error where the expected 'do not match' message was not found in the response. It is uncertain whether the application logic is flawed or if the test implementation is incorrect, as the evidence does not confirm the actual behavior of the signup form.\nAgent run: 3f7db7924a8849f0ab585420840b1dde. Draft only; a human must review before any submission.",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-22T06:17:29.843190+00:00",
+  "draft_id": "DRAFT-22af5787d952",
+  "path": "evidence/drafts/DRAFT-22af5787d952.json"
+}

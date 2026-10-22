@@ -1,0 +1,88 @@
+{
+  "run_id": "8bec739d7d654457bc6200c13c74b66c",
+  "started_utc": "2026-10-22T17:21:42.398708+00:00",
+  "model": "qwen/qwen3.8-27b",
+  "prompt_version": "agent-planner-v1.1.txt",
+  "goal": "Link one reported test failure to project requirements and prepare one local draft issue for human review.",
+  "task": {
+    "title": "Synthetic planning boundary report",
+    "failed_test": "SYN-FINAL-06",
+    "expected": "The plan must stay within income.",
+    "actual": "Synthetic report of an over-income plan accepted; no real product failure claimed."
+  },
+  "limits": {
+    "max_iterations": 6,
+    "max_retrievals": 3,
+    "max_drafts": 1,
+    "max_consecutive_failures": 2,
+    "max_invalid_decisions": 2,
+    "time_budget_seconds": 900
+  },
+  "fault_injection": null,
+  "state": "finished",
+  "steps": [
+    {
+      "iteration": 1,
+      "tool": null,
+      "sense": {
+        "limits_remaining": {
+          "iterations": 6,
+          "retrievals": 3
+        },
+        "history_items": 0,
+        "prior_context": null
+      },
+      "decision": null,
+      "error": "RateLimited: Groq rate limit reached. Wait before retrying; no automatic retry was made.",
+      "guard": null,
+      "decision_seconds": 1.016,
+      "observation": {
+        "iteration": 1,
+        "action": null,
+        "outcome": "model_unavailable",
+        "detail": "RateLimited: Groq rate limit reached. Wait before retrying; no automatic retry was made.",
+        "stop_reason": "STOPPED_MODEL_UNAVAILABLE"
+      }
+    }
+  ],
+  "state_transitions": [
+    {
+      "state": "RECEIVED",
+      "at_utc": "2026-10-22T17:21:42.398799+00:00"
+    },
+    {
+      "state": "LOADING_HISTORY",
+      "at_utc": "2026-10-22T17:21:42.401674+00:00"
+    },
+    {
+      "state": "SENSING",
+      "at_utc": "2026-10-22T17:21:42.429833+00:00"
+    },
+    {
+      "state": "DECIDING",
+      "at_utc": "2026-10-22T17:21:42.429885+00:00"
+    },
+    {
+      "state": "SAVING_HISTORY",
+      "at_utc": "2026-10-22T17:21:43.446927+00:00"
+    },
+    {
+      "state": "HANDED_OFF",
+      "at_utc": "2026-10-22T17:21:43.476382+00:00"
+    }
+  ],
+  "history_requested": true,
+  "workflow_state": "HANDED_OFF",
+  "prior_context": null,
+  "stop_reason": "STOPPED_MODEL_UNAVAILABLE",
+  "message": "The model service was unavailable, rate-limited or timed out.",
+  "human_handoff": true,
+  "iterations_used": 1,
+  "retrievals_used": 0,
+  "elapsed_seconds": 1.045,
+  "linked_sources": [],
+  "draft": null,
+  "finished_utc": "2026-10-22T17:21:43.446841+00:00",
+  "history_saved": true,
+  "memory_warnings": []
+}

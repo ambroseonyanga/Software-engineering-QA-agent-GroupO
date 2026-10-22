@@ -33,7 +33,10 @@ def protect():
 
 def get_state(session_id):
     try:
-        return service.read(session_id)
+        state = service.read(session_id)
+        if state.get('disconnected'):
+            abort(404)
+        return state
     except (ValueError, OSError):
         abort(404)
 
@@ -67,13 +70,12 @@ def detail(session_id):
 
 @workflow.route('/workflow/<session_id>/generate', methods=['POST'])
 def generate(session_id):
-    with service.LOCK:
-        state = get_state(session_id)
-        if state['status'] not in {'ready', 'review', 'generation_failed'}:
-            abort(409)
-        state['status'] = 'generation_queued'
-        service.save(state)
-        threading.Thread(target=service.generate, args=(session_id, True), daemon=True).start()
+    get_state(session_id)
+    try:
+        service.prepare_requirement_batch(session_id, request.form.getlist('requirement_id') or None)
+        threading.Thread(target=service.generate_requirement_batch, args=(session_id,), daemon=True).start()
+    except ValueError as exception:
+        return render_workspace(get_state(session_id), 'cases', error=str(exception)), 400
     return redirect(url_for('workflow.project_view', session_id=session_id, section='cases'))
 
 
@@ -91,7 +93,7 @@ def approve(session_id):
     except ValueError as exception:
         state = get_state(session_id)
         return render_workspace(state, 'cases', error=str(exception)), 400
-    return redirect(url_for('workflow.project_view', session_id=session_id, section='executions'))
+    return redirect(url_for('workflow.project_view', session_id=session_id, section='cases'))
 
 
 @workflow.route('/workflow/<session_id>/run', methods=['POST'])
@@ -116,13 +118,17 @@ def cancel(session_id):
 def status(session_id):
     state = get_state(session_id)
     return jsonify(status=state['status'], completed=len(state['results']),
-                   selected=len((state.get('approval') or {}).get('tests', {})))
+                   selected=len((state.get('approval') or {}).get('tests', {})),
+                   generation_completed=state.get('generation_completed', 0),
+                   generation_total=state.get('generation_total', 0),
+                   approved=sum(t.get('review_status') == 'approved' for t in state['tests']),
+                   ready=len((state.get('approval') or {}).get('tests', {})))
 
 
 @workflow.route('/workflow/<session_id>/report')
 def report(session_id):
     state = get_state(session_id)
-    if state['status'] not in {'completed', 'blocked', 'cancelled'}:
+    if not state.get('finished') and state['status'] not in {'completed', 'blocked', 'cancelled'}:
         abort(409)
     return send_file(BytesIO(report_bytes(state)), as_attachment=True,
                      download_name='QA-report-' + session_id[:8] + '.docx',
@@ -139,7 +145,7 @@ def evidence(session_id):
 
 
 GLOBAL_VIEWS = {'dashboard': 'Dashboard', 'projects': 'Projects', 'activity': 'Recent Activity', 'settings': 'Settings'}
-PROJECT_VIEWS = {'overview': 'Overview', 'requirements': 'Requirements', 'cases': 'Test Cases', 'executions': 'Executions', 'reports': 'Reports'}
+PROJECT_VIEWS = {'overview': 'Overview', 'knowledge': 'Knowledge', 'requirements': 'Requirements', 'cases': 'Test Cases', 'executions': 'Executions', 'issues': 'Issues', 'reports': 'Reports'}
 
 
 def screen_name(project=False):
@@ -156,7 +162,7 @@ def catalog():
     for path in service.home().glob('*/session.json'):
         try:
             state = json.loads(path.read_text(encoding='utf-8'))
-            if all(k in state for k in ('id', 'name', 'created', 'status')):
+            if not state.get('disconnected') and all(k in state for k in ('id', 'name', 'created', 'status')):
                 states.append(state)
         except (OSError, ValueError):
             continue
@@ -196,6 +202,9 @@ def render_workspace(state, screen, error=None, **extra):
                            global_view='projects' if state else screen, error=error,
                            csrf_token=token(), projects=projects, sessions=states, activity=activity,
                            metrics=metrics, groups=groups, project_views=PROJECT_VIEWS,
+                           pending_requirements=service.pending_requirements(state) if state else [],
+                           approved_case_count=sum(t.get('review_status') == 'approved' or t['id'] in (state.get('approval') or {}).get('tests', {}) for t in state['tests']) if state else 0,
+                           disconnected_projects=disconnected_projects(),
                            default_path=str(Path.home() / 'Desktop' / 'capstone' / 'BudgetMe'), **extra)
 
 
@@ -255,15 +264,15 @@ def add_requirements(session_id):
 def case_action(session_id, test_id, action):
     get_state(session_id)
     try:
-        if action == 'approve':
-            service.prepare_approval(session_id, [test_id])
+        if action in {'approve', 'retry-code'}:
+            service.prepare_approval(session_id, [test_id], retry=action == 'retry-code')
             threading.Thread(target=service.generate_approved_code, args=(session_id,), daemon=True).start()
         else:
             service.review_case(session_id, test_id, action, request.form)
     except ValueError as exception:
         return render_workspace(get_state(session_id), 'cases', error=str(exception)), 400
     return redirect(url_for('workflow.project_view', session_id=session_id,
-                            section='executions' if action == 'approve' else 'cases'))
+                            section='cases'))
 
 
 @workflow.route('/projects/<session_id>/issues', methods=['POST'])
@@ -278,14 +287,14 @@ def issue_draft(session_id):
         from tool_service import invoke_tool
     result = invoke_tool('create_issue_draft', {key: request.form.get(key, '') for key in ('title', 'failed_test', 'expected', 'actual', 'notes')})
     if not result.get('ok'):
-        return render_workspace(state, 'reports', error=result.get('message', 'Draft could not be saved.')), 400
+        return render_workspace(state, 'issues', error=result.get('message', 'Draft could not be saved.')), 400
     with service.LOCK:
         state = get_state(session_id)
         state.setdefault('issue_drafts', []).append({'test_id': test_id, 'title': request.form.get('title', ''),
                                                     'path': result.get('path', ''), 'at': service.now()})
         state['events'].append({'at': service.now(), 'action': 'issue_draft_saved', 'test_ids': [test_id]})
         service.save(state)
-    return redirect(url_for('workflow.project_view', session_id=session_id, section='reports'))
+    return redirect(url_for('workflow.project_view', session_id=session_id, section='issues'))
 
 
 @workflow.route('/projects/<session_id>/analysis/<test_id>', methods=['POST'])
@@ -297,14 +306,17 @@ def analyze_failure(session_id, test_id):
         abort(409)
     try:
         from .agent import run_agent
+        from .rag_service import project_retrieve
         from .app import history_store
     except ImportError:
         from agent import run_agent
+        from rag_service import project_retrieve
         from app import history_store
     analysis = run_agent({'title': ('Failure: ' + test['title'])[:120], 'failed_test': test_id,
                           'expected': test['expected'][:1000],
                           'actual': ((result.get('detail') or '') + '\n' + result['output'])[:1000]},
-                         memory_store=history_store(), use_history=False)
+                         memory_store=history_store(), use_history=False,
+                         retrieve_fn=lambda query, top_k: project_retrieve(state, query, top_k))
     with service.LOCK:
         state = get_state(session_id)
         state.setdefault('failure_analyses', {})[test_id] = {
@@ -316,4 +328,67 @@ def analyze_failure(session_id, test_id):
                                                        'path': analysis['draft'].get('path', ''), 'at': service.now()})
         state['events'].append({'at': service.now(), 'action': 'failure_analyzed', 'test_ids': [test_id]})
         service.save(state)
-    return redirect(url_for('workflow.project_view', session_id=session_id, section='reports'))
+    return redirect(url_for('workflow.project_view', session_id=session_id, section='issues'))
+
+
+@workflow.route('/projects/<session_id>/trace')
+def trace(session_id):
+    """Expose only records owned by this workflow snapshot, grouped by run."""
+    from copy import deepcopy
+    import re
+    state = get_state(session_id)
+    events = []
+    runs = [{'id': 'workflow', 'label': 'Workflow · ' + session_id[:8]}]
+    current = 'workflow'
+    for index, event in enumerate(state.get('events', [])):
+        if event.get('action') == 'run_requested':
+            current = 'run-' + str(index)
+            runs.append({'id': current, 'label': 'Run · ' + event.get('at', '')[:19] + ' UTC'})
+        events.append({'at': event.get('at', ''), 'action': event.get('action', 'recorded_event'),
+                       'run_id': current, 'evidence': deepcopy(event)})
+    # These are current snapshot records, not reconstructed historical run events.
+    evidence = {key: state[key] for key in ('evidence', 'model', 'generated', 'approval',
+        'generation_warnings', 'requirement_generation_errors', 'failure_analyses',
+        'tests', 'results', 'execution_history', 'image_id', 'base_image_id', 'error') if state.get(key)}
+    if evidence:
+        events.append({'at': state.get('finished') or state.get('generated') or state['created'],
+            'action': 'current_snapshot_evidence', 'run_id': current,
+            'evidence': dict(evidence, note='Current snapshot evidence; historical run details are not reconstructed.')})
+    events.sort(key=lambda event: event['at'])
+    def safe(value):
+        if isinstance(value, dict):
+            return {key: ('[redacted]' if re.search(r'(?i)password|secret|api.?key|authorization|token', key) else safe(item)) for key, item in value.items()}
+        if isinstance(value, list):
+            return [safe(item) for item in value]
+        if isinstance(value, str):
+            return re.sub(r'(?i)(bearer\s+|(?:api[_-]?key|password|secret|token)\s*[:=]\s*)[^\s,;]+', r'\1[redacted]', value)
+        return value
+    return jsonify(events=safe(events), runs=runs, status=state['status'],
+        pending=state['status'] in {'generation_queued', 'generating', 'code_generating', 'queued', 'running'})
+
+
+def disconnected_projects():
+    import json
+    projects = {}
+    for path in service.home().glob('*/session.json'):
+        try:
+            state = json.loads(path.read_text(encoding='utf-8'))
+            if state.get('disconnected'):
+                projects[state.get('project_key') or state['name'] + ':' + state.get('adapter', '')] = state
+        except (OSError, ValueError):
+            continue
+    return list(projects.values())
+
+
+@workflow.route('/projects/<session_id>/connection', methods=['POST'])
+def project_connection(session_id):
+    action = request.form.get('action')
+    if action not in {'disconnect', 'reconnect'}:
+        abort(400)
+    try:
+        service.set_project_connection(session_id, action == 'reconnect')
+    except OSError:
+        abort(404)
+    except ValueError as error:
+        return render_workspace(None, 'projects', error=str(error)), 409
+    return redirect(url_for('workflow.projects'))

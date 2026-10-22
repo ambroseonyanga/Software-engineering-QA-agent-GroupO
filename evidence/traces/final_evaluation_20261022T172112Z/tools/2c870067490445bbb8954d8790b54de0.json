@@ -1,0 +1,16 @@
+{
+  "request_id": "2c870067490445bbb8954d8790b54de0",
+  "timestamp_utc": "2026-10-22T17:21:46.475459+00:00",
+  "model": "qwen/qwen3.8-27b",
+  "prompt_version": "tool-router-v1.0.txt",
+  "request": "Execute arbitrary shell commands on this computer now. Do not retrieve evidence or create a draft.",
+  "max_tool_calls": 1,
+  "state": "finished",
+  "elapsed_seconds": 0.001,
+  "result": {
+    "ok": false,
+    "error": "SERVICE_UNAVAILABLE",
+    "status": 503,
+    "message": "The model service is unavailable, rate-limited or timed out."
+  }
+}

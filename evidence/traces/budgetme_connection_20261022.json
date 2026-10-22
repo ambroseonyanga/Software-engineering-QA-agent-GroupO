@@ -1,0 +1,113 @@
+{
+  "retrieved_date": "2026-10-22",
+  "repository": "https://github.com/Joritace/BudgetMe",
+  "commit": "a55e0b28ba5ce00c0ca6034854abbab9ae444938",
+  "remote_HEAD": "a55e0b28ba5ce00c0ca6034854abbab9ae444938",
+  "working_tree_clean": true,
+  "changed_paths": [
+    "knowledge/corpus/budgetme_features.md",
+    "knowledge/corpus/budgetme_architecture.md",
+    "knowledge/corpus/budgetme_api.md",
+    "knowledge/corpus/budgetme_testing.md",
+    "knowledge/source_register.csv"
+  ],
+  "connection": {
+    "session_id": "35e8d33b1d4c4f23861d283f32e97d57",
+    "source_path": "C:\\Users\\HP\\Desktop\\capstone\\BudgetMe",
+    "snapshot_hash": "f619e15d33f35928fd51616bfe0f4b33d608adbf7a84c80ad770177e50caae55",
+    "source_files_verified": 100,
+    "session_path": "C:\\Users\\HP\\AppData\\Local\\GroupOQA\\sessions\\35e8d33b1d4c4f23861d283f32e97d57",
+    "project_url": "/projects/35e8d33b1d4c4f23861d283f32e97d57/overview"
+  },
+  "rag": {
+    "documents": 9,
+    "chunks": 34,
+    "checks": [
+      {
+        "query": "BudgetMe planning validation category allocations saving goal income pay period",
+        "expected_source": "budgetme_features.md",
+        "passed": true,
+        "sources": [
+          {
+            "source": "budgetme_features.md",
+            "source_id": "SRC-016",
+            "chunk_id": 0,
+            "score": 0.3846923661944184
+          }
+        ]
+      },
+      {
+        "query": "BudgetMe architecture manage.py Django ASGI WSGI DATABASE_URL",
+        "expected_source": "budgetme_architecture.md",
+        "passed": true,
+        "sources": [
+          {
+            "source": "budgetme_architecture.md",
+            "source_id": "SRC-017",
+            "chunk_id": 0,
+            "score": 0.25231848352843167
+          },
+          {
+            "source": "budgetme_testing.md",
+            "source_id": "SRC-019",
+            "chunk_id": 1,
+            "score": 0.12434237243163329
+          },
+          {
+            "source": "budgetme_architecture.md",
+            "source_id": "SRC-017",
+            "chunk_id": 1,
+            "score": 0.12428289498766408
+          }
+        ]
+      },
+      {
+        "query": "BudgetMe GET /api/live/summary/ include deposits JSON fields",
+        "expected_source": "budgetme_api.md",
+        "passed": true,
+        "sources": [
+          {
+            "source": "budgetme_api.md",
+            "source_id": "SRC-018",
+            "chunk_id": 1,
+            "score": 0.16113765568398372
+          },
+          {
+            "source": "budgetme_api.md",
+            "source_id": "SRC-018",
+            "chunk_id": 0,
+            "score": 0.09017759320792107
+          }
+        ]
+      },
+      {
+        "query": "BudgetMe test_savings.py SavingsServiceTests SavingsViewTests test source not executed",
+        "expected_source": "budgetme_testing.md",
+        "passed": true,
+        "sources": [
+          {
+            "source": "budgetme_testing.md",
+            "source_id": "SRC-019",
+            "chunk_id": 0,
+            "score": 0.22155854499714991
+          },
+          {
+            "source": "budgetme_testing.md",
+            "source_id": "SRC-019",
+            "chunk_id": 1,
+            "score": 0.11977735239216586
+          },
+          {
+            "source": "budgetme_architecture.md",
+            "source_id": "SRC-017",
+            "chunk_id": 1,
+            "score": 0.1120784658499237
+          }
+        ]
+      }
+    ],
+    "model_called": false,
+    "cache_note": "Existing running processes must restart to rebuild the cached pipeline."
+  },
+  "budgetme_tests_executed": false
+}

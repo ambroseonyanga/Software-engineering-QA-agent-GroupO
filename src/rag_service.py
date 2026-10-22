@@ -138,9 +138,9 @@ def ask_model(prompt):
 
 
 class RagPipeline:
-    def __init__(self):
-        self.register = load_source_register()
-        self.documents = load_documents()
+    def __init__(self, documents=None, register=None):
+        self.register = load_source_register() if register is None else register
+        self.documents = load_documents() if documents is None else documents
         self.chunks = build_chunks(self.documents)
         if not self.chunks:
             raise RuntimeError("No authorised project documents are available. Check the source register.")
@@ -228,3 +228,41 @@ def get_pipeline():
 
 def answer_question(question, generate=True, top_k=TOP_K):
     return get_pipeline().answer(question, generate=generate, top_k=top_k)
+
+
+def project_pipeline(state):
+    """Keep target-system evidence separate from the QA Agent's own requirements."""
+    repository = state.get("knowledge_repository", "").rstrip("/")
+    register = load_source_register()
+    documents = []
+    if repository:
+        documents = [doc for doc in load_documents()
+                     if register[doc["path"]].get("origin", "").split(";", 1)[0].rstrip("/") == repository]
+    # Supplied requirements belong only to this session, and retain their provenance.
+    for requirement in state.get("requirements", []):
+        identifier = str(requirement.get("id", "unknown"))
+        path = "session/requirements/" + identifier
+        text = json.dumps(requirement, ensure_ascii=False)
+        documents.append({"source": identifier, "path": path,
+                          "text": "User-supplied target requirement; not independent runtime evidence. " + text})
+        register[path] = {"source_id": identifier, "authority": "User-supplied target requirement"}
+    if not documents:
+        return None
+    return RagPipeline(documents=documents, register=register)
+
+
+def project_corpus_context(state, question):
+    """Retrieve evidence bound to this repository/session only."""
+    pipeline = project_pipeline(dict(state, requirements=[]))
+    if pipeline is None:
+        return []
+    results = retrieve(state["name"] + " " + question, pipeline.chunks, pipeline.vectorizer, pipeline.matrix)
+    return [dict(item, source_id=pipeline.register[item["path"]]["source_id"])
+            for item in results if item["score"] > 0]
+
+
+def project_retrieve(state, query, top_k=3):
+    pipeline = project_pipeline(state)
+    if pipeline is None:
+        return {"grounded": False, "answer": "No target project evidence is available.", "sources": []}
+    return pipeline.answer(query, generate=False, top_k=top_k)

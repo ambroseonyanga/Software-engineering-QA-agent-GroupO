@@ -73,6 +73,29 @@ def read(session_id):
             state['requirements'] = extract_requirements(state['pages'])
             state['requirements_version'] = REQUIREMENTS_VERSION
             save(state)
+        changed = False
+        recorded = {}
+        if state.get('error') and ('Code generation failed' in state['error'] or 'Approval saved.' in state['error']):
+            for event in state.get('events', []):
+                if event['action'] == 'test_descriptions_approved' and event['at'] >= state.get('generated', ''):
+                    recorded.update({test_id: event['at'] for test_id in event.get('test_ids', [])})
+        for test in state['tests']:
+            if test['id'] in (state.get('approval') or {}).get('tests', {}):
+                if test.get('review_status') != 'approved' or test.get('code_status') != 'ready':
+                    test.update(review_status='approved', code_status='ready')
+                    changed = True
+            elif test['id'] in recorded and test.get('review_status') != 'approved':
+                test.update(review_status='approved', approved_at=recorded[test['id']], code_status='failed', code_error=state['error'])
+                changed = True
+        if changed:
+            save(state)
+        if (state.get('error') or '').startswith('Code generation failed.'):
+            reason = state['error'].split('retry. ', 1)[-1] if 'retry. ' in state['error'] else state['error'].removeprefix('Code generation failed.').strip()
+            state['error'] = 'Approval saved. Code generation failed: ' + reason
+            for test in state['tests']:
+                if test.get('code_status') == 'failed':
+                    test['code_error'] = reason
+            save(state)
         return state
 
 
@@ -172,10 +195,14 @@ def create(pdf, filename, code_path, adapter, focus, manual_text="", allow_empty
         raise
 
 
-def context(state):
+def context(state, requirement_ids=None):
     requirements = state.get('requirements') or extract_requirements(state['pages'])
     if not requirements:
         raise ValueError('No requirement statements could be extracted. Use a PDF with requirement IDs, acceptance criteria, or clear shall/must statements.')
+    if requirement_ids is not None:
+        requirements = [r for r in requirements if r['id'] in requirement_ids]
+        if not requirements:
+            raise ValueError('Requirement not found.')
     code_names = ' '.join(state['manifest']).lower()
     def relevance(item):
         terms = set(re.findall(r'[a-z]{4,}', item['title'] + ' ' + item['text']))
@@ -269,6 +296,7 @@ def generate(session_id, proposals_only=False):
             del item['properties']['code']
         response = complete(load_prompt('workflow-proposals.txt' if proposals_only else 'workflow-tests.txt'), json.dumps(evidence),
                             temperature=0.2, max_tokens=2200, schema=schema)
+        record_model_trace(state, 'workflow-proposals.txt' if proposals_only else 'workflow-tests.txt', evidence, response)
         payload = json.loads(response['text'])
         validate(payload, schema)
         accepted, warnings = [], []
@@ -333,20 +361,26 @@ def verify_approval(state):
     return selected
 
 
-def prepare_approval(session_id, selected):
-    """Reserve a description-only approval before starting a background worker."""
+def prepare_approval(session_id, selected, retry=False):
     with LOCK:
         state = read(session_id)
         ids = set(selected)
-        eligible = {t['id'] for t in state['tests'] if t.get('review_status') != 'rejected'}
-        approved = set((state.get('approval') or {}).get('tests', {}))
-        if state['status'] not in {'review', 'approved'} or not ids or not ids.issubset(eligible) or ids & approved:
-            raise ValueError('Select at least one test awaiting review.')
-        if approved:
+        eligible = {t['id'] for t in state['tests'] if
+                    (t.get('review_status') == 'approved' and t.get('code_status') in {'failed', 'waiting'} if retry
+                     else t.get('review_status') not in {'approved', 'rejected'})}
+        ready = set((state.get('approval') or {}).get('tests', {}))
+        if state['status'] not in {'review', 'approved'} or not ids or not ids.issubset(eligible) or ids & ready:
+            raise ValueError('Select cases awaiting approval.' if not retry else 'Select approved cases whose code needs retrying.')
+        if ready:
             verify_approval(state)
-        state.update(status='code_generating', error=None, selected_for_code=sorted(ids | approved),
+        at = now()
+        for test in state['tests']:
+            if test['id'] in ids:
+                test.update(review_status='approved', code_status='queued', code_error=None)
+                test.setdefault('approved_at', at)
+        state.update(status='code_generating', error=None, selected_for_code=sorted(ids),
                      prior_approval=state.get('approval'))
-        state['events'].append({'at': now(), 'action': 'test_descriptions_approved', 'test_ids': sorted(ids)})
+        state['events'].append({'at': at, 'action': 'code_retry_requested' if retry else 'test_descriptions_approved', 'test_ids': sorted(ids)})
         save(state)
 
 
@@ -354,49 +388,133 @@ def generate_approved_code(session_id):
     state = read(session_id)
     if state['status'] != 'code_generating':
         return
-    try:
-        evidence = context(state)
-        for test in state['tests']:
-            if test['id'] not in state['selected_for_code']:
-                continue
+    failed = None
+    for test in state['tests']:
+        if test['id'] not in state['selected_for_code']:
+            continue
+        if failed:
+            test.update(code_status='waiting', code_error='Paused after a code-generation error. Retry explicitly.')
+            continue
+        try:
+            test['code_status'] = 'generating'
+            with LOCK:
+                save(state)
             if test.get('code'):
-                prior_hash = (state.get('prior_approval') or {}).get('tests', {}).get(test['id'])
-                if prior_hash and digest(test['code'].encode()) != prior_hash:
-                    raise ValueError('Previously approved code changed. Connect a new snapshot.')
                 test['hash'] = digest(test['code'].encode())
-                continue
-            response = complete(load_prompt('workflow-tests.txt') + '\nFor this call, the supplied test description has been approved by the local operator. Generate its code only; do not change the approved expected behaviour or claim it has run.', json.dumps({
-                'evidence': evidence, 'approved_test': test,
-                'instruction': 'Generate exactly one module implementing this approved test. Preserve its expected behaviour.'
-            }), temperature=0.2, max_tokens=2200, schema=SCHEMA)
+            else:
+                rid = requirement_for_case(state, test)
+                evidence = context(state, [rid] if rid else None)
+                response = complete(load_prompt('workflow-tests.txt') + '\nThe supplied test description is already approved. Generate its code only; preserve its expected behaviour. Do not claim execution.', json.dumps({
+                    'evidence': evidence, 'approved_test': test,
+                    'instruction': 'Generate exactly one module implementing this approved test.'
+                }), temperature=0.2, max_tokens=2200, schema=SCHEMA)
+                record_model_trace(state, 'workflow-tests.txt', evidence, response)
+                payload = json.loads(response['text'])
+                validate(payload, SCHEMA)
+                if len(payload['tests']) != 1:
+                    raise ValueError('Expected one code module for the approved test.')
+                test['code'] = validate_code(payload['tests'][0]['code'])
+                test['hash'] = digest(test['code'].encode())
+                test['code_model'] = response['model']
+                test['code_generated'] = now()
+            test.update(code_status='ready', code_error=None)
+            state['events'].append({'at': now(), 'action': 'code_validation_passed', 'test_id': test['id'], 'sha256': test['hash']})
+        except Exception as error:
+            failed = str(error)[:500]
+            test.pop('code', None)
+            test.pop('hash', None)
+            test.update(code_status='failed', code_error=failed)
+            state['events'].append({'at': now(), 'action': 'code_generation_or_validation_failed', 'test_id': test['id'], 'error': failed})
+        with LOCK:
+            save(state)
+    with LOCK:
+        prior = state.get('prior_approval')
+        hashes = dict((prior or {}).get('tests', {}))
+        for test in state['tests']:
+            if test['id'] in state['selected_for_code'] and test.get('code_status') == 'ready':
+                hashes[test['id']] = test['hash']
+        state['approval'] = prior if failed and hashes == (prior or {}).get('tests', {}) else ({'at': now(), 'reviewer': 'Local operator', 'snapshot_hash': state['snapshot_hash'], 'tests': hashes} if hashes else None)
+        state.update(status='approved' if hashes else 'review', error=('Approval saved. Code generation failed: ' + failed) if failed else None)
+        state['events'].append({'at': now(), 'action': 'code_generation_failed' if failed else 'approved_code_generated', 'test_ids': state['selected_for_code']})
+        save(state)
+
+
+def requirement_for_case(state, test):
+    for requirement in state['requirements']:
+        if re.search(r'(?<![A-Za-z0-9_-])' + re.escape(requirement['id']) + r'(?:-AC[0-9]+)?(?![A-Za-z0-9_-])', test['requirement'], re.I):
+            return requirement['id']
+    return None
+
+
+def pending_requirements(state):
+    covered = {requirement_for_case(state, test) for test in state['tests']}
+    return [r['id'] for r in state['requirements'] if r['id'] not in covered]
+
+
+def prepare_requirement_batch(session_id, requested=None):
+    with LOCK:
+        state = read(session_id)
+        if state['status'] not in {'ready', 'review', 'approved', 'generation_failed', 'completed', 'blocked', 'cancelled'}:
+            raise ValueError('Wait for the current operation to finish.')
+        pending = pending_requirements(state)
+        if requested and not set(requested).issubset(set(pending)):
+            raise ValueError('Choose requirements that do not have cases yet.')
+        failures = state.get('requirement_generation_errors', {})
+        selected = list(requested) if requested else [r for r in pending if r not in failures] or pending
+        if not selected:
+            raise ValueError('All requirements already have cases.')
+        if state['status'] in {'completed', 'blocked', 'cancelled'}:
+            # Consume the old approval: a new cycle must not rerun previously executed tests.
+            state.setdefault('execution_history', []).append({key: state.get(key) for key in
+                ('started', 'finished', 'status', 'results', 'approval', 'image_id', 'base_image_id', 'error')})
+            state['approval'] = None
+            state['events'].append({'at': now(), 'action': 'generation_cycle_started', 'requirement_ids': selected[:3]})
+        state.update(status='generation_queued', error=None, requirement_batch=selected[:3],
+                     generation_completed=0, generation_total=min(3, len(selected)))
+        save(state)
+
+
+def generate_requirement_batch(session_id):
+    with LOCK:
+        state = read(session_id)
+        if state['status'] != 'generation_queued' or not state.get('requirement_batch'):
+            return
+        state['status'] = 'generating'
+        save(state)
+    failed = None
+    for rid in state['requirement_batch']:
+        try:
+            evidence = context(state, [rid])
+            schema = json.loads(json.dumps(SCHEMA))
+            item = schema['properties']['tests']['items']
+            item['required'].remove('code')
+            del item['properties']['code']
+            item['properties']['requirement']['enum'] = [rid]
+            response = complete(load_prompt('workflow-requirement-cases.txt'), json.dumps(evidence),
+                                temperature=0.2, max_tokens=1600, schema=schema)
+            record_model_trace(state, 'workflow-requirement-cases.txt', evidence, response)
             payload = json.loads(response['text'])
-            validate(payload, SCHEMA)
-            if len(payload['tests']) != 1:
-                raise ValueError('Expected one code module for the approved test.')
-            test['code'] = validate_code(payload['tests'][0]['code'])
-            test['hash'] = digest(test['code'].encode())
-            test['code_model'] = response['model']
-            test['code_generated'] = now()
-        with LOCK:
-            state['approval'] = {'at': now(), 'reviewer': 'Local operator',
-                'snapshot_hash': state['snapshot_hash'],
-                'tests': {t['id']: t['hash'] for t in state['tests'] if t['id'] in state['selected_for_code']}}
-            state.update(status='approved', error=None)
-            for test in state['tests']:
-                if test['id'] in state['selected_for_code']:
-                    test['review_status'] = 'approved'
-            state['events'].append({'at': now(), 'action': 'approved_code_generated', 'test_ids': state['selected_for_code']})
-            save(state)
-    except Exception as error:
-        with LOCK:
-            # Keep descriptions reviewable; partial code is never runnable.
-            prior = state.get('prior_approval')
-            for test in state['tests']:
-                if test['id'] not in (prior or {}).get('tests', {}):
-                    test.pop('code', None)
-                    test.pop('hash', None)
-            state.update(status='approved' if prior else 'review', approval=prior, error='Code generation failed. Approve the pending cases again to retry. ' + str(error)[:300])
-            save(state)
+            validate(payload, schema)
+            next_id = max([int(t['id'][1:]) for t in state['tests'] if re.fullmatch(r'T[0-9]+', t['id'])] or [0]) + 1
+            for test in payload['tests']:
+                test.update(id=f'T{next_id:02}', review_status='pending', code_status='not_generated')
+                state['tests'].append(test)
+                next_id += 1
+            state.setdefault('requirement_generation_errors', {}).pop(rid, None)
+            state['generation_completed'] += 1
+            state['model'] = response['model']
+            state['generated'] = now()
+            state['events'].append({'at': now(), 'action': 'requirement_cases_generated', 'requirement_id': rid, 'count': len(payload['tests'])})
+            with LOCK:
+                save(state)
+        except Exception as error:
+            failed = str(error)[:500]
+            state.setdefault('requirement_generation_errors', {})[rid] = failed
+            break
+    with LOCK:
+        state.update(status='approved' if state.get('approval') else 'review' if state['tests'] else 'generation_failed',
+                     error=('Case generation paused: ' + failed) if failed else None)
+        save(state)
 
 
 def connect(code_path, adapter, name=''):
@@ -409,11 +527,11 @@ def connect(code_path, adapter, name=''):
 
 
 def add_requirements(session_id, *, identifier='', title='', text='', pdf=b'', filename=''):
-    """Append requirement records before tests are approved; reject ID collisions."""
+    """Append new IDs without changing existing cases, approvals or execution evidence."""
     with LOCK:
         state = read(session_id)
-        if state['status'] not in {'ready', 'review', 'generation_failed'}:
-            raise ValueError('Requirements are locked after approval. Connect a new project snapshot to revise them.')
+        if state['status'] in {'generation_queued', 'generating', 'code_generating', 'queued', 'running'}:
+            raise ValueError('Wait for the current operation to finish before adding requirements.')
         if pdf:
             if len(pdf) > 10000000 or not pdf.startswith(b'%PDF-'):
                 raise ValueError('Upload a text-based PDF up to 10 MB.')
@@ -445,12 +563,9 @@ def add_requirements(session_id, *, identifier='', title='', text='', pdf=b'', f
         existing = {r['id'] for r in state['requirements']}
         if existing & {r['id'] for r in records}:
             raise ValueError('A requirement with this ID already exists. Use a different ID.')
-        if state['tests']:
-            state.setdefault('test_history', []).append({'at': now(), 'reason': 'requirements_updated', 'tests': state['tests']})
         state['pages'].extend(pages)
         state['requirements'].extend(records)
         state['requirements'].sort(key=lambda r: r['id'])
-        state.update(tests=[], approval=None, status='ready', error=None)
         document = {'name': Path(filename).name if pdf else 'Manual entry', 'ids': [r['id'] for r in records],
                     'hash': digest(pdf if pdf else text.encode()), 'at': now()}
         state.setdefault('requirement_sources', []).append(document)
@@ -468,7 +583,7 @@ def review_case(session_id, test_id, action, fields=None):
         if state['status'] not in {'review', 'approved'}:
             raise ValueError('Test cases cannot be changed in the current state.')
         test = next((t for t in state['tests'] if t['id'] == test_id), None)
-        if test is None or test_id in (state.get('approval') or {}).get('tests', {}):
+        if test is None or test.get('review_status') == 'approved' or test_id in (state.get('approval') or {}).get('tests', {}):
             raise ValueError('Only unapproved test cases can be edited or rejected.')
         before = dict(test)
         if action == 'reject':
@@ -488,5 +603,36 @@ def review_case(session_id, test_id, action, fields=None):
         state.setdefault('test_history', []).append({'at': now(), 'reason': action, 'tests': [before]})
         test.pop('code', None)
         test.pop('hash', None)
+        test.pop('approved_at', None)
+        test.update(code_status='not_generated', code_error=None)
         state['events'].append({'at': now(), 'action': 'case_' + action, 'test_ids': [test_id]})
         save(state)
+
+
+def record_model_trace(state, prompt_name, evidence, response):
+    prompt = load_prompt(prompt_name)
+    state.setdefault('events', []).append({'at': now(), 'action': 'model_response_recorded',
+        'prompt_file': prompt_name, 'prompt_sha256': digest(prompt.encode()),
+        'prompt': prompt, 'sources': evidence, 'model': response.get('model'),
+        'output': response.get('text'), 'validation': 'Response received; validation follows.'})
+    with LOCK:
+        save(state)
+
+
+def set_project_connection(session_id, connected):
+    """Soft disconnect all snapshots of a project; retain evidence and source files."""
+    with LOCK:
+        selected = read(session_id)
+        def key(state):
+            return state.get('project_key') or state['name'] + ':' + state.get('adapter', '')
+        states = []
+        for path in home().glob('*/session.json'):
+            state = json.loads(path.read_text(encoding='utf-8'))
+            if key(state) == key(selected):
+                states.append(state)
+        if any(state['status'] in {'queued', 'running', 'generation_queued', 'generating', 'code_generating'} for state in states):
+            raise ValueError('Wait for this project’s current operation to finish before disconnecting.')
+        for state in states:
+            state['disconnected'] = not connected
+            state.setdefault('events', []).append({'at': now(), 'action': 'project_reconnected' if connected else 'project_disconnected'})
+            save(state)

@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-22",
+  "word_layout": "Rendered with installed Word, inspected all pages; the engineering report has 10 main pages and one evidence appendix, with empty headers and footers. The results report has four pages and Week 7 has two.",
+  "pages": [
+    {
+      "pages": 4,
+      "file": "Evaluation_Results"
+    },
+    {
+      "pages": 6,
+      "file": "Failure_Catalogue"
+    },
+    {
+      "pages": 6,
+      "file": "RAG_Evaluation"
+    },
+    {
+      "pages": 1,
+      "file": "Tool_Authorization_Evidence"
+    },
+    {
+      "pages": 2,
+      "file": "Week7-ProgressReport"
+    },
+    {
+      "pages": 11,
+      "file": "Final_Engineering_Report"
+    },
+    {
+      "pages": 3,
+      "file": "AI-Engineering-Log"
+    }
+  ],
+  "presentation": {
+    "slides": 15,
+    "package_integrity": "pass",
+    "layout_findings": 0,
+    "import_passed": true,
+    "native_chart_passed": true,
+    "sha256": "a49cbfebcd54c202a5a15b8fd0f3cea8255e6f53fe715e0beadb5cf07aff5b98"
+  },
+  "references": "Current formal document and Markdown file references checked; no missing local files found.",
+  "target_source": "BudgetMe original source unchanged; all runs use read-only snapshots and disposable databases."
+}

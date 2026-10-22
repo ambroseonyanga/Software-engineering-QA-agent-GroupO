@@ -149,18 +149,13 @@ Every stop reason other than `COMPLETED` is a **human hand-off**. The agent neve
 
 ## 9. Evidence
 
-| Evidence type | Location |
-|---|---|
-| Per-run audit trace (JSON) | `evidence/traces/agent_runs/<run_id>.json` |
-| Offline guard tests (24 cases) | `tests/test_agent.py` + `evidence/traces/week5_agent_tests.json` |
-| Live traces with Qwen3 model | `scripts/capture_week5_traces.py` → `evidence/traces/week5_live_demo.json` |
-| Tool call summary log | `evidence/traces/week4_tool_calls.json` |
+Current verification: evidence/traces/offline_regression_20261022.json and evidence/traces/milestones_20261022T154858Z/verification.json. Removed historical artifacts are not required inputs to the current application.
 
 ---
 
 ## 10. Known Limitations
 
 - The agent does not execute tests. It triages a failure a human reports; test execution remains blocked until an approval path is built.
-- Retrieval is TF-IDF keyword matching over five registered documents. A grounded result means a chunk scored above 0.08 cosine similarity, not that it is the correct requirement.
+- The register contains nine documents. Project failure analysis searches its supplied session requirements and repository-bound corpus; unbound targets do not fall back to QA Agent governance. Retrieval uses TF-IDF keyword matching. A grounded result means a chunk scored above 0.08 cosine similarity, not that it is the correct requirement.
 - The model analysis in the draft is labelled "unverified opinion" and cannot be treated as a confirmed diagnosis.
 - Groq calls can fail through network errors or rate limits. Each call has a 90-second timeout; the 900-second run budget is checked between iterations.

@@ -1,0 +1,12 @@
+{
+  "title": "Synthetic boundary assertion failure",
+  "failed_test": "SYN-FINAL-05",
+  "expected": "100",
+  "actual": "101",
+  "notes": "Synthetic evaluation fixture; observed values are supplied, not a real BudgetMe defect.",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-22T17:28:21.815313+00:00",
+  "draft_id": "DRAFT-21e4f6cfdca9",
+  "path": "evidence/traces/final_evaluation_20261022T172723Z/drafts/DRAFT-21e4f6cfdca9.json"
+}

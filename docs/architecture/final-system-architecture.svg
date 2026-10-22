@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#334155"/></marker></defs>
+<rect width="1600" height="900" fill="white"/>
+<g font-family="Arial,sans-serif" fill="#111827"><text x="60" y="60" font-size="32" font-weight="bold">Software Engineering QA Agent</text><text x="60" y="98" font-size="20">Local application, cloud reasoning and approval-controlled execution</text></g>
+<g fill="#f8fafc" stroke="#64748b" stroke-width="2">
+<rect x="60" y="160" width="300" height="150"/><rect x="450" y="160" width="340" height="150"/>
+<rect x="900" y="160" width="300" height="150"/><rect x="1300" y="160" width="240" height="150" fill="#eff6ff"/>
+<rect x="450" y="410" width="340" height="160"/><rect x="900" y="410" width="300" height="160"/>
+<rect x="1300" y="410" width="240" height="160"/><rect x="60" y="650" width="300" height="150"/>
+<rect x="450" y="650" width="340" height="150"/><rect x="900" y="650" width="640" height="150"/>
+</g>
+<g font-family="Arial,sans-serif" fill="#111827" font-size="21">
+<text x="82" y="196" font-weight="bold">Operator and project</text><text x="82" y="232">Local folder snapshot</text><text x="82" y="266">PDF or manual requirements</text>
+<text x="472" y="196" font-weight="bold">Flask project workspace</text><text x="472" y="232">Saved records and source hashes</text><text x="472" y="266">Approval and state validation</text>
+<text x="922" y="196" font-weight="bold">Evidence and prompts</text><text x="922" y="232">Target-bound retrieval</text><text x="922" y="266">Bounded context and schemas</text>
+<text x="1322" y="196" font-weight="bold">Groq API</text><text x="1322" y="232">Qwen model</text><text x="1322" y="266">No direct host tools</text>
+<text x="472" y="446" font-weight="bold">Approved execution</text><text x="472" y="482">Selected tests and code hashes</text><text x="472" y="516">Explicit operator Run action</text><text x="472" y="550">Pinned source snapshot</text>
+<text x="922" y="446" font-weight="bold">Bounded triage agent</text><text x="922" y="482">Decide, validate, act, observe</text><text x="922" y="516">Retrieve or save local draft</text><text x="922" y="550">Limits and human hand-off</text>
+<text x="1322" y="446" font-weight="bold">Registered corpus</text><text x="1322" y="482">CSV allow-list</text><text x="1322" y="516">BudgetMe provenance</text><text x="1322" y="550">Separate QA controls</text>
+<text x="82" y="686" font-weight="bold">Docker sandbox</text><text x="82" y="722">No network, non-root</text><text x="82" y="756">Disposable test database</text>
+<text x="472" y="686" font-weight="bold">Results and Word report</text><text x="472" y="722">Pass, fail, error, skip, not run</text><text x="472" y="756">Traceable local issue drafts</text>
+<text x="922" y="686" font-weight="bold">Local traces and justified history</text><text x="922" y="722">SQLite triage summaries: up to 90 days / 500 records</text><text x="922" y="756">History reuse is opt-in on the standalone triage path</text>
+</g>
+<g fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)">
+<path d="M360 235 H450"/><path d="M790 235 H900"/><path d="M1200 235 H1300"/>
+<path d="M620 310 V410"/><path d="M1050 310 V410"/><path d="M1420 410 V330 H1150 V310"/>
+<path d="M450 490 H210 V650"/><path d="M360 725 H450"/><path d="M1050 570 V650"/><path d="M900 725 H790"/>
+</g>
+<text x="60" y="857" font-family="Arial,sans-serif" font-size="19" fill="#475569">No automatic issue submission, merging, deployment or unrestricted shell execution. Retrieved evidence does not establish a passing test.</text>
+</svg>

@@ -1,0 +1,12 @@
+{
+  "title": "Synthetic planning boundary report",
+  "failed_test": "SYN-FINAL-06",
+  "expected": "The plan must stay within income.",
+  "actual": "Synthetic report of an over-income plan accepted; no real product failure claimed.",
+  "notes": "Retrieved project evidence (not proof of approved requirements or a confirmed cause):\n- None above the similarity threshold. This failure is NOT linked to a documented requirement.\nModel-suggested analysis (unverified; not a confirmed cause): The failure report states that a plan exceeding income was accepted, which may relate to a requirement that plans must stay within income limits. However, two retrieval attempts with different phrasings returned no grounded evidence, so no specific requirement ID or source can be cited. The report is explicitly synthetic and claims no real product failure, so the actual impact and root cause remain uncertain.\nAgent run: 67bcca84e6d04d0db50d89580b0d1b52. Draft only; a human must review before any submission.",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-22T17:32:52.451037+00:00",
+  "draft_id": "DRAFT-eb67ddbe52ca",
+  "path": "evidence/traces/final_evaluation_20261022T172723Z/drafts/DRAFT-eb67ddbe52ca.json"
+}

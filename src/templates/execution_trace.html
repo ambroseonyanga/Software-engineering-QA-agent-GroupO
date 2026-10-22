@@ -1,0 +1,3 @@
+<aside class="execution-trace" data-url="{{ url_for('workflow.trace', session_id=state.id) }}" aria-label="Agent Execution Trace">
+<button id="trace-toggle" class="secondary" aria-expanded="true" aria-controls="trace-body">Agent Execution Trace <span aria-hidden="true">↔</span></button>
+<div id="trace-body"><label for="trace-run">Workflow / run</label><select id="trace-run"></select><button id="trace-refresh" class="icon-button" type="button">Refresh</button><p id="trace-status" role="status" aria-live="polite">Loading recorded events…</p><ol id="trace-events"></ol><p class="hint">Recorded evidence only. Older workflows may not include prompt or tool details.</p></div></aside>

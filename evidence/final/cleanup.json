@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-22",
+  "removed": [
+    "C:\\Users\\HP\\Desktop\\Software-engineering-QA-agent-GroupO\\docs\\evaluation\\Final_Evaluation_Results_Template.csv",
+    "C:\\Users\\HP\\Documents\\Codex\\2026-10-22\\referenced-chatgpt-conversation-this-is-an-3\\outputs\\Final_Evaluation_Results_Template.csv",
+    "docs/architecture/.gitkeep",
+    "docs/evaluation/.gitkeep",
+    "docs/requirements/.gitkeep",
+    "docs/weekly-reports/.gitkeep",
+    "knowledge/.gitkeep",
+    "prompts/.gitkeep",
+    "src/.gitkeep",
+    "evidence/traces/.gitkeep",
+    "evidence/drafts/.gitkeep",
+    "evidence/screenshots/.gitkeep"
+  ],
+  "preserved": "Existing user edits/deletions, active Word lock files, historical failed evidence, runtime environment and local databases. Temporary builders, renderings and disposable UI sessions remain outside the repository and are removed after verification.",
+  "minimal_implementation_changes": [
+    "src/app.py: concise Knowledge answer instruction within existing token allowance",
+    "sandbox/workflow/_qa_settings.py: explicit BudgetMe template directory"
+  ],
+  "repository_cleanup_20261022": {
+    "removed": [
+      "knowledge/scripts/.docx_to_md.py.un~",
+      "knowledge/scripts/.rag_pipeline.py.un~",
+      ".env.example",
+      "evidence/demo/.gitkeep",
+      "evidence/demo/"
+    ],
+    "ignore_patterns_added": [
+      "*.un~",
+      "*.swp",
+      "*.swo",
+      "*.bak",
+      "*.tmp"
+    ],
+    "preserved": "Implementation, dependencies, runtime memory, all 19 corpus documents, source registers, required reports, editable architecture files, prompt revisions, reproducibility scripts and recorded successful/failed evidence. Active Office lock files were not removed."
+  }
+}

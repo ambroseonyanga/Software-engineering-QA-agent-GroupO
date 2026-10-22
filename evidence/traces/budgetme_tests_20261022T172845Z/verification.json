@@ -1,0 +1,268 @@
+{
+  "commit": "a55e0b28ba5ce00c0ca6034854abbab9ae444938",
+  "snapshot_hash": "f619e15d33f35928fd51616bfe0f4b33d608adbf7a84c80ad770177e50caae55",
+  "snapshot_files": 100,
+  "image_id": "sha256:3fd7dba4629b49bfbeaac0c47353d8e99cfa322fc4a51714a3ac14a4be95b228",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "groupo-final-target-suite",
+    "--network",
+    "none",
+    "--read-only",
+    "--tmpfs",
+    "/tmp:rw,noexec,nosuid,size=128m",
+    "--memory",
+    "768m",
+    "--cpus",
+    "1",
+    "--pids-limit",
+    "64",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--user",
+    "10001:10001",
+    "--mount",
+    "type=bind,source=C:\\Users\\HP\\AppData\\Local\\GroupOQA\\sessions\\35e8d33b1d4c4f23861d283f32e97d57\\source,target=/workspace,readonly",
+    "--mount",
+    "type=bind,source=C:\\Users\\HP\\Documents\\Codex\\2026-10-22\\referenced-chatgpt-conversation-this-is-an-3\\work\\target-qa,target=/qa,readonly",
+    "sha256:3fd7dba4629b49bfbeaac0c47353d8e99cfa322fc4a51714a3ac14a4be95b228",
+    "python",
+    "-I",
+    "/qa/target_suite.py"
+  ],
+  "exit_code": 1,
+  "stop_reason": null,
+  "test_settings": "QA Agent disposable SQLite settings, network disabled; no production services",
+  "result": {
+    "tests_run": 53,
+    "failures": 6,
+    "errors": 0,
+    "skipped": 0,
+    "records": [
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetPeriodTests.test_biweekly_period_is_fourteen_days",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetPeriodTests.test_biweekly_spending_only_counts_current_period",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetPeriodTests.test_monthly_period_is_calendar_month",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetServiceTests.test_summarize_budget_calculates_totals",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_auth_status_for_guest",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_auth_status_for_logged_in_user",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_budget_delete_removes_profile",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_budget_rejects_over_income",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_budget_setup_edit_shows_delete_option",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_budget_setup_requires_login",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_budget_setup_saves_profile",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_empty_dashboard_prompts_sign_in_for_guest",
+        "status": "failed",
+        "detail": "Traceback (most recent call last):\n  File \"/workspace/budgetbuddy/tests/test_dashboard.py\", line 185, in test_empty_dashboard_prompts_sign_in_for_guest\n    self.assertContains(response, 'Sign in')\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true : Couldn't find 'Sign in' in the following response\nb'\\n<!DOCTYPE html>\\n<html>\\n    <head>\\n        <meta charset=\"utf-8\">\\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\\n        <title>\\n            \\n    Sign In\\n\\n        </title>\\n        \\n        \\n    </head>\\n    <body>\\n        \\n            \\n            <div>\\n                <strong>Menu:</strong>\\n                <ul>\\n                    \\n                        \\n                        \\n                            <li>\\n                                <a href=\"/accounts/login/\">Sign In</a>\\n                            </li>\\n                        \\n                        \\n                        \\n                            <li>\\n                                <a href=\"/accounts/signup/\">Sign Up</a>\\n                            </li>\\n                        \\n                    \\n                </ul>\\n            </div>\\n            \\n    <h1>\\n        Sign In\\n    </h1>\\n\\n    \\n        \\n            \\n        <p>\\n            If you have not created an account yet, then please <a href=\"/accounts/signup/\">sign up</a> first.\\n        </p>\\n\\n        \\n        \\n<form method=\"post\"\\n      action=\"/accounts/login/\">\\n    \\n                <input type=\"hidden\" name=\"csrfmiddlewaretoken\" value=\"jweaFjYWafCFHsHeDyYYQ8eIIOpWfuTvQhBy4hEi2uLrspLuzowaGBaFDSl5M1OK\">\\n                <p>\\n    <label for=\"id_login\">Email:</label>\\n    <input type=\"email\" name=\"login\" autocomplete=\"email\" placeholder=\"Email address\" maxlength=\"320\" required id=\"id_login\">\\n    \\n    \\n  </p>\\n\\n  \\n  <p>\\n    <label for=\"id_password\">Password:</label>\\n    <input type=\"password\" name=\"password\" placeholder=\"Password\" autocomplete=\"current-password\" required aria-describedby=\"id_password_helptext\" id=\"id_password\">\\n    \\n      <span class=\"helptext\" id=\"id_password_helptext\"><a href=\"/accounts/password/reset/\">Forgot your password?</a></span>\\n    \\n    \\n  </p>\\n\\n  \\n  <p>\\n    <label for=\"id_remember\">Remember Me:</label>\\n    <input type=\"checkbox\" name=\"remember\" id=\"id_remember\">\\n    \\n    \\n      \\n    \\n  </p>\\n\\n                \\n            \\n    \\n                \\n\\n<button\\n\\n\\n\\n\\ntype=\"submit\"\\n>\\n\\n                    Sign In\\n                \\n</button>\\n\\n            \\n</form>\\n\\n    \\n    \\n    \\n        \\n\\n\\n\\n\\n\\n    \\n\\n        \\n        \\n    \\n        \\n    \\n\\n    </body>\\n</html>\\n'\n"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_empty_dashboard_shows_google_when_configured",
+        "status": "failed",
+        "detail": "Traceback (most recent call last):\n  File \"/workspace/budgetbuddy/tests/test_dashboard.py\", line 192, in test_empty_dashboard_shows_google_when_configured\n    self.assertContains(response, 'Continue with Google')\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true : Couldn't find 'Continue with Google' in the following response\nb'\\n<!DOCTYPE html>\\n<html>\\n    <head>\\n        <meta charset=\"utf-8\">\\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\\n        <title>\\n            \\n    Sign In\\n\\n        </title>\\n        \\n        \\n    </head>\\n    <body>\\n        \\n            \\n            <div>\\n                <strong>Menu:</strong>\\n                <ul>\\n                    \\n                        \\n                        \\n                            <li>\\n                                <a href=\"/accounts/login/\">Sign In</a>\\n                            </li>\\n                        \\n                        \\n                        \\n                            <li>\\n                                <a href=\"/accounts/signup/\">Sign Up</a>\\n                            </li>\\n                        \\n                    \\n                </ul>\\n            </div>\\n            \\n    <h1>\\n        Sign In\\n    </h1>\\n\\n    \\n        \\n            \\n        <p>\\n            If you have not created an account yet, then please <a href=\"/accounts/signup/\">sign up</a> first.\\n        </p>\\n\\n        \\n        \\n<form method=\"post\"\\n      action=\"/accounts/login/\">\\n    \\n                <input type=\"hidden\" name=\"csrfmiddlewaretoken\" value=\"LLi2tII9TopkahVtHVKC8ok0PcSWi5tkVlEUaz0u6RiFNkf1QWqsTu0UjCZ8thK4\">\\n                <p>\\n    <label for=\"id_login\">Email:</label>\\n    <input type=\"email\" name=\"login\" autocomplete=\"email\" placeholder=\"Email address\" maxlength=\"320\" required id=\"id_login\">\\n    \\n    \\n  </p>\\n\\n  \\n  <p>\\n    <label for=\"id_password\">Password:</label>\\n    <input type=\"password\" name=\"password\" placeholder=\"Password\" autocomplete=\"current-password\" required aria-describedby=\"id_password_helptext\" id=\"id_password\">\\n    \\n      <span class=\"helptext\" id=\"id_password_helptext\"><a href=\"/accounts/password/reset/\">Forgot your password?</a></span>\\n    \\n    \\n  </p>\\n\\n  \\n  <p>\\n    <label for=\"id_remember\">Remember Me:</label>\\n    <input type=\"checkbox\" name=\"remember\" id=\"id_remember\">\\n    \\n    \\n      \\n    \\n  </p>\\n\\n                \\n            \\n    \\n                \\n\\n<button\\n\\n\\n\\n\\ntype=\"submit\"\\n>\\n\\n                    Sign In\\n                \\n</button>\\n\\n            \\n</form>\\n\\n    \\n    \\n    \\n        \\n\\n\\n\\n\\n    \\n        <hr>\\n\\n        <h2>\\n            Or use a third-party\\n        </h2>\\n\\n    \\n    \\n\\n\\n    \\n<ul>\\n    \\n        \\n            \\n            \\n            <li>\\n    <a title=\"Google\" href=\"/accounts/google/login/?process=login\">Google</a>\\n</li>\\n\\n        \\n    \\n</ul>\\n\\n\\n\\n    \\n\\n\\n\\n\\n    \\n\\n        \\n        \\n    \\n        \\n    \\n\\n    </body>\\n</html>\\n'\n"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_empty_dashboard_shows_setup_cta_when_logged_in",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_home_link_points_to_dashboard",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_html_responses_are_not_cached",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_login_page_shows_google_option",
+        "status": "failed",
+        "detail": "Traceback (most recent call last):\n  File \"/workspace/budgetbuddy/tests/test_dashboard.py\", line 212, in test_login_page_shows_google_option\n    self.assertContains(response, 'Continue with Google')\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true : Couldn't find 'Continue with Google' in the following response\nb'\\n<!DOCTYPE html>\\n<html>\\n    <head>\\n        <meta charset=\"utf-8\">\\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\\n        <title>\\n            \\n    Sign In\\n\\n        </title>\\n        \\n        \\n    </head>\\n    <body>\\n        \\n            \\n            <div>\\n                <strong>Menu:</strong>\\n                <ul>\\n                    \\n                        \\n                        \\n                            <li>\\n                                <a href=\"/accounts/login/\">Sign In</a>\\n                            </li>\\n                        \\n                        \\n                        \\n                            <li>\\n                                <a href=\"/accounts/signup/\">Sign Up</a>\\n                            </li>\\n                        \\n                    \\n                </ul>\\n            </div>\\n            \\n    <h1>\\n        Sign In\\n    </h1>\\n\\n    \\n        \\n            \\n        <p>\\n            If you have not created an account yet, then please <a href=\"/accounts/signup/\">sign up</a> first.\\n        </p>\\n\\n        \\n        \\n<form method=\"post\"\\n      action=\"/accounts/login/\">\\n    \\n                <input type=\"hidden\" name=\"csrfmiddlewaretoken\" value=\"kC0VuQJ6no7Gtgdana7E7cPzuuUfzPfKklD4bOAF3fAmiz9x1qM7CDlcRPFJam44\">\\n                <p>\\n    <label for=\"id_login\">Email:</label>\\n    <input type=\"email\" name=\"login\" autocomplete=\"email\" placeholder=\"Email address\" maxlength=\"320\" required id=\"id_login\">\\n    \\n    \\n  </p>\\n\\n  \\n  <p>\\n    <label for=\"id_password\">Password:</label>\\n    <input type=\"password\" name=\"password\" placeholder=\"Password\" autocomplete=\"current-password\" required aria-describedby=\"id_password_helptext\" id=\"id_password\">\\n    \\n      <span class=\"helptext\" id=\"id_password_helptext\"><a href=\"/accounts/password/reset/\">Forgot your password?</a></span>\\n    \\n    \\n  </p>\\n\\n  \\n  <p>\\n    <label for=\"id_remember\">Remember Me:</label>\\n    <input type=\"checkbox\" name=\"remember\" id=\"id_remember\">\\n    \\n    \\n      \\n    \\n  </p>\\n\\n                \\n            \\n    \\n                \\n\\n<button\\n\\n\\n\\n\\ntype=\"submit\"\\n>\\n\\n                    Sign In\\n                \\n</button>\\n\\n            \\n</form>\\n\\n    \\n    \\n    \\n        \\n\\n\\n\\n\\n    \\n        <hr>\\n\\n        <h2>\\n            Or use a third-party\\n        </h2>\\n\\n    \\n    \\n\\n\\n    \\n<ul>\\n    \\n        \\n            \\n            \\n            <li>\\n    <a title=\"Google\" href=\"/accounts/google/login/?process=login\">Google</a>\\n</li>\\n\\n        \\n    \\n</ul>\\n\\n\\n\\n    \\n\\n\\n\\n\\n    \\n\\n        \\n        \\n    \\n        \\n    \\n\\n    </body>\\n</html>\\n'\n"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_login_page_shows_setup_notice_without_google",
+        "status": "failed",
+        "detail": "Traceback (most recent call last):\n  File \"/workspace/budgetbuddy/tests/test_dashboard.py\", line 243, in test_login_page_shows_setup_notice_without_google\n    self.assertContains(response, 'Google sign-in needs setup')\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true : Couldn't find 'Google sign-in needs setup' in the following response\nb'\\n<!DOCTYPE html>\\n<html>\\n    <head>\\n        <meta charset=\"utf-8\">\\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\\n        <title>\\n            \\n    Sign In\\n\\n        </title>\\n        \\n        \\n    </head>\\n    <body>\\n        \\n            \\n            <div>\\n                <strong>Menu:</strong>\\n                <ul>\\n                    \\n                        \\n                        \\n                            <li>\\n                                <a href=\"/accounts/login/\">Sign In</a>\\n                            </li>\\n                        \\n                        \\n                        \\n                            <li>\\n                                <a href=\"/accounts/signup/\">Sign Up</a>\\n                            </li>\\n                        \\n                    \\n                </ul>\\n            </div>\\n            \\n    <h1>\\n        Sign In\\n    </h1>\\n\\n    \\n        \\n            \\n        <p>\\n            If you have not created an account yet, then please <a href=\"/accounts/signup/\">sign up</a> first.\\n        </p>\\n\\n        \\n        \\n<form method=\"post\"\\n      action=\"/accounts/login/\">\\n    \\n                <input type=\"hidden\" name=\"csrfmiddlewaretoken\" value=\"bWs2sOMFHGvfljrc3oenXCJpQHnQKAS8PP9a8etQz5ohHARbx1kHJlqrBOAV52tv\">\\n                <p>\\n    <label for=\"id_login\">Email:</label>\\n    <input type=\"email\" name=\"login\" autocomplete=\"email\" placeholder=\"Email address\" maxlength=\"320\" required id=\"id_login\">\\n    \\n    \\n  </p>\\n\\n  \\n  <p>\\n    <label for=\"id_password\">Password:</label>\\n    <input type=\"password\" name=\"password\" placeholder=\"Password\" autocomplete=\"current-password\" required aria-describedby=\"id_password_helptext\" id=\"id_password\">\\n    \\n      <span class=\"helptext\" id=\"id_password_helptext\"><a href=\"/accounts/password/reset/\">Forgot your password?</a></span>\\n    \\n    \\n  </p>\\n\\n  \\n  <p>\\n    <label for=\"id_remember\">Remember Me:</label>\\n    <input type=\"checkbox\" name=\"remember\" id=\"id_remember\">\\n    \\n    \\n      \\n    \\n  </p>\\n\\n                \\n            \\n    \\n                \\n\\n<button\\n\\n\\n\\n\\ntype=\"submit\"\\n>\\n\\n                    Sign In\\n                \\n</button>\\n\\n            \\n</form>\\n\\n    \\n    \\n    \\n        \\n\\n\\n\\n\\n\\n    \\n\\n        \\n        \\n    \\n        \\n    \\n\\n    </body>\\n</html>\\n'\n"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_service_worker_is_served_at_root",
+        "status": "failed",
+        "detail": "Traceback (most recent call last):\n  File \"/workspace/budgetbuddy/tests/test_dashboard.py\", line 234, in test_service_worker_is_served_at_root\n    self.assertContains(response, 'bb-sw-1')\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true : Couldn't find 'bb-sw-1' in the following response\nb\"/* BudgetMe service worker \\xe2\\x80\\x94 instant PWA shell on cold start. */\\r\\n'use strict';\\r\\n\\r\\nvar SW_VERSION = 'bb-sw-2';\\r\\nvar STATIC_CACHE = SW_VERSION + '-static';\\r\\nvar PAGE_CACHE = SW_VERSION + '-pages';\\r\\n\\r\\nvar APP_PATHS = ['/', '/transfer/', '/savings/', '/budget/', '/profile/'];\\r\\n\\r\\nfunction isAppPath(pathname) {\\r\\n    return APP_PATHS.indexOf(pathname) !== -1;\\r\\n}\\r\\n\\r\\nfunction isAuthPath(pathname) {\\r\\n    return pathname.indexOf('/accounts/') === 0 || pathname.indexOf('/admin/') === 0;\\r\\n}\\r\\n\\r\\nfunction isTurboRequest(request) {\\r\\n    return request.headers.get('X-BB-Turbo') === '1';\\r\\n}\\r\\n\\r\\nfunction isAppHtmlRequest(request) {\\r\\n    if (request.method !== 'GET') {\\r\\n        return false;\\r\\n    }\\r\\n    var url = new URL(request.url);\\r\\n    if (url.origin !== self.location.origin) {\\r\\n        return false;\\r\\n    }\\r\\n    if (isAuthPath(url.pathname) || url.pathname.indexOf('/api/') === 0) {\\r\\n        return false;\\r\\n    }\\r\\n    if (request.mode === 'navigate' && isAppPath(url.pathname)) {\\r\\n        return true;\\r\\n    }\\r\\n    var accept = request.headers.get('Accept') || '';\\r\\n    return accept.indexOf('text/html') !== -1 && isAppPath(url.pathname);\\r\\n}\\r\\n\\r\\nfunction isStaticRequest(request) {\\r\\n    if (request.method !== 'GET') {\\r\\n        return false;\\r\\n    }\\r\\n    var url = new URL(request.url);\\r\\n    return url.pathname.indexOf('/static/') === 0\\r\\n        || url.pathname === '/site.webmanifest'\\r\\n        || url.pathname === '/icon-192.png'\\r\\n        || url.pathname === '/icon-512.png'\\r\\n        || url.pathname === '/apple-touch-icon.png';\\r\\n}\\r\\n\\r\\nfunction cachePut(request, response) {\\r\\n    if (!response || !response.ok) {\\r\\n        return;\\r\\n    }\\r\\n    var cacheName = isStaticRequest(request) ? STATIC_CACHE : PAGE_CACHE;\\r\\n    caches.open(cacheName).then(function (cache) {\\r\\n        cache.put(request, response);\\r\\n    });\\r\\n}\\r\\n\\r\\nfunction staleWhileRevalidate(request) {\\r\\n    return caches.open(PAGE_CACHE).then(function (cache) {\\r\\n        return cache.match(request).then(function (cached) {\\r\\n            var network = fetch(request).then(function (response) {\\r\\n                cachePut(request, response.clone());\\r\\n                return response;\\r\\n            });\\r\\n\\r\\n            if (cached) {\\r\\n                network.catch(function () {});\\r\\n                return cached;\\r\\n            }\\r\\n\\r\\n            return network.catch(function () {\\r\\n                return cached;\\r\\n            });\\r\\n        });\\r\\n    });\\r\\n}\\r\\n\\r\\nfunction networkFirst(request) {\\r\\n    return fetch(request).then(function (response) {\\r\\n        cachePut(request, response.clone());\\r\\n        return response;\\r\\n    }).catch(function () {\\r\\n        return caches.match(request).then(function (cached) {\\r\\n            if (cached) {\\r\\n                return cached;\\r\\n            }\\r\\n            throw new Error('Offline');\\r\\n        });\\r\\n    });\\r\\n}\\r\\n\\r\\nself.addEventListener('install', function (event) {\\r\\n    self.skipWaiting();\\r\\n});\\r\\n\\r\\nself.addEventListener('activate', function (event) {\\r\\n    event.waitUntil(\\r\\n        caches.keys().then(function (keys) {\\r\\n            return Promise.all(keys.map(function (key) {\\r\\n                if (key.indexOf(SW_VERSION) === 0) {\\r\\n                    return undefined;\\r\\n                }\\r\\n                return caches.delete(key);\\r\\n            }));\\r\\n        }).then(function () {\\r\\n            return self.clients.claim();\\r\\n        })\\r\\n    );\\r\\n});\\r\\n\\r\\nself.addEventListener('message', function (event) {\\r\\n    if (!event.data || event.data.type !== 'CLEAR_CACHES') {\\r\\n        return;\\r\\n    }\\r\\n    event.waitUntil(\\r\\n        caches.keys().then(function (keys) {\\r\\n            return Promise.all(keys.map(function (key) {\\r\\n                return caches.delete(key);\\r\\n            }));\\r\\n        })\\r\\n    );\\r\\n});\\r\\n\\r\\nself.addEventListener('fetch', function (event) {\\r\\n    var request = event.request;\\r\\n\\r\\n    if (isStaticRequest(request)) {\\r\\n        event.respondWith(\\r\\n            caches.match(request).then(function (cached) {\\r\\n                var network = fetch(request).then(function (response) {\\r\\n                    cachePut(request, response.clone());\\r\\n                    return response;\\r\\n                });\\r\\n                return cached || network;\\r\\n            })\\r\\n        );\\r\\n        return;\\r\\n    }\\r\\n\\r\\n    if (!isAppHtmlRequest(request)) {\\r\\n        return;\\r\\n    }\\r\\n\\r\\n    event.respondWith(networkFirst(request));\\r\\n});\\r\\n\"\n"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.BudgetSetupViewTests.test_web_manifest_is_cacheable",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.DashboardServiceTests.test_build_dashboard_context_includes_insights",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.DashboardServiceTests.test_empty_dashboard_context",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.DashboardViewTests.test_dashboard_shows_user_data",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.DashboardViewTests.test_mobile_money_mock_uses_ugx",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.DashboardViewTests.test_period_filter_weekly",
+        "status": "failed",
+        "detail": "Traceback (most recent call last):\n  File \"/workspace/budgetbuddy/tests/test_dashboard.py\", line 302, in test_period_filter_weekly\n    self.assertContains(response, 'Weekly')\n    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true : Couldn't find 'Weekly' in the following response\nb'\\n<!DOCTYPE html>\\n<html lang=\"en\">\\n<head>\\n    <meta charset=\"UTF-8\">\\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no\">\\n    <meta name=\"theme-color\" content=\"#3ecf8e\">\\n    <meta name=\"application-name\" content=\"BudgetMe\">\\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\\n    <meta name=\"apple-mobile-web-app-title\" content=\"BudgetMe\">\\n    <meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black-translucent\">\\n    <meta name=\"mobile-web-app-capable\" content=\"yes\">\\n    <meta name=\"format-detection\" content=\"telephone=no\">\\n    <title>Dashboard \\xe2\\x80\\x94 Uganda</title>\\n    <link rel=\"preload\" href=\"/static/budgetbuddy/fonts/boxicons.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\\n    <link rel=\"stylesheet\" href=\"/static/budgetbuddy/vendor/boxicons.min.css\">\\n    <link rel=\"stylesheet\" href=\"/static/budgetbuddy/css/dash.css\">\\n    <link rel=\"stylesheet\" href=\"/static/budgetbuddy/css/auth.css\">\\n    <link rel=\"stylesheet\" href=\"/static/budgetbuddy/css/motion.css?v=2\">\\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/static/budgetbuddy/icons/favicon.svg\">\\n    <link rel=\"icon\" type=\"image/png\" sizes=\"192x192\" href=\"/static/budgetbuddy/icons/icon-192.png\">\\n    <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/static/budgetbuddy/icons/apple-touch-icon.png\">\\n    <link rel=\"manifest\" href=\"/site.webmanifest\">\\n    <link rel=\"stylesheet\" href=\"/static/budgetbuddy/css/dashboard.css\">\\n    \\n</head>\\n<body class=\"app-body\">\\n    <div class=\"bb-loader\" id=\"bb-loader\" hidden aria-live=\"polite\" aria-busy=\"false\">\\n    <div class=\"bb-loader__backdrop\"></div>\\n    <div class=\"bb-loader__card\" role=\"status\">\\n        <div class=\"bb-loader__mascot\" aria-hidden=\"true\">\\n            <span class=\"bb-loader__coin bb-loader__coin--1\"></span>\\n            <span class=\"bb-loader__coin bb-loader__coin--2\"></span>\\n            <span class=\"bb-loader__piggy\">\\n                <i class=\"bx bxs-coin-stack\"></i>\\n            </span>\\n        </div>\\n        <p class=\"bb-loader__text\">Just a moment\\xe2\\x80\\xa6</p>\\n        <p class=\"bb-loader__sub\">Counting your shillings</p>\\n    </div>\\n</div>\\n\\n    <div class=\"app-layout\">\\n        \\n\\n<aside class=\"sidebar\" aria-label=\"Main navigation\">\\n    <a href=\"/\" class=\"sidebar-brand\">\\n        <span class=\"brand-mark\"><i class=\"bx bx-coin-stack\" aria-hidden=\"true\"></i></span>\\n        <div>\\n            <p class=\"brand-name\">BudgetMe</p>\\n        </div>\\n    </a>\\n    <nav class=\"sidebar-nav\">\\n        \\n        <a href=\"/\"\\n           class=\"sidebar-link active\"\\n           aria-current=\"page\">\\n            <i class=\"bx bx-home-alt\" aria-hidden=\"true\"></i>\\n            Home\\n        </a>\\n        \\n        <a href=\"/transfer/\"\\n           class=\"sidebar-link \"\\n           >\\n            <i class=\"bx bx-transfer-alt\" aria-hidden=\"true\"></i>\\n            Transfer\\n        </a>\\n        \\n        <a href=\"/savings/\"\\n           class=\"sidebar-link \"\\n           >\\n            <i class=\"bx bxs-coin-stack\" aria-hidden=\"true\"></i>\\n            Savings\\n        </a>\\n        \\n        <a href=\"/budget/\"\\n           class=\"sidebar-link \"\\n           >\\n            <i class=\"bx bx-wallet\" aria-hidden=\"true\"></i>\\n            Budget\\n        </a>\\n        \\n        <a href=\"/profile/\"\\n           class=\"sidebar-link \"\\n           >\\n            <i class=\"bx bx-user-circle\" aria-hidden=\"true\"></i>\\n            Profile\\n        </a>\\n        \\n    </nav>\\n\\n    <div class=\"sidebar-footer\">\\n        \\n        <a href=\"/profile/\" class=\"sidebar-user\" aria-label=\"Open profile\">\\n            <div class=\"avatar\">J</div>\\n            <div>\\n                <p class=\"user-name\">Jane Doe</p>\\n                <p class=\"user-meta\">UGX budget</p>\\n            </div>\\n            <i class=\"bx bx-chevron-right sidebar-user__chevron\" aria-hidden=\"true\"></i>\\n        </a>\\n        <form method=\"post\" action=\"/accounts/logout/\" class=\"sidebar-logout-form\">\\n            <input type=\"hidden\" name=\"csrfmiddlewaretoken\" value=\"fhPinC6pGyMWK6EmxZjlD3e1Ssuq1fbPAceNAdg4qmz220hq3Tj508i2XBmfPhS4\">\\n            <button type=\"submit\" class=\"sidebar-logout\">\\n                <i class=\"bx bx-log-out\"></i> Sign out\\n            </button>\\n        </form>\\n        \\n    </div>\\n</aside>\\n\\n\\n        <div class=\"page-wrap\">\\n            \\n\\n<div class=\"dash\">\\n    <header class=\"dash-hero\">\\n        <div class=\"dash-hero__bg\" aria-hidden=\"true\">\\n            <span class=\"dash-hero__orb dash-hero__orb--1\"></span>\\n            <span class=\"dash-hero__orb dash-hero__orb--2\"></span>\\n            <span class=\"dash-hero__orb dash-hero__orb--3\"></span>\\n        </div>\\n        <div class=\"dash-hero__floats\" aria-hidden=\"true\">\\n            <i class=\"bx bx-wallet dash-float dash-float--1\"></i>\\n            <i class=\"bx bx-line-chart dash-float dash-float--2\"></i>\\n            <i class=\"bx bx-mobile-alt dash-float dash-float--3\"></i>\\n            <i class=\"bx bxs-coin-stack dash-float dash-float--4\"></i>\\n            <i class=\"bx bx-coin-stack dash-float dash-float--5\"></i>\\n            <i class=\"bx bx-trending-up dash-float dash-float--6\"></i>\\n        </div>\\n\\n        <div class=\"dash-hero__inner\">\\n            <div class=\"dash-hero__top dash-animate\" style=\"--i: 0\">\\n                <div class=\"dash-hero__intro\">\\n                    <p class=\"dash-hero__eyebrow\">Hi, Welcome Back</p>\\n                    <h1 class=\"dash-hero__title\">Good Evening, Jane</h1>\\n                    <p class=\"dash-hero__income\">\\n                        <i class=\"bx bx-money\" aria-hidden=\"true\"></i>\\n                        UGX 2500000 / Monthly\\n                    </p>\\n                </div>\\n                <button class=\"dash-notif\" type=\"button\" aria-label=\"Notifications\">\\n                    <i class=\"bx bx-bell\" aria-hidden=\"true\"></i>\\n                </button>\\n            </div>\\n\\n            <div class=\"dash-hero__stats\">\\n                <article class=\"dash-stat dash-stat--balance dash-animate\" style=\"--i: 1\">\\n                    <div class=\"dash-stat__bubble\" aria-hidden=\"true\"><i class=\"bx bx-wallet\"></i></div>\\n                    <div class=\"dash-stat__body\">\\n                        <p class=\"dash-stat__label\">Total Balance</p>\\n                        <p class=\"dash-stat__value\" id=\"bb-stat-balance\">UGX 2500000</p>\\n                        <p class=\"dash-stat__meta\">October 2026 \\xc2\\xb7 0.0% spent</p>\\n                    </div>\\n                </article>\\n                <article class=\"dash-stat dash-stat--expense dash-animate\" style=\"--i: 2\">\\n                    <div class=\"dash-stat__bubble\" aria-hidden=\"true\"><i class=\"bx bx-down-arrow-alt\"></i></div>\\n                    <div class=\"dash-stat__body\">\\n                        <p class=\"dash-stat__label\">Total Expense</p>\\n                        <p class=\"dash-stat__value dash-stat__value--expense\" id=\"bb-stat-expense\">-UGX 0</p>\\n                    </div>\\n                </article>\\n                <article class=\"dash-stat dash-stat--usage dash-animate\" style=\"--i: 3\">\\n                    <div class=\"dash-stat__bubble\" aria-hidden=\"true\"><i class=\"bx bx-pie-chart-alt-2\"></i></div>\\n                    <div class=\"dash-stat__body\">\\n                        <p class=\"dash-stat__label\">Budget Used</p>\\n                        <p class=\"dash-stat__value\" id=\"bb-stat-usage\">0.0%</p>\\n                    </div>\\n                </article>\\n            </div>\\n\\n            <div class=\"dash-hero__progress dash-animate\" style=\"--i: 4\">\\n                <div class=\"dash-progress__labels\">\\n                    <span><i class=\"bx bx-bar-chart-alt-2\"></i> Monthly spending</span>\\n                    <span id=\"bb-budget-progress-label\">0.0%</span>\\n                </div>\\n                <progress class=\"dash-progress\" id=\"bb-budget-progress\" value=\"0.0\" max=\"100\" aria-label=\"Budget used\"></progress>\\n            </div>\\n        </div>\\n    </header>\\n\\n    <main class=\"dash-main\">\\n        <section class=\"dash-bento\" aria-labelledby=\"dash-insights-title\">\\n            <h2 id=\"dash-insights-title\" class=\"dash-section-label dash-animate\" style=\"--i: 6\">\\n                <i class=\"bx bx-grid-alt\"></i> At a glance\\n            </h2>\\n            <div class=\"dash-bento__grid\">\\n                <article class=\"dash-tile dash-tile--savings dash-animate\" style=\"--i: 7\">\\n                    <a href=\"/savings/\" class=\"dash-tile__link\">\\n                    <div class=\"dash-tile__ring\">\\n                        <svg viewBox=\"0 0 72 72\" aria-hidden=\"true\" style=\"--progress: 0\">\\n                            <circle class=\"dash-ring-bg\" cx=\"36\" cy=\"36\" r=\"30\"/>\\n                            <circle class=\"dash-ring-fill\" cx=\"36\" cy=\"36\" r=\"30\"/>\\n                        </svg>\\n                        <span class=\"dash-tile__ring-pct\">0%</span>\\n                    </div>\\n                    <div class=\"dash-tile__content\">\\n                        <p class=\"dash-tile__label\"><i class=\"bx bx-target-lock\"></i> Saving Goal</p>\\n                        \\n                        <p class=\"dash-tile__value\">UGX 0</p>\\n                        <p class=\"dash-tile__sub\">of 400000</p>\\n                        \\n                    </div>\\n                    <i class=\"bx bxs-coin-stack dash-tile__deco\" aria-hidden=\"true\"></i>\\n                    </a>\\n                </article>\\n\\n                <article class=\"dash-tile dash-tile--income dash-animate\" style=\"--i: 8\">\\n                    <div class=\"dash-tile__icon\"><i class=\"bx bx-trending-up\"></i></div>\\n                    <p class=\"dash-tile__label\">Revenue Last Week</p>\\n                    <p class=\"dash-tile__value dash-tile__value--pos\">UGX 0</p>\\n                </article>\\n\\n                <article class=\"dash-tile dash-tile--expense dash-animate\" style=\"--i: 9\">\\n                    <div class=\"dash-tile__icon\"><i class=\"bx bx-bowl-hot\"></i></div>\\n                    <p class=\"dash-tile__label\">Biggest Expense</p>\\n                    <p class=\"dash-tile__value dash-tile__value--neg\">-UGX 0</p>\\n                    <p class=\"dash-tile__sub\">\\xe2\\x80\\x94</p>\\n                </article>\\n            </div>\\n        </section>\\n\\n        <div class=\"dash-split\">\\n            <section class=\"dash-card dash-animate\" style=\"--i: 10\" aria-labelledby=\"dash-budget-title\">\\n                <header class=\"dash-card__head\">\\n                    <div>\\n                        <h2 id=\"dash-budget-title\" class=\"dash-card__title\">\\n                            <i class=\"bx bx-list-check\"></i> October 2026 budget\\n                        </h2>\\n                        <p class=\"dash-card__sub\">October 2026 \\xc2\\xb7 2 categories</p>\\n                    </div>\\n                    <a href=\"/budget/\" class=\"dash-card__action\"><i class=\"bx bx-edit\"></i> Edit</a>\\n                </header>\\n\\n                <div class=\"dash-totals\" aria-label=\"Budget totals\">\\n                    <div class=\"dash-total\">\\n                        <span class=\"dash-total__label\">Allocated</span>\\n                        <span class=\"dash-total__val\">UGX 1250000</span>\\n                    </div>\\n                    <div class=\"dash-total dash-total--spent\">\\n                        <span class=\"dash-total__label\">Spent</span>\\n                        <span class=\"dash-total__val\">UGX 0</span>\\n                    </div>\\n                    <div class=\"dash-total dash-total--left\">\\n                        <span class=\"dash-total__label\">Remaining</span>\\n                        <span class=\"dash-total__val\">UGX 1250000</span>\\n                    </div>\\n                </div>\\n\\n                <ul class=\"dash-cats\" id=\"budget-list\">\\n                    \\n                    <li class=\"dash-cat\" style=\"--ci: 1\">\\n                        <div class=\"dash-cat__icon\"><i class=\"bx bx-store-alt\"></i></div>\\n                        <div class=\"dash-cat__body\">\\n                            <div class=\"dash-cat__row\">\\n                                <span class=\"dash-cat__name\">Food &amp; Market</span>\\n                                <span class=\"dash-cat__amt\">UGX 0 <em>/ 450000</em></span>\\n                            </div>\\n                            <progress class=\"dash-cat__bar \"\\n                                      value=\"0\" max=\"100\"\\n                                      aria-label=\"Food &amp; Market budget usage\"></progress>\\n                        </div>\\n                    </li>\\n                    \\n                    <li class=\"dash-cat\" style=\"--ci: 2\">\\n                        <div class=\"dash-cat__icon\"><i class=\"bx bx-home\"></i></div>\\n                        <div class=\"dash-cat__body\">\\n                            <div class=\"dash-cat__row\">\\n                                <span class=\"dash-cat__name\">Rent</span>\\n                                <span class=\"dash-cat__amt\">UGX 0 <em>/ 800000</em></span>\\n                            </div>\\n                            <progress class=\"dash-cat__bar \"\\n                                      value=\"0\" max=\"100\"\\n                                      aria-label=\"Rent budget usage\"></progress>\\n                        </div>\\n                    </li>\\n                    \\n                </ul>\\n\\n                \\n\\n                <footer class=\"dash-card__danger\">\\n                    <form method=\"post\" action=\"/budget/delete/\" class=\"dash-delete-form\"\\n      onsubmit=\"return confirm(\\'Delete your budget? All categories, transactions, and transfers will be removed. This cannot be undone.\\');\">\\n    <input type=\"hidden\" name=\"csrfmiddlewaretoken\" value=\"fhPinC6pGyMWK6EmxZjlD3e1Ssuq1fbPAceNAdg4qmz220hq3Tj508i2XBmfPhS4\">\\n    <button type=\"submit\" class=\"btn btn-danger btn-sm\">\\n        <i class=\"bx bx-trash\"></i> Delete budget\\n    </button>\\n</form>\\n\\n                </footer>\\n            </section>\\n\\n            <section class=\"dash-card dash-animate\" style=\"--i: 11\" aria-labelledby=\"dash-txn-title\">\\n                <header class=\"dash-card__head dash-card__head--stack\">\\n                    <div>\\n                        <h2 id=\"dash-txn-title\" class=\"dash-card__title\">\\n                            <i class=\"bx bx-transfer-alt\"></i> Transactions\\n                        </h2>\\n                        <p class=\"dash-card__sub\" id=\"dash-txn-subtitle\">Recent \\xc2\\xb7 This week</p>\\n                    </div>\\n                    \\n<nav class=\"period-tabs dash-period\"\\n     data-period-tabs\\n     data-endpoint=\"/api/transactions/\"\\n     data-target=\"dash-txns-list\"\\n     data-subtitle=\"dash-txn-subtitle\"\\n     data-subtitle-prefix=\"Recent \\xc2\\xb7 \"\\n     aria-label=\"Filter by period\"\\n     style=\"--tab-count: 3\">\\n    <span class=\"period-tabs__slider\" data-period-slider aria-hidden=\"true\"></span>\\n    \\n    <button type=\"button\"\\n            class=\"period-tabs__btn dash-period__tab \"\\n            data-period=\"monthly\"\\n            >This month</button>\\n    \\n    <button type=\"button\"\\n            class=\"period-tabs__btn dash-period__tab is-active\"\\n            data-period=\"weekly\"\\n            aria-current=\"true\">This week</button>\\n    \\n    <button type=\"button\"\\n            class=\"period-tabs__btn dash-period__tab \"\\n            data-period=\"daily\"\\n            >Today</button>\\n    \\n</nav>\\n\\n                </header>\\n\\n                \\n<div class=\"dash-txns swap-content\" id=\"dash-txns-list\" data-swap-content>\\n    \\n    <div class=\"dash-empty\">\\n        <i class=\"bx bx-receipt dash-empty__icon\"></i>\\n        <p>No transactions for this period.</p>\\n        <a href=\"/transfer/\" class=\"btn btn-primary btn-sm\">Record a transfer</a>\\n    </div>\\n    \\n</div>\\n\\n            </section>\\n        </div>\\n    </main>\\n</div>\\n\\n\\n        </div>\\n    </div>\\n    \\n\\n<nav class=\"bottom-nav\" aria-label=\"Main navigation\">\\n    \\n    <a href=\"/\"\\n       class=\"nav-item active\"\\n       aria-current=\"page\">\\n        <span class=\"nav-icon active\">\\n            <i class=\"bx bx-home-alt\" aria-hidden=\"true\"></i>\\n        </span>\\n        <span class=\"nav-label\">Home</span>\\n    </a>\\n    \\n    <a href=\"/transfer/\"\\n       class=\"nav-item \"\\n       >\\n        <span class=\"nav-icon \">\\n            <i class=\"bx bx-transfer-alt\" aria-hidden=\"true\"></i>\\n        </span>\\n        <span class=\"nav-label\">Transfer</span>\\n    </a>\\n    \\n    <a href=\"/savings/\"\\n       class=\"nav-item \"\\n       >\\n        <span class=\"nav-icon \">\\n            <i class=\"bx bxs-coin-stack\" aria-hidden=\"true\"></i>\\n        </span>\\n        <span class=\"nav-label\">Savings</span>\\n    </a>\\n    \\n    <a href=\"/budget/\"\\n       class=\"nav-item \"\\n       >\\n        <span class=\"nav-icon \">\\n            <i class=\"bx bx-wallet\" aria-hidden=\"true\"></i>\\n        </span>\\n        <span class=\"nav-label\">Budget</span>\\n    </a>\\n    \\n    <a href=\"/profile/\"\\n       class=\"nav-item \"\\n       >\\n        <span class=\"nav-icon \">\\n            <i class=\"bx bx-user-circle\" aria-hidden=\"true\"></i>\\n        </span>\\n        <span class=\"nav-label\">Profile</span>\\n    </a>\\n    \\n</nav>\\n\\n\\n    <script src=\"/static/budgetbuddy/js/app.js?v=7\" defer></script>\\n    <script src=\"/static/budgetbuddy/js/ugx_amounts.js\" defer></script>\\n    <script src=\"/static/budgetbuddy/js/auth.js\" defer></script>\\n    <script src=\"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2\"></script>\\n    \\n    \\n</body>\\n</html>\\n'\n"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.ProfileServiceTests.test_biweekly_monthly_income_is_double_period",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.ProfileServiceTests.test_monthly_income_equals_period_for_monthly_frequency",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.ProfileServiceTests.test_profile_to_user_dict",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.ProfileViewTests.test_profile_empty_without_budget",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.ProfileViewTests.test_profile_page_renders",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.ProfileViewTests.test_profile_saves_phones",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.TransactionServiceTests.test_transaction_to_dict",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.TransferViewTests.test_transfer_ajax_returns_json",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.TransferViewTests.test_transfer_cash_spend",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.TransferViewTests.test_transfer_cash_spend_custom_amount",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.TransferViewTests.test_transfer_deposit",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.TransferViewTests.test_transfer_mtn_spend",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.TransferViewTests.test_transfer_page_renders",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_dashboard.TransferViewTests.test_transfer_requires_profile_phone_for_mtn",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_savings.SavingsServiceTests.test_available_balance_matches_spendable_balance",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_savings.SavingsServiceTests.test_cannot_save_more_than_available_balance",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_savings.SavingsServiceTests.test_manual_deposit_counts_toward_period_savings_goal",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_savings.SavingsServiceTests.test_manual_deposit_reduces_spendable_balance",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_savings.SavingsServiceTests.test_period_end_moves_remainder_to_savings",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_savings.SavingsViewTests.test_post_adds_to_savings",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_savings.SavingsViewTests.test_savings_page_loads",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_supabase_realtime.SupabaseRealtimeApiTests.test_live_summary_for_budget_user",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_supabase_realtime.SupabaseRealtimeApiTests.test_live_summary_includes_deposits_html",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_supabase_realtime.SupabaseRealtimeApiTests.test_token_disabled_when_not_configured",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_supabase_realtime.SupabaseRealtimeApiTests.test_token_requires_login",
+        "status": "passed"
+      },
+      {
+        "test": "budgetbuddy.tests.test_supabase_realtime.SupabaseRealtimeApiTests.test_token_returns_jwt_for_logged_in_user",
+        "status": "passed"
+      },
+      {
+        "test": "target_signup_retest.SignupFixtureRetest.test_signup_rejects_invalid_email",
+        "status": "passed"
+      },
+      {
+        "test": "target_signup_retest.SignupFixtureRetest.test_user_fixture_includes_required_username",
+        "status": "passed"
+      }
+    ]
+  },
+  "run_at_utc": "2026-10-22T17:28:45.328230+00:00"
+}

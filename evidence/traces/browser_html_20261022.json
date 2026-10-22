@@ -1,0 +1,10 @@
+{
+  "scenario_id": "FINAL-24",
+  "method": "Controlled model HTML response through the actual Flask Knowledge endpoint and browser UI",
+  "result": {
+    "activeElements": 0,
+    "answer": "<script>document.body.dataset.qaProbe=\"executed\"</script><img src=\"/synthetic-missing-image\" onerror=\"document.body.dataset.qaProbe='executed'\">",
+    "executionMarker": null
+  },
+  "status": "PASS"
+}

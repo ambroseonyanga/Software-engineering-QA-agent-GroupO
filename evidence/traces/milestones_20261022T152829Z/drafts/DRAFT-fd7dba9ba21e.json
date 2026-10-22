@@ -1,0 +1,12 @@
+{
+  "title": "Synthetic missing requirement link",
+  "failed_test": "SYNTH-TOOL-01",
+  "expected": "proposal has a requirement ID",
+  "actual": "synthetic example omits ID",
+  "notes": "",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-22T15:37:08.494830+00:00",
+  "draft_id": "DRAFT-fd7dba9ba21e",
+  "path": "evidence/traces/milestones_20261022T152829Z/drafts/DRAFT-fd7dba9ba21e.json"
+}

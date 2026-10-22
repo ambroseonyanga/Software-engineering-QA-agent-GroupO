@@ -1,0 +1,88 @@
+{
+  "run_id": "8ae3863e99764b4aab70f1bb61629091",
+  "started_utc": "2026-10-22T15:58:04.673270+00:00",
+  "model": "qwen/qwen3.8-27b",
+  "prompt_version": "agent-planner-v1.1.txt",
+  "goal": "Link one reported test failure to project requirements and prepare one local draft issue for human review.",
+  "task": {
+    "title": "Synthetic over-income planning rejection report",
+    "failed_test": "SYNTH-RECOVERY",
+    "expected": "Source-derived rule: category allocations plus saving goal must not exceed pay-period income.",
+    "actual": "Synthetic reported failure for orchestration demonstration only: a tester reports an over-income plan was accepted. No real BudgetMe defect is claimed."
+  },
+  "limits": {
+    "max_iterations": 6,
+    "max_retrievals": 3,
+    "max_drafts": 1,
+    "max_consecutive_failures": 2,
+    "max_invalid_decisions": 2,
+    "time_budget_seconds": 900
+  },
+  "fault_injection": "First retrieval raises a deliberate temporary error; subsequent calls use real BudgetMe retrieval.",
+  "state": "finished",
+  "steps": [
+    {
+      "iteration": 1,
+      "tool": null,
+      "sense": {
+        "limits_remaining": {
+          "iterations": 6,
+          "retrievals": 3
+        },
+        "history_items": 0,
+        "prior_context": null
+      },
+      "decision": null,
+      "error": "ModelUnavailable: Could not reach Groq or the request timed out. Check your connection and retry later.",
+      "guard": null,
+      "decision_seconds": 3.959,
+      "observation": {
+        "iteration": 1,
+        "action": null,
+        "outcome": "model_unavailable",
+        "detail": "ModelUnavailable: Could not reach Groq or the request timed out. Check your connection and retry later.",
+        "stop_reason": "STOPPED_MODEL_UNAVAILABLE"
+      }
+    }
+  ],
+  "state_transitions": [
+    {
+      "state": "RECEIVED",
+      "at_utc": "2026-10-22T15:58:04.673302+00:00"
+    },
+    {
+      "state": "LOADING_HISTORY",
+      "at_utc": "2026-10-22T15:58:04.676565+00:00"
+    },
+    {
+      "state": "SENSING",
+      "at_utc": "2026-10-22T15:58:04.676623+00:00"
+    },
+    {
+      "state": "DECIDING",
+      "at_utc": "2026-10-22T15:58:04.676641+00:00"
+    },
+    {
+      "state": "SAVING_HISTORY",
+      "at_utc": "2026-10-22T15:58:08.635519+00:00"
+    },
+    {
+      "state": "HANDED_OFF",
+      "at_utc": "2026-10-22T15:58:08.659008+00:00"
+    }
+  ],
+  "history_requested": false,
+  "workflow_state": "HANDED_OFF",
+  "prior_context": null,
+  "stop_reason": "STOPPED_MODEL_UNAVAILABLE",
+  "message": "The model service was unavailable, rate-limited or timed out.",
+  "human_handoff": true,
+  "iterations_used": 1,
+  "retrievals_used": 0,
+  "elapsed_seconds": 3.959,
+  "linked_sources": [],
+  "draft": null,
+  "finished_utc": "2026-10-22T15:58:08.635492+00:00",
+  "history_saved": true,
+  "memory_warnings": []
+}

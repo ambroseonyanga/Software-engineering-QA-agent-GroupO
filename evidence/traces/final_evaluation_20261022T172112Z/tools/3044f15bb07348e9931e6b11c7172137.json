@@ -1,0 +1,16 @@
+{
+  "request_id": "3044f15bb07348e9931e6b11c7172137",
+  "timestamp_utc": "2026-10-22T17:21:46.444471+00:00",
+  "model": "test double",
+  "prompt_version": "tool-router-v1.0.txt",
+  "request": "Synthetic malformed model decision",
+  "max_tool_calls": 1,
+  "state": "finished",
+  "elapsed_seconds": 0.007,
+  "result": {
+    "ok": false,
+    "error": "UNEXPECTED_TOOL_RESPONSE",
+    "status": 502,
+    "message": "The model returned an invalid tool decision."
+  }
+}

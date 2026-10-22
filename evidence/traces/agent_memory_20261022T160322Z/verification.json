@@ -1,0 +1,1019 @@
+{
+  "scope": "Week 5 recovery and Week 6 opt-in memory only; final dataset NOT RUN",
+  "requests": [
+    {
+      "number": 1,
+      "settings": {
+        "temperature": 0,
+        "max_tokens": 600,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "retrieve_project_evidence",
+                "create_issue_draft",
+                "ask_human"
+              ]
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "analysis": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "action",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "reasoning_effort": "none"
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.020336335,
+        "prompt_tokens": 662,
+        "prompt_time": 0.048410585,
+        "completion_tokens": 49,
+        "completion_time": 0.096427966,
+        "total_tokens": 711,
+        "total_time": 0.144838551
+      },
+      "elapsed_seconds": 0.879,
+      "finish_reason": "stop"
+    },
+    {
+      "number": 2,
+      "settings": {
+        "temperature": 0,
+        "max_tokens": 600,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "retrieve_project_evidence",
+                "create_issue_draft",
+                "ask_human"
+              ]
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "analysis": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "action",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "reasoning_effort": "none"
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.018643441,
+        "prompt_tokens": 733,
+        "prompt_time": 0.051830708,
+        "completion_tokens": 48,
+        "completion_time": 0.091232628,
+        "total_tokens": 781,
+        "total_time": 0.143063336
+      },
+      "elapsed_seconds": 0.62,
+      "finish_reason": "stop"
+    },
+    {
+      "number": 3,
+      "settings": {
+        "temperature": 0,
+        "max_tokens": 600,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "retrieve_project_evidence",
+                "create_issue_draft",
+                "ask_human"
+              ]
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "analysis": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "action",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "reasoning_effort": "none"
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.020255667,
+        "prompt_tokens": 1018,
+        "prompt_time": 0.077952437,
+        "completion_tokens": 160,
+        "completion_time": 0.328154518,
+        "total_tokens": 1178,
+        "total_time": 0.406106955
+      },
+      "elapsed_seconds": 1.932,
+      "finish_reason": "stop"
+    },
+    {
+      "number": 4,
+      "settings": {
+        "temperature": 0,
+        "max_tokens": 600,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "retrieve_project_evidence",
+                "create_issue_draft",
+                "ask_human"
+              ]
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "analysis": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "action",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "reasoning_effort": "none"
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.088530668,
+        "prompt_tokens": 662,
+        "prompt_time": 0.045064566,
+        "completion_tokens": 52,
+        "completion_time": 0.098950157,
+        "total_tokens": 714,
+        "total_time": 0.144014723
+      },
+      "elapsed_seconds": 0.665,
+      "finish_reason": "stop"
+    },
+    {
+      "number": 5,
+      "settings": {
+        "temperature": 0,
+        "max_tokens": 600,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "retrieve_project_evidence",
+                "create_issue_draft",
+                "ask_human"
+              ]
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "analysis": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "action",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "reasoning_effort": "none"
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.020807685,
+        "prompt_tokens": 854,
+        "prompt_time": 0.060557605,
+        "completion_tokens": 85,
+        "completion_time": 0.176029112,
+        "total_tokens": 939,
+        "total_time": 0.236586717
+      },
+      "elapsed_seconds": 0.633,
+      "finish_reason": "stop"
+    },
+    {
+      "number": 6,
+      "settings": {
+        "temperature": 0,
+        "max_tokens": 600,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "retrieve_project_evidence",
+                "create_issue_draft",
+                "ask_human"
+              ]
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "analysis": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "action",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "reasoning_effort": "none"
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.021039428,
+        "prompt_tokens": 1138,
+        "prompt_time": 0.102439277,
+        "completion_tokens": 174,
+        "completion_time": 0.365737189,
+        "total_tokens": 1312,
+        "total_time": 0.468176466
+      },
+      "elapsed_seconds": 56.403,
+      "finish_reason": "stop"
+    },
+    {
+      "number": 7,
+      "settings": {
+        "temperature": 0,
+        "max_tokens": 600,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "retrieve_project_evidence",
+                "create_issue_draft",
+                "ask_human"
+              ]
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "analysis": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "action",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "reasoning_effort": "none"
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.072202083,
+        "prompt_tokens": 1195,
+        "prompt_time": 0.087993985,
+        "completion_tokens": 164,
+        "completion_time": 0.363581328,
+        "total_tokens": 1359,
+        "total_time": 0.451575313
+      },
+      "elapsed_seconds": 1.221,
+      "finish_reason": "stop"
+    },
+    {
+      "number": 8,
+      "settings": {
+        "temperature": 0,
+        "max_tokens": 600,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "retrieve_project_evidence",
+                "create_issue_draft",
+                "ask_human"
+              ]
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "analysis": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "action",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "reasoning_effort": "none"
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.086688651,
+        "prompt_tokens": 708,
+        "prompt_time": 0.051865492,
+        "completion_tokens": 49,
+        "completion_time": 0.094342676,
+        "total_tokens": 757,
+        "total_time": 0.146208168
+      },
+      "elapsed_seconds": 1.021,
+      "finish_reason": "stop"
+    },
+    {
+      "number": 9,
+      "settings": {
+        "temperature": 0,
+        "max_tokens": 600,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "retrieve_project_evidence",
+                "create_issue_draft",
+                "ask_human"
+              ]
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "analysis": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "action",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "reasoning_effort": "none"
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.143198073,
+        "prompt_tokens": 900,
+        "prompt_time": 0.080989704,
+        "completion_tokens": 59,
+        "completion_time": 0.116167029,
+        "total_tokens": 959,
+        "total_time": 0.197156733
+      },
+      "elapsed_seconds": 0.945,
+      "finish_reason": "stop"
+    },
+    {
+      "number": 10,
+      "settings": {
+        "temperature": 0,
+        "max_tokens": 600,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "retrieve_project_evidence",
+                "create_issue_draft",
+                "ask_human"
+              ]
+            },
+            "query": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "analysis": {
+              "type": "string",
+              "maxLength": 600
+            },
+            "message": {
+              "type": "string",
+              "maxLength": 600
+            }
+          },
+          "required": [
+            "action",
+            "message"
+          ],
+          "additionalProperties": false
+        },
+        "reasoning_effort": "none"
+      },
+      "model": "qwen/qwen3.8-27b",
+      "usage": {
+        "queue_time": 0.018625371,
+        "prompt_tokens": 1184,
+        "prompt_time": 0.10223355,
+        "completion_tokens": 156,
+        "completion_time": 0.348493516,
+        "total_tokens": 1340,
+        "total_time": 0.450727066
+      },
+      "elapsed_seconds": 1.058,
+      "finish_reason": "stop"
+    }
+  ],
+  "agent": [
+    {
+      "scenario": "recovery",
+      "synthetic_report": true,
+      "result": {
+        "ok": true,
+        "stop_reason": "COMPLETED",
+        "message": "Goal met: a local draft exists with evidence links. Human reviews and submits.",
+        "human_handoff": false,
+        "run_id": "ef7f9f3d8ea04c1a89d86429d14844e2",
+        "iterations_used": 3,
+        "retrievals_used": 2,
+        "linked_sources": [
+          {
+            "source_id": "SRC-016",
+            "source": "budgetme_features.md",
+            "chunk_id": 0,
+            "score": 0.15492879874695048
+          },
+          {
+            "source_id": "SRC-016",
+            "source": "budgetme_features.md",
+            "chunk_id": 1,
+            "score": 0.11473631206111447
+          }
+        ],
+        "draft": {
+          "ok": true,
+          "draft_id": "DRAFT-6ce05896ff08",
+          "status": "draft",
+          "path": "evidence/traces/agent_memory_20261022T160322Z/drafts/DRAFT-6ce05896ff08.json",
+          "submitted": false,
+          "title": "Synthetic budget planning validation report"
+        },
+        "trace_path": "C:\\Users\\HP\\Desktop\\Software-engineering-QA-agent-GroupO\\evidence\\traces\\agent_memory_20261022T160322Z\\agent\\ef7f9f3d8ea04c1a89d86429d14844e2.json",
+        "workflow_state": "COMPLETED",
+        "state_transitions": [
+          {
+            "state": "RECEIVED",
+            "at_utc": "2026-10-22T16:03:22.500056+00:00"
+          },
+          {
+            "state": "LOADING_HISTORY",
+            "at_utc": "2026-10-22T16:03:22.502551+00:00"
+          },
+          {
+            "state": "SENSING",
+            "at_utc": "2026-10-22T16:03:22.502583+00:00"
+          },
+          {
+            "state": "DECIDING",
+            "at_utc": "2026-10-22T16:03:22.502605+00:00"
+          },
+          {
+            "state": "VALIDATING",
+            "at_utc": "2026-10-22T16:03:23.385358+00:00"
+          },
+          {
+            "state": "RETRIEVING",
+            "at_utc": "2026-10-22T16:03:23.392911+00:00"
+          },
+          {
+            "state": "OBSERVING",
+            "at_utc": "2026-10-22T16:03:23.396883+00:00"
+          },
+          {
+            "state": "REPLANNING",
+            "at_utc": "2026-10-22T16:03:23.396908+00:00"
+          },
+          {
+            "state": "SENSING",
+            "at_utc": "2026-10-22T16:03:23.399829+00:00"
+          },
+          {
+            "state": "DECIDING",
+            "at_utc": "2026-10-22T16:03:23.399874+00:00"
+          },
+          {
+            "state": "VALIDATING",
+            "at_utc": "2026-10-22T16:03:48.130372+00:00"
+          },
+          {
+            "state": "RETRIEVING",
+            "at_utc": "2026-10-22T16:03:48.148768+00:00"
+          },
+          {
+            "state": "OBSERVING",
+            "at_utc": "2026-10-22T16:03:48.210849+00:00"
+          },
+          {
+            "state": "REPLANNING",
+            "at_utc": "2026-10-22T16:03:48.210877+00:00"
+          },
+          {
+            "state": "SENSING",
+            "at_utc": "2026-10-22T16:03:48.213452+00:00"
+          },
+          {
+            "state": "DECIDING",
+            "at_utc": "2026-10-22T16:03:48.213491+00:00"
+          },
+          {
+            "state": "VALIDATING",
+            "at_utc": "2026-10-22T16:04:14.442027+00:00"
+          },
+          {
+            "state": "DRAFTING",
+            "at_utc": "2026-10-22T16:04:14.453250+00:00"
+          },
+          {
+            "state": "OBSERVING",
+            "at_utc": "2026-10-22T16:04:14.481292+00:00"
+          },
+          {
+            "state": "SAVING_HISTORY",
+            "at_utc": "2026-10-22T16:04:14.481360+00:00"
+          },
+          {
+            "state": "COMPLETED",
+            "at_utc": "2026-10-22T16:04:14.510210+00:00"
+          }
+        ],
+        "prior_context": null,
+        "history_saved": true,
+        "memory_warnings": [],
+        "steps": [
+          {
+            "iteration": 1,
+            "action": "retrieve_project_evidence",
+            "outcome": "tool_error",
+            "detail": "SERVICE_UNAVAILABLE: Injected retrieval failure for a controlled recovery demonstration."
+          },
+          {
+            "iteration": 2,
+            "action": "retrieve_project_evidence",
+            "outcome": "grounded",
+            "detail": "budget plan total categories savings must not exceed income"
+          },
+          {
+            "iteration": 3,
+            "action": "create_issue_draft",
+            "outcome": "draft_saved",
+            "detail": "evidence/traces/agent_memory_20261022T160322Z/drafts/DRAFT-6ce05896ff08.json"
+          }
+        ]
+      }
+    }
+  ],
+  "memory": [
+    {
+      "attempt": 1,
+      "result": {
+        "ok": true,
+        "stop_reason": "COMPLETED",
+        "message": "Goal met: a local draft exists with evidence links. Human reviews and submits.",
+        "human_handoff": false,
+        "run_id": "0a145ce1f8d947758e011bb1f49c2a7c",
+        "iterations_used": 4,
+        "retrievals_used": 2,
+        "linked_sources": [
+          {
+            "source_id": "SRC-016",
+            "source": "budgetme_features.md",
+            "chunk_id": 0,
+            "score": 0.23775896378735517
+          },
+          {
+            "source_id": "SRC-016",
+            "source": "budgetme_features.md",
+            "chunk_id": 1,
+            "score": 0.11473631206111447
+          }
+        ],
+        "draft": {
+          "ok": true,
+          "draft_id": "DRAFT-acdf32f3ab29",
+          "status": "draft",
+          "path": "evidence/traces/agent_memory_20261022T160322Z/drafts/DRAFT-acdf32f3ab29.json",
+          "submitted": false,
+          "title": "Synthetic budget planning validation report"
+        },
+        "trace_path": "C:\\Users\\HP\\Desktop\\Software-engineering-QA-agent-GroupO\\evidence\\traces\\agent_memory_20261022T160322Z\\memory\\0a145ce1f8d947758e011bb1f49c2a7c.json",
+        "workflow_state": "COMPLETED",
+        "state_transitions": [
+          {
+            "state": "RECEIVED",
+            "at_utc": "2026-10-22T16:04:14.525593+00:00"
+          },
+          {
+            "state": "LOADING_HISTORY",
+            "at_utc": "2026-10-22T16:04:14.530908+00:00"
+          },
+          {
+            "state": "SENSING",
+            "at_utc": "2026-10-22T16:04:14.544734+00:00"
+          },
+          {
+            "state": "DECIDING",
+            "at_utc": "2026-10-22T16:04:14.544777+00:00"
+          },
+          {
+            "state": "VALIDATING",
+            "at_utc": "2026-10-22T16:04:38.175808+00:00"
+          },
+          {
+            "state": "RETRIEVING",
+            "at_utc": "2026-10-22T16:04:38.191852+00:00"
+          },
+          {
+            "state": "OBSERVING",
+            "at_utc": "2026-10-22T16:04:38.261398+00:00"
+          },
+          {
+            "state": "REPLANNING",
+            "at_utc": "2026-10-22T16:04:38.261433+00:00"
+          },
+          {
+            "state": "SENSING",
+            "at_utc": "2026-10-22T16:04:38.264338+00:00"
+          },
+          {
+            "state": "DECIDING",
+            "at_utc": "2026-10-22T16:04:38.264378+00:00"
+          },
+          {
+            "state": "VALIDATING",
+            "at_utc": "2026-10-22T16:05:03.142545+00:00"
+          },
+          {
+            "state": "RETRIEVING",
+            "at_utc": "2026-10-22T16:05:03.146913+00:00"
+          },
+          {
+            "state": "OBSERVING",
+            "at_utc": "2026-10-22T16:05:03.209392+00:00"
+          },
+          {
+            "state": "REPLANNING",
+            "at_utc": "2026-10-22T16:05:03.209425+00:00"
+          },
+          {
+            "state": "SENSING",
+            "at_utc": "2026-10-22T16:05:03.212146+00:00"
+          },
+          {
+            "state": "DECIDING",
+            "at_utc": "2026-10-22T16:05:03.212185+00:00"
+          },
+          {
+            "state": "VALIDATING",
+            "at_utc": "2026-10-22T16:06:23.913692+00:00"
+          },
+          {
+            "state": "OBSERVING",
+            "at_utc": "2026-10-22T16:06:23.917498+00:00"
+          },
+          {
+            "state": "REPLANNING",
+            "at_utc": "2026-10-22T16:06:23.917519+00:00"
+          },
+          {
+            "state": "SENSING",
+            "at_utc": "2026-10-22T16:06:23.919146+00:00"
+          },
+          {
+            "state": "DECIDING",
+            "at_utc": "2026-10-22T16:06:23.919179+00:00"
+          },
+          {
+            "state": "VALIDATING",
+            "at_utc": "2026-10-22T16:06:25.143160+00:00"
+          },
+          {
+            "state": "DRAFTING",
+            "at_utc": "2026-10-22T16:06:25.147448+00:00"
+          },
+          {
+            "state": "OBSERVING",
+            "at_utc": "2026-10-22T16:06:25.160018+00:00"
+          },
+          {
+            "state": "SAVING_HISTORY",
+            "at_utc": "2026-10-22T16:06:25.160085+00:00"
+          },
+          {
+            "state": "COMPLETED",
+            "at_utc": "2026-10-22T16:06:25.185819+00:00"
+          }
+        ],
+        "prior_context": null,
+        "history_saved": true,
+        "memory_warnings": [],
+        "steps": [
+          {
+            "iteration": 1,
+            "action": "retrieve_project_evidence",
+            "outcome": "grounded",
+            "detail": "budget planning validation categories savings pay-period income"
+          },
+          {
+            "iteration": 2,
+            "action": "retrieve_project_evidence",
+            "outcome": "grounded",
+            "detail": "budget plan validation rule categories savings income limit"
+          },
+          {
+            "iteration": 3,
+            "action": "create_issue_draft",
+            "outcome": "invalid_decision",
+            "detail": "invalid: \"The failure report describes a synthetic scenario where an over-income plan was accepted, contradicting the expected rule that categories plus saving"
+          },
+          {
+            "iteration": 4,
+            "action": "create_issue_draft",
+            "outcome": "draft_saved",
+            "detail": "evidence/traces/agent_memory_20261022T160322Z/drafts/DRAFT-acdf32f3ab29.json"
+          }
+        ]
+      }
+    },
+    {
+      "attempt": 2,
+      "result": {
+        "ok": true,
+        "stop_reason": "COMPLETED",
+        "message": "Goal met: a local draft exists with evidence links. Human reviews and submits.",
+        "human_handoff": false,
+        "run_id": "d75b489c6f994f288d80b8a0ffbb60da",
+        "iterations_used": 3,
+        "retrievals_used": 2,
+        "linked_sources": [
+          {
+            "source_id": "SRC-016",
+            "source": "budgetme_features.md",
+            "chunk_id": 0,
+            "score": 0.23775896378735517
+          },
+          {
+            "source_id": "SRC-016",
+            "source": "budgetme_features.md",
+            "chunk_id": 1,
+            "score": 0.11473631206111447
+          }
+        ],
+        "draft": {
+          "ok": true,
+          "draft_id": "DRAFT-02ab1f1772a4",
+          "status": "draft",
+          "path": "evidence/traces/agent_memory_20261022T160322Z/drafts/DRAFT-02ab1f1772a4.json",
+          "submitted": false,
+          "title": "Synthetic budget planning validation report"
+        },
+        "trace_path": "C:\\Users\\HP\\Desktop\\Software-engineering-QA-agent-GroupO\\evidence\\traces\\agent_memory_20261022T160322Z\\memory\\d75b489c6f994f288d80b8a0ffbb60da.json",
+        "workflow_state": "COMPLETED",
+        "state_transitions": [
+          {
+            "state": "RECEIVED",
+            "at_utc": "2026-10-22T16:06:25.198425+00:00"
+          },
+          {
+            "state": "LOADING_HISTORY",
+            "at_utc": "2026-10-22T16:06:25.200843+00:00"
+          },
+          {
+            "state": "SENSING",
+            "at_utc": "2026-10-22T16:06:25.217208+00:00"
+          },
+          {
+            "state": "DECIDING",
+            "at_utc": "2026-10-22T16:06:25.217240+00:00"
+          },
+          {
+            "state": "VALIDATING",
+            "at_utc": "2026-10-22T16:06:49.947555+00:00"
+          },
+          {
+            "state": "RETRIEVING",
+            "at_utc": "2026-10-22T16:06:49.955669+00:00"
+          },
+          {
+            "state": "OBSERVING",
+            "at_utc": "2026-10-22T16:06:50.030709+00:00"
+          },
+          {
+            "state": "REPLANNING",
+            "at_utc": "2026-10-22T16:06:50.030750+00:00"
+          },
+          {
+            "state": "SENSING",
+            "at_utc": "2026-10-22T16:06:50.034182+00:00"
+          },
+          {
+            "state": "DECIDING",
+            "at_utc": "2026-10-22T16:06:50.034234+00:00"
+          },
+          {
+            "state": "VALIDATING",
+            "at_utc": "2026-10-22T16:07:14.873682+00:00"
+          },
+          {
+            "state": "RETRIEVING",
+            "at_utc": "2026-10-22T16:07:14.882010+00:00"
+          },
+          {
+            "state": "OBSERVING",
+            "at_utc": "2026-10-22T16:07:14.962760+00:00"
+          },
+          {
+            "state": "REPLANNING",
+            "at_utc": "2026-10-22T16:07:14.962801+00:00"
+          },
+          {
+            "state": "SENSING",
+            "at_utc": "2026-10-22T16:07:14.966272+00:00"
+          },
+          {
+            "state": "DECIDING",
+            "at_utc": "2026-10-22T16:07:14.966319+00:00"
+          },
+          {
+            "state": "VALIDATING",
+            "at_utc": "2026-10-22T16:07:39.986002+00:00"
+          },
+          {
+            "state": "DRAFTING",
+            "at_utc": "2026-10-22T16:07:39.990701+00:00"
+          },
+          {
+            "state": "OBSERVING",
+            "at_utc": "2026-10-22T16:07:40.001458+00:00"
+          },
+          {
+            "state": "SAVING_HISTORY",
+            "at_utc": "2026-10-22T16:07:40.001505+00:00"
+          },
+          {
+            "state": "COMPLETED",
+            "at_utc": "2026-10-22T16:07:40.016803+00:00"
+          }
+        ],
+        "prior_context": {
+          "prior_report_count": 1,
+          "last_stop_reason": "COMPLETED",
+          "meaning": "Previous triage reports, not independently verified test executions."
+        },
+        "history_saved": true,
+        "memory_warnings": [],
+        "steps": [
+          {
+            "iteration": 1,
+            "action": "retrieve_project_evidence",
+            "outcome": "grounded",
+            "detail": "budget planning validation categories savings pay-period income"
+          },
+          {
+            "iteration": 2,
+            "action": "retrieve_project_evidence",
+            "outcome": "grounded",
+            "detail": "budget plan validation rule categories savings income limit"
+          },
+          {
+            "iteration": 3,
+            "action": "create_issue_draft",
+            "outcome": "draft_saved",
+            "detail": "evidence/traces/agent_memory_20261022T160322Z/drafts/DRAFT-02ab1f1772a4.json"
+          }
+        ]
+      }
+    }
+  ],
+  "history_before_delete": {
+    "ok": true,
+    "failed_test": "SYNTH-MEMORY-02",
+    "run_count": 2,
+    "last_stop_reason": "COMPLETED",
+    "runs": [
+      {
+        "run_id": "d75b489c6f994f288d80b8a0ffbb60da",
+        "failed_test": "SYNTH-MEMORY-02",
+        "stop_reason": "COMPLETED",
+        "iterations_used": 3,
+        "retrievals_used": 2,
+        "draft_id": "DRAFT-02ab1f1772a4",
+        "linked_source_ids": [
+          "SRC-016"
+        ],
+        "elapsed_seconds": 74.801,
+        "recorded_utc": "2026-10-22T16:07:40.008510+00:00",
+        "provenance": "human_reported_failure"
+      },
+      {
+        "run_id": "0a145ce1f8d947758e011bb1f49c2a7c",
+        "failed_test": "SYNTH-MEMORY-02",
+        "stop_reason": "COMPLETED",
+        "iterations_used": 4,
+        "retrievals_used": 2,
+        "draft_id": "DRAFT-acdf32f3ab29",
+        "linked_source_ids": [
+          "SRC-016"
+        ],
+        "elapsed_seconds": 130.629,
+        "recorded_utc": "2026-10-22T16:06:25.168313+00:00",
+        "provenance": "human_reported_failure"
+      }
+    ]
+  },
+  "history_after_delete": {
+    "ok": true,
+    "failed_test": "SYNTH-MEMORY-02",
+    "run_count": 0,
+    "last_stop_reason": null,
+    "runs": []
+  },
+  "finished_utc": "2026-10-22T16:07:40.063035+00:00"
+}

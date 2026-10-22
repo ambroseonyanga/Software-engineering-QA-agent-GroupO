@@ -82,6 +82,23 @@ def start(session_id):
 def execute(session_id):
     tag = 'groupo-qa-run:' + uuid4().hex
     event = CANCEL[session_id]
+    state = read(session_id)
+    def traced_command(args, **options):
+        with LOCK:
+            state['events'].append({'at': now(), 'action': 'sandbox_tool_called', 'command': args})
+            save(state)
+        try:
+            result = command(args, **options)
+        except Exception as error:
+            with LOCK:
+                state['events'].append({'at': now(), 'action': 'sandbox_tool_error', 'error': str(error)})
+                save(state)
+            raise
+        with LOCK:
+            state['events'].append({'at': now(), 'action': 'sandbox_tool_result',
+                'exit_code': result[0], 'output': result[1][-16000:], 'stop_reason': result[2]})
+            save(state)
+        return result
     try:
         with RUN_LOCK:
             state = read(session_id)
@@ -91,13 +108,13 @@ def execute(session_id):
             with LOCK:
                 state.update(status='running', started=now())
                 save(state)
-            rc, output, reason = command(['docker', 'image', 'inspect', 'budgetme-sandbox:local', '--format', '{{.Id}}'], timeout=20)
+            rc, output, reason = traced_command(['docker', 'image', 'inspect', 'budgetme-sandbox:local', '--format', '{{.Id}}'], timeout=20)
             if rc or reason:
                 raise ValueError('Docker is unavailable or budgetme-sandbox:local is missing. Start Docker Desktop and build the sandbox image first. ' + output[-1000:])
             base_id = output.strip()
             # A private tag pins the local base for this run. No network or dependency installation is used.
             base_tag = 'groupo-qa-base:' + uuid4().hex
-            rc, output, reason = command(['docker', 'tag', base_id, base_tag], timeout=20)
+            rc, output, reason = traced_command(['docker', 'tag', base_id, base_tag], timeout=20)
             if rc or reason:
                 raise ValueError('Could not prepare the local sandbox base.')
             try:
@@ -115,10 +132,10 @@ def execute(session_id):
                         f'FROM {base_tag}\nUSER root\nWORKDIR /workspace\n'
                         'COPY source/ /workspace/\nCOPY qa/ /qa/\n'
                         'ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1\nUSER 10001:10001\n', encoding='utf-8')
-                    rc, output, reason = command(['docker', 'build', '--network', 'none', '--pull=false', '-t', tag, str(build)], timeout=180, cancel=event)
+                    rc, output, reason = traced_command(['docker', 'build', '--network', 'none', '--pull=false', '-t', tag, str(build)], timeout=180, cancel=event)
                     if rc or reason:
                         raise ValueError('Sandbox preparation failed: ' + (reason or output[-1500:]))
-                rc, image_id, reason = command(['docker', 'image', 'inspect', tag, '--format', '{{.Id}}'], timeout=20)
+                rc, image_id, reason = traced_command(['docker', 'image', 'inspect', tag, '--format', '{{.Id}}'], timeout=20)
                 if rc or reason:
                     raise ValueError('Could not identify the prepared image.')
                 state.update(image_id=image_id.strip(), base_image_id=base_id)
@@ -136,9 +153,9 @@ def execute(session_id):
                             '--security-opt', 'no-new-privileges', '--user', '10001:10001',
                             image_id.strip(), 'python', '-I', '/qa/runner.py', state['adapter'], 'case_' + test['id']]
                     try:
-                        rc, output, reason = command(args, timeout=TEST_TIMEOUT_SECONDS, cancel=event)
+                        rc, output, reason = traced_command(args, timeout=TEST_TIMEOUT_SECONDS, cancel=event)
                     finally:
-                        command(['docker', 'rm', '-f', name], timeout=15)
+                        traced_command(['docker', 'rm', '-f', name], timeout=15)
                     record = {'id': test['id'], 'status': 'error', 'seconds': round(time.monotonic() - started, 2),
                               'output': output[-16000:], 'exit_code': rc, 'detail': '', 'tests_run': 0}
                     if reason:
@@ -162,18 +179,18 @@ def execute(session_id):
                         save(state)
                 state['status'] = 'cancelled' if event.is_set() else 'completed'
             finally:
-                command(['docker', 'image', 'rm', base_tag], timeout=20)
+                traced_command(['docker', 'image', 'rm', base_tag], timeout=20)
     except Exception as error:
         state = read(session_id)
         state.update(status='cancelled' if event.is_set() else 'blocked', error=str(error)[:2000])
     finally:
         try:
-            command(['docker', 'image', 'rm', tag], timeout=20)
+            traced_command(['docker', 'image', 'rm', tag], timeout=20)
         except OSError:
             pass
         with LOCK:
             state = locals().get('state', read(session_id))
             state['finished'] = now()
-            state['events'].append({'at': now(), 'action': 'run_finished', 'status': state['status']})
+            state['events'].append({'at': now(), 'action': 'run_finished', 'status': state['status'], 'stop_reason': state.get('error') or state['status']})
             save(state)
             CANCEL.pop(session_id, None)

@@ -43,5 +43,6 @@ class IntegrationTests(unittest.TestCase):
   self.assertIn('<table>',html);self.assertNotIn('<script>',html);self.assertNotIn('<img',html)
  def test_assignment_records_are_not_retrieved(self):
   names={d['source'] for d in load_documents()}
-  self.assertEqual(names,{'project_charter.md','user_stories.md','ai_boundary_matrix.md','tool_catalogue.md','agent_task_contract.md'})
+  self.assertTrue({'project_charter.md','user_stories.md','ai_boundary_matrix.md','tool_catalogue.md','agent_task_contract.md','budgetme_features.md','budgetme_architecture.md','budgetme_api.md','budgetme_testing.md'} <= names)
+  self.assertFalse(any('progress' in name.lower() or 'evaluation' in name.lower() for name in names))
 if __name__=='__main__':unittest.main()

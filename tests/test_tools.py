@@ -120,7 +120,7 @@ class ToolAuthorizationTests(unittest.TestCase):
     def test_t05_unavailable_retrieval_does_not_invent_answer(self):
         def retrieve_fn(query, top_k):
             raise RuntimeError(
-                "Could not reach Ollama. Start Ollama and confirm qwen3:8b is installed."
+                "Model service unavailable. Check the configured provider."
             )
 
         result = invoke_tool(
@@ -135,7 +135,7 @@ class ToolAuthorizationTests(unittest.TestCase):
         self.assertNotIn("answer", result)
         self.record(
             "T-05",
-            "retrieve when index or Ollama is down",
+            "retrieve when index or model service is down",
             result,
             "SERVICE_UNAVAILABLE, no invented answer",
         )

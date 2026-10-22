@@ -1,0 +1,773 @@
+{
+  "date": "2026-10-22",
+  "documents": 19,
+  "budgetme_documents": 14,
+  "global_chunks": 86,
+  "budgetme_chunks": 60,
+  "retrieval_checks": [
+    {
+      "question": "FR-001 register using email password matching password confirmation",
+      "expected": "budgetme_requirements_001_005.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_001_005.md",
+          "source_id": "SRC-020",
+          "chunk_id": 0,
+          "score": 0.44777600190487477
+        },
+        {
+          "source": "budgetme_requirements_001_005.md",
+          "source_id": "SRC-020",
+          "chunk_id": 1,
+          "score": 0.0937925330418081
+        }
+      ]
+    },
+    {
+      "question": "FR-002 sign in end session POST logout",
+      "expected": "budgetme_requirements_001_005.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_001_005.md",
+          "source_id": "SRC-020",
+          "chunk_id": 1,
+          "score": 0.3843322529617904
+        }
+      ]
+    },
+    {
+      "question": "FR-003 offer optional Google sign in",
+      "expected": "budgetme_requirements_001_005.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_001_005.md",
+          "source_id": "SRC-020",
+          "chunk_id": 1,
+          "score": 0.27417626411585067
+        },
+        {
+          "source": "budgetme_requirements_001_005.md",
+          "source_id": "SRC-020",
+          "chunk_id": 2,
+          "score": 0.10491669820012901
+        },
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 1,
+          "score": 0.09107710801617847
+        }
+      ]
+    },
+    {
+      "question": "FR-004 enforce budget ownership users A and B",
+      "expected": "budgetme_requirements_001_005.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_001_005.md",
+          "source_id": "SRC-020",
+          "chunk_id": 2,
+          "score": 0.2916070300434001
+        }
+      ]
+    },
+    {
+      "question": "FR-005 create a budget profile exactly one owned profile",
+      "expected": "budgetme_requirements_001_005.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_001_005.md",
+          "source_id": "SRC-020",
+          "chunk_id": 3,
+          "score": 0.33626861370645256
+        },
+        {
+          "source": "budgetme_requirements_006_010.md",
+          "source_id": "SRC-021",
+          "chunk_id": 2,
+          "score": 0.11082417155381866
+        }
+      ]
+    },
+    {
+      "question": "FR-006 planning limit income 100000 saving goal 30001",
+      "expected": "budgetme_requirements_006_010.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_006_010.md",
+          "source_id": "SRC-021",
+          "chunk_id": 0,
+          "score": 0.40053599997811673
+        },
+        {
+          "source": "budgetme_data_rules.md",
+          "source_id": "SRC-026",
+          "chunk_id": 0,
+          "score": 0.1511886436643129
+        },
+        {
+          "source": "budgetme_requirements_001_005.md",
+          "source_id": "SRC-020",
+          "chunk_id": 3,
+          "score": 0.08972850300186298
+        }
+      ]
+    },
+    {
+      "question": "FR-007 manage categories duplicate name negative allocation",
+      "expected": "budgetme_requirements_006_010.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_006_010.md",
+          "source_id": "SRC-021",
+          "chunk_id": 1,
+          "score": 0.30000606272907293
+        },
+        {
+          "source": "budgetme_requirements_006_010.md",
+          "source_id": "SRC-021",
+          "chunk_id": 0,
+          "score": 0.15263578095350816
+        }
+      ]
+    },
+    {
+      "question": "FR-008 edit existing plan monthly equivalent daily 10000",
+      "expected": "budgetme_requirements_006_010.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_006_010.md",
+          "source_id": "SRC-021",
+          "chunk_id": 2,
+          "score": 0.19637023165636988
+        },
+        {
+          "source": "budgetme_requirements_006_010.md",
+          "source_id": "SRC-021",
+          "chunk_id": 1,
+          "score": 0.19018501923896428
+        }
+      ]
+    },
+    {
+      "question": "FR-009 delete owned budget cascading rows account remains",
+      "expected": "budgetme_requirements_006_010.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_006_010.md",
+          "source_id": "SRC-021",
+          "chunk_id": 2,
+          "score": 0.3750902928880401
+        }
+      ]
+    },
+    {
+      "question": "FR-010 biweekly periods anchored creation October",
+      "expected": "budgetme_requirements_006_010.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_006_010.md",
+          "source_id": "SRC-021",
+          "chunk_id": 3,
+          "score": 0.3604838540778161
+        },
+        {
+          "source": "budgetme_requirements_006_010.md",
+          "source_id": "SRC-021",
+          "chunk_id": 5,
+          "score": 0.08334989999564495
+        }
+      ]
+    },
+    {
+      "question": "FR-011 dashboard totals Food 60000 Transport 40000",
+      "expected": "budgetme_requirements_011_015.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 0,
+          "score": 0.35419649846832646
+        },
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 4,
+          "score": 0.09350924237695868
+        },
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 2,
+          "score": 0.08012557336878037
+        }
+      ]
+    },
+    {
+      "question": "FR-012 show spendable balance expenses manual savings",
+      "expected": "budgetme_requirements_011_015.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 1,
+          "score": 0.28642842405453156
+        },
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 3,
+          "score": 0.21709136578678995
+        },
+        {
+          "source": "budgetme_data_rules.md",
+          "source_id": "SRC-026",
+          "chunk_id": 1,
+          "score": 0.18885273810992215
+        }
+      ]
+    },
+    {
+      "question": "FR-013 filter order transaction history newest forty rows",
+      "expected": "budgetme_requirements_011_015.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 1,
+          "score": 0.19108308745419877
+        },
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 2,
+          "score": 0.17720272558317948
+        },
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 2,
+          "score": 0.09055410224433841
+        }
+      ]
+    },
+    {
+      "question": "FR-014 present dashboard insights revenue last week",
+      "expected": "budgetme_requirements_011_015.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 2,
+          "score": 0.22408069288914043
+        },
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 5,
+          "score": 0.1155971781647735
+        }
+      ]
+    },
+    {
+      "question": "FR-015 select movement method and category",
+      "expected": "budgetme_requirements_011_015.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 3,
+          "score": 0.33633339232141946
+        },
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 1,
+          "score": 0.08284533170506578
+        },
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 2,
+          "score": 0.08180291218088478
+        }
+      ]
+    },
+    {
+      "question": "FR-016 validate movement amounts 499 500 501",
+      "expected": "budgetme_requirements_016_020.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 0,
+          "score": 0.3595676625249712
+        },
+        {
+          "source": "budgetme_requirements_006_010.md",
+          "source_id": "SRC-021",
+          "chunk_id": 3,
+          "score": 0.09103038543485883
+        }
+      ]
+    },
+    {
+      "question": "FR-017 record spend atomically second row creation failure",
+      "expected": "budgetme_requirements_016_020.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 1,
+          "score": 0.38724200315521307
+        }
+      ]
+    },
+    {
+      "question": "FR-018 record deposit atomically income transaction",
+      "expected": "budgetme_requirements_016_020.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 1,
+          "score": 0.25289678849196456
+        },
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 2,
+          "score": 0.21432338700856457
+        }
+      ]
+    },
+    {
+      "question": "FR-019 movement history newest thirty matching rows",
+      "expected": "budgetme_requirements_016_020.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 2,
+          "score": 0.3284692029945586
+        },
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 2,
+          "score": 0.08435429443227356
+        }
+      ]
+    },
+    {
+      "question": "FR-020 manual savings deposit note 255",
+      "expected": "budgetme_requirements_016_020.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 3,
+          "score": 0.42864013170646703
+        },
+        {
+          "source": "budgetme_data_rules.md",
+          "source_id": "SRC-026",
+          "chunk_id": 1,
+          "score": 0.15403250800764254
+        },
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 0,
+          "score": 0.1010674489161128
+        }
+      ]
+    },
+    {
+      "question": "FR-021 savings totals history positive entries zero closure rows",
+      "expected": "budgetme_requirements_021_025.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 0,
+          "score": 0.3684757884369974
+        },
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 2,
+          "score": 0.09595092347945702
+        },
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 1,
+          "score": 0.09346760610510636
+        }
+      ]
+    },
+    {
+      "question": "FR-022 close ended period savings at most one period",
+      "expected": "budgetme_requirements_021_025.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 1,
+          "score": 0.47598171715899806
+        },
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 0,
+          "score": 0.1678951730591432
+        },
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 4,
+          "score": 0.08411847469450982
+        }
+      ]
+    },
+    {
+      "question": "FR-023 provider phones normalise 0770123456",
+      "expected": "budgetme_requirements_021_025.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 2,
+          "score": 0.2105855789598229
+        },
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 1,
+          "score": 0.11270118394670717
+        }
+      ]
+    },
+    {
+      "question": "FR-024 signed in user without budget setup guidance",
+      "expected": "budgetme_requirements_021_025.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 2,
+          "score": 0.23415424335340815
+        },
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 3,
+          "score": 0.1748502489585541
+        },
+        {
+          "source": "budgetme_requirements_001_005.md",
+          "source_id": "SRC-020",
+          "chunk_id": 0,
+          "score": 0.12138551739554854
+        }
+      ]
+    },
+    {
+      "question": "FR-025 structured form responses X-BB-Ajax",
+      "expected": "budgetme_requirements_021_025.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_021_025.md",
+          "source_id": "SRC-024",
+          "chunk_id": 3,
+          "score": 0.33271553459132386
+        },
+        {
+          "source": "budgetme_auth_api_contracts.md",
+          "source_id": "SRC-027",
+          "chunk_id": 1,
+          "score": 0.11690066944509883
+        }
+      ]
+    },
+    {
+      "question": "FR-026 owned live summary include deposits",
+      "expected": "budgetme_requirements_026_030.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 0,
+          "score": 0.3795655052585893
+        },
+        {
+          "source": "budgetme_auth_api_contracts.md",
+          "source_id": "SRC-027",
+          "chunk_id": 1,
+          "score": 0.11140285267831568
+        },
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 4,
+          "score": 0.09301043477362664
+        }
+      ]
+    },
+    {
+      "question": "FR-027 optional Realtime token one hour JWT",
+      "expected": "budgetme_requirements_026_030.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 1,
+          "score": 0.2929562513963043
+        },
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 0,
+          "score": 0.14463140395610954
+        },
+        {
+          "source": "budgetme_auth_api_contracts.md",
+          "source_id": "SRC-027",
+          "chunk_id": 1,
+          "score": 0.14413414205927566
+        }
+      ]
+    },
+    {
+      "question": "FR-028 refresh pages owned Realtime events debounce 350",
+      "expected": "budgetme_requirements_026_030.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 1,
+          "score": 0.25833603857408194
+        },
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 2,
+          "score": 0.11483957443679417
+        }
+      ]
+    },
+    {
+      "question": "FR-029 installable browser metadata manifest icons",
+      "expected": "budgetme_requirements_026_030.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 2,
+          "score": 0.3647787660261007
+        }
+      ]
+    },
+    {
+      "question": "FR-030 stale page session data CLEAR_CACHES",
+      "expected": "budgetme_requirements_026_030.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 3,
+          "score": 0.2849223044058464
+        }
+      ]
+    },
+    {
+      "question": "What is the spendable balance formula and do recorded deposits increase it?",
+      "expected": "budgetme_data_rules.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_016_020.md",
+          "source_id": "SRC-023",
+          "chunk_id": 4,
+          "score": 0.17861962583853686
+        },
+        {
+          "source": "budgetme_requirements_011_015.md",
+          "source_id": "SRC-022",
+          "chunk_id": 5,
+          "score": 0.16260261873962684
+        },
+        {
+          "source": "budgetme_data_rules.md",
+          "source_id": "SRC-026",
+          "chunk_id": 1,
+          "score": 0.16108702351114346
+        }
+      ]
+    },
+    {
+      "question": "What fields does the owned live summary return and how long is the Realtime JWT valid?",
+      "expected": "budgetme_auth_api_contracts.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 0,
+          "score": 0.15176206774122708
+        },
+        {
+          "source": "budgetme_auth_api_contracts.md",
+          "source_id": "SRC-027",
+          "chunk_id": 1,
+          "score": 0.1323144572511979
+        }
+      ]
+    },
+    {
+      "question": "Which BudgetMe tests were executed and what results were recorded?",
+      "expected": "budgetme_test_coverage.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_test_coverage.md",
+          "source_id": "SRC-028",
+          "chunk_id": 0,
+          "score": 0.1802587316434715
+        },
+        {
+          "source": "budgetme_test_coverage.md",
+          "source_id": "SRC-028",
+          "chunk_id": 2,
+          "score": 0.14787060885265857
+        },
+        {
+          "source": "budgetme_testing.md",
+          "source_id": "SRC-019",
+          "chunk_id": 0,
+          "score": 0.09628792206163114
+        }
+      ]
+    },
+    {
+      "question": "Why did the service worker version and Weekly label assertions fail?",
+      "expected": "budgetme_observed_failures.md",
+      "pass": true,
+      "sources": [
+        {
+          "source": "budgetme_observed_failures.md",
+          "source_id": "SRC-029",
+          "chunk_id": 0,
+          "score": 0.17713270082744534
+        },
+        {
+          "source": "budgetme_requirements_026_030.md",
+          "source_id": "SRC-025",
+          "chunk_id": 3,
+          "score": 0.1014491186507058
+        },
+        {
+          "source": "budgetme_observed_failures.md",
+          "source_id": "SRC-029",
+          "chunk_id": 1,
+          "score": 0.08435716111865815
+        }
+      ]
+    }
+  ],
+  "retrieval_passes": 34,
+  "retrieval_total": 34,
+  "knowledge_endpoint": {
+    "status": 200,
+    "payload_characters": 3347,
+    "included_corpus": [
+      "knowledge/corpus/budgetme_requirements_006_010.md",
+      "knowledge/corpus/budgetme_data_rules.md",
+      "knowledge/corpus/budgetme_requirements_006_010.md"
+    ],
+    "new_requirement_document_present": true,
+    "generation": "mocked; this check verifies evidence assembly, not answer quality"
+  },
+  "unbound_project_sources": [],
+  "offline": {
+    "tests_run": 66,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "corpus_sha256": {
+    "knowledge/corpus/project_charter.md": "e96a40caa799b24336afdd4c2fe211b5d908fc3fbb8d030f9350d84d31ee5ab3",
+    "knowledge/corpus/user_stories.md": "7a1dd74ac7a2c6c6b6cf5a8a514d4b9a37f0136e554750268da57c9e0e193c81",
+    "knowledge/corpus/ai_boundary_matrix.md": "2eac62b85c19d3a60481611ef51a56281f757bc814df5b74d7aef7bd4084f91a",
+    "knowledge/corpus/tool_catalogue.md": "ad445deb6498ea5ebb9817c269a1ec5c1f970c5a8f5da326844bb9fbda6dc709",
+    "knowledge/corpus/agent_task_contract.md": "5ec83ef9ae4b844439a2a91a28d23db5752d89c3f71e96a83305e7036dcce3f4",
+    "knowledge/corpus/budgetme_features.md": "3722383bf62b9095b448322e798f258828b49e12aa03d2bb0c570ecb3daafaa2",
+    "knowledge/corpus/budgetme_architecture.md": "decf57c12123cf888ec10fd673693aac669c04a64840d68daa3d6b341173c18b",
+    "knowledge/corpus/budgetme_api.md": "ab8dd8271958add06a364a0f1012d40f0d439308727578b5228c2d175884f26a",
+    "knowledge/corpus/budgetme_testing.md": "7abcd878ea87ba69e722c91569ca4e956df80bebcb7838e5a3438529a3694912",
+    "knowledge/corpus/budgetme_requirements_001_005.md": "38352f4dd562fa586250d90949194df8d446a7eaccfc31f9c7cc074e6554eff4",
+    "knowledge/corpus/budgetme_requirements_006_010.md": "c0143bf29855e55a2507b301b2f07cbdf303eaaa727c6fedf092da75572ae22b",
+    "knowledge/corpus/budgetme_requirements_011_015.md": "5e6546a1849b8871875f01dbf6d816e76931a2db3fb5e2cc6f14ccf2909cb96a",
+    "knowledge/corpus/budgetme_requirements_016_020.md": "85202ad3cb39b681d6bd4af2caec19d3b802c0328f8d2959a0a2ff3981353898",
+    "knowledge/corpus/budgetme_requirements_021_025.md": "dcbd4d1ddec308311d1e60e2bf9f8ebe39a99bcee5ffe2282b94af7c169be65c",
+    "knowledge/corpus/budgetme_requirements_026_030.md": "af373ea515d3f5530fc1568214945839a68f73c54eb0af62d04fb1b722f7fd5e",
+    "knowledge/corpus/budgetme_data_rules.md": "75a1f837d6f5da6b94c089d98f2e4a257503bfb3539a6bb9bd8c4a96c255311b",
+    "knowledge/corpus/budgetme_auth_api_contracts.md": "ba3e42e3d0dd8694d3bc30e9e8b46ad9d0c53464aafff4d5fa9c43079f0617c9",
+    "knowledge/corpus/budgetme_test_coverage.md": "f9feeca32f8c641a6c146dc9ef995806a11fbb4e6e9434849c5c805c44f42abb",
+    "knowledge/corpus/budgetme_observed_failures.md": "6ed183a5caeeb8ee42b08dd1abba2db904e86ebaca7a9acde389379c77f01d64"
+  },
+  "model_calls": 0,
+  "claim_boundary": "Fresh in-process TF-IDF index and retrieval checks; no new live answer-generation scores.",
+  "register_parity": {
+    "rows": 19,
+    "columns": [
+      "source_id",
+      "source_name",
+      "file_path",
+      "source_type",
+      "origin",
+      "authority",
+      "purpose",
+      "access_status"
+    ],
+    "native_table_range": "A1:H20",
+    "header_frozen": true,
+    "csv_xlsx_identical": true
+  },
+  "existing_connection": {
+    "session_id": "35e8d33b1d4c4f23861d283f32e97d57",
+    "repository_binding": "https://github.com/Joritace/BudgetMe",
+    "source_snapshot_unchanged": true
+  }
+}

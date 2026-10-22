@@ -1,0 +1,29 @@
+{
+  "request_id": "57789d7273d9421bb6fc117515eaa2f3",
+  "timestamp_utc": "2026-10-22T15:55:14.323048+00:00",
+  "model": "qwen/qwen3.8-27b",
+  "prompt_version": "tool-router-v1.0.txt",
+  "request": "Create a LOCAL issue draft. Title: Synthetic missing requirement link. Failed test: SYNTH-TOOL-01. Expected: proposal has a requirement ID. Actual: synthetic example omits ID. Do not submit.",
+  "max_tool_calls": 1,
+  "state": "finished",
+  "decision": {
+    "tool": "create_issue_draft",
+    "arguments": {
+      "title": "Synthetic missing requirement link",
+      "failed_test": "SYNTH-TOOL-01",
+      "expected": "proposal has a requirement ID",
+      "actual": "synthetic example omits ID",
+      "submit": false
+    },
+    "message": "Local issue draft created. It has not been submitted."
+  },
+  "elapsed_seconds": 24.865,
+  "result": {
+    "ok": true,
+    "draft_id": "DRAFT-71f056b7009c",
+    "status": "draft",
+    "path": "evidence/traces/milestones_20261022T154858Z/drafts/DRAFT-71f056b7009c.json",
+    "submitted": false,
+    "title": "Synthetic missing requirement link"
+  }
+}

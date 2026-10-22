@@ -83,7 +83,7 @@ def _norm(query):
 
 def _compose_notes(state, analysis, run_id):
     """Notes are built by the application: deterministic evidence, then labelled model opinion."""
-    lines = ["Requirement evidence (retrieved by the application):"]
+    lines = ["Retrieved project evidence (not proof of approved requirements or a confirmed cause):"]
     if state["evidence"]:
         for s in state["evidence"][:5]:
             lines.append(f"- {s['source_id'] or 'unregistered'} {s['source']} chunk {s['chunk_id']} (score {s['score']:.3f})")

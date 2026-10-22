@@ -17,6 +17,7 @@ if (progress) {
       const response = await fetch(progress.dataset.workflowPoll, {cache: 'no-store'});
       if (!response.ok) throw new Error('Status unavailable');
       const result = await response.json();
+      if (result.status === 'generating' && result.generation_total) document.getElementById('run-progress').textContent = `${result.generation_completed} of ${result.generation_total} requirements processed in this batch.`;
       if (!['generation_queued', 'generating', 'code_generating', 'queued', 'running'].includes(result.status)) {
         window.location.reload();
         return;

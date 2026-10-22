@@ -23,7 +23,7 @@ def load_prompt(name):
     return (ROOT / "prompts" / name).read_text(encoding="utf-8-sig")
 
 
-def complete(system, user, *, temperature=0.2, max_tokens=2048, schema=None):
+def complete(system, user, *, temperature=0.2, max_tokens=2048, schema=None, reasoning_effort=None):
     key = os.getenv("GROQ_API_KEY", "").strip()
     if not key:
         raise ModelUnavailable("Set GROQ_API_KEY in the application environment before using the model.")
@@ -32,6 +32,8 @@ def complete(system, user, *, temperature=0.2, max_tokens=2048, schema=None):
     payload = {"model": MODEL, "messages": [{"role": "system", "content": system},
                {"role": "user", "content": user}], "temperature": temperature,
                "max_completion_tokens": max_tokens, "stream": False}
+    if reasoning_effort is not None:
+        payload["reasoning_effort"] = reasoning_effort
     if schema:
         payload["response_format"] = {"type": "json_object"}
     req = urllib.request.Request(API_URL, data=json.dumps(payload).encode("utf-8"),

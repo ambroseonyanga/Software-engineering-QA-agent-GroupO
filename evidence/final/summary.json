@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-22",
+  "rag_run": "evidence/traces/milestones_20261022T154858Z/verification.json",
+  "rag_generated": 15,
+  "rag_ai_assessed_pass": 15,
+  "offline_tests": 66,
+  "offline_failures": 0,
+  "offline_errors": 0,
+  "selected_agent_traces": {
+    "normal": "evidence/traces/milestones_20261022T154858Z/agent/8d1df4864c3548c19ccbdf7fc84725f8.json",
+    "adversarial": "evidence/traces/milestones_20261022T152829Z/agent/bb7c66010a8b4d01b9b86f941137ef7e.json",
+    "recovery": "evidence/traces/agent_memory_20261022T160322Z/agent/ef7f9f3d8ea04c1a89d86429d14844e2.json"
+  },
+  "memory_followup": "evidence/traces/agent_memory_20261022T160322Z/verification.json",
+  "memory_runs": [
+    "COMPLETED",
+    "COMPLETED"
+  ],
+  "history_before_delete": 2,
+  "history_after_delete": 0,
+  "final_dataset_scenarios": 36,
+  "final_dataset_executed": true,
+  "release_tag_created": false,
+  "human_acceptance_review": "pending",
+  "final_dataset_full_pass": 31,
+  "final_dataset_partial": 5,
+  "final_dataset_full_pass_percent": 86.1,
+  "final_scenario_assessment": "evidence/final/scenario_assessment.json",
+  "budgetme_test_count": 53,
+  "budgetme_test_pass": 49,
+  "budgetme_test_fail": 4,
+  "scenario_run": "evidence/traces/final_evaluation_20261022T172723Z/verification.json",
+  "scenario_retest": "evidence/traces/final_evaluation_20261022T174959Z/verification.json",
+  "corpus_documents": 19,
+  "budgetme_corpus_documents": 14,
+  "functional_requirement_records": 30,
+  "acceptance_criteria": 90,
+  "corpus_expansion": "evidence/traces/corpus_expansion_20261022.json",
+  "current_retrieval_verification": "evidence/traces/corpus_index_20261022/verification.json"
+}

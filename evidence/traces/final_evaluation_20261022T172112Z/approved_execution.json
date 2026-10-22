@@ -1,0 +1,349 @@
+{
+  "id": "e9302a952258408f8aa5af689f231215",
+  "name": "BudgetMe evaluation",
+  "pdf_name": "No requirements",
+  "pdf_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "pages": [],
+  "manifest": {
+    "manage.py": "43400a9a5bcb079d46065c4f0d6073b19f780f4803a298658d1f12f1ebe7f29c",
+    "BudgetMe/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "BudgetMe/asgi.py": "4dafcf303d089667d3ed19563746953040f99bbfc6c090e451df37262b9cd973",
+    "BudgetMe/urls.py": "1aebd2b1b2e2de3971173a54802fdd0250a55ee96b658116256596c3736c6b3c",
+    "BudgetMe/wsgi.py": "3f8d3435c8115e17717a3fd455f602925b8c91f527f97a338e2ea62a7fa2fcad",
+    "budgetbuddy/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "budgetbuddy/adapters.py": "c4c762b78b3d94b85e5918248b99657fb19a4596509a4a3ebea60563fb4244c5",
+    "budgetbuddy/admin.py": "fd5d1f1d67d8bea995928823be7063d268cb47220721eb01e5f746d4b0fc7345",
+    "budgetbuddy/apps.py": "25992e45eb5274afac1c03992ced587779601770a41249eddb5e0e194eb4a1a6",
+    "budgetbuddy/constants.py": "1256f3ffa25bddf236f85a98465d53159f6c0ee7d49021a11ab31389cf4b6f21",
+    "budgetbuddy/context_processors.py": "0f5bbc83476dc8f133b3ddf4b6a811371d45769b9506bb338327ade2e412584a",
+    "budgetbuddy/forms.py": "b18f123e71db199b8295c4c2982c30319b7d75d913f6fbdec37dadd8101b8e8f",
+    "budgetbuddy/middleware.py": "e6ac30a241ca0c063c10591f79a1b94e9ef8424867e0bf43cce932084cf519fa",
+    "budgetbuddy/models.py": "7b4bae04bccc0926ba58c59058f7a8ec44cdd152c5dde4b2e0f5ff4fdc30b227",
+    "budgetbuddy/urls.py": "69db1b86bc650a58cc161440c1d32280077d7fb8ab0ac82a69413daf717dbfaf",
+    "budgetbuddy/management/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "budgetbuddy/management/commands/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "budgetbuddy/management/commands/setup_google_oauth.py": "e6eb73f824fb1efd1bd685eacc31aab1519a3688fb9aaf28d4dfaa5336c45447",
+    "budgetbuddy/migrations/0001_initial.py": "fdad61247ffe40fd253f2a5f58421dc790f5edb24fe2b494c149193a34ea0299",
+    "budgetbuddy/migrations/0002_alter_budgetcategory_unique_together_and_more.py": "65f69ac1dfadd67d887a6087c91dccf70d3cb3a6b3e7bef0d23f4d39a8a09458",
+    "budgetbuddy/migrations/0003_transaction.py": "0a5a39cc25662c3fa568858522b1f70af71bf606bbfe210b7c4a185c8fd3b5cf",
+    "budgetbuddy/migrations/0004_alter_budgetprofile_options_and_more.py": "e791b35c5c98dfbed53eb5682661ec216059eb8bccb1e185cd3cee2b93a2bcd0",
+    "budgetbuddy/migrations/0005_transfer_direction.py": "aac295e1ecfbe066f1525e2fa0b3ec66db4bf36b3157ada03b6406dfac3c2502",
+    "budgetbuddy/migrations/0006_profile_mobile_phones.py": "277ad514d7af61a9035c77ee4cc59eca8d91c85e27a446b751d95ae96d924c31",
+    "budgetbuddy/migrations/0007_fix_phone_blank.py": "648e092a8b8669d4274a15d4c6eafd440bd8012744f86d075232496686a4fe98",
+    "budgetbuddy/migrations/0008_budgetprofile_user.py": "7a5d7a7fbce4cde1e895c9307ae3bfa773e34f897a56222b4bb8efa8c0df2b61",
+    "budgetbuddy/migrations/0009_savings_deposit.py": "7c965352b433de7bab106328fb3b399696fb729d9814f03095dd2edf0d5d1f8b",
+    "budgetbuddy/migrations/0010_transaction_indexes.py": "bf514c94cedae0a721f4b8a87c427bdbcfbde73ec9d6d102ca72bd34d46f269c",
+    "budgetbuddy/migrations/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "budgetbuddy/mocks/__init__.py": "b75022e4e233c4ae08f78135f0da5c69fdce37a61473eb2a1c3e2cc8320b6df4",
+    "budgetbuddy/mocks/sample_data.py": "088dcdf9018b0fde64e8ef2e77173087e34d0bac30cfb9b9564ffc378513570a",
+    "budgetbuddy/oauth/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "budgetbuddy/oauth/google.py": "e629fcdde3fc3c8c3da08cb9c00b6e5864167d1544c1ccb3b01d77980163078d",
+    "budgetbuddy/services/__init__.py": "4686a860e0a28464af2143a6f9d96d36ffd1121cab19a2b43f3ed4766a64f112",
+    "budgetbuddy/services/budget.py": "38348932746e1c2177fb234263dbed2a7d08ac5f4c33912669df145270e89ed6",
+    "budgetbuddy/services/budget_period.py": "d15123d530b79112d99b875733591d20aca08eea0039939902b5c15cbbebc711",
+    "budgetbuddy/services/budget_validation.py": "e601e0c18594c6c5fbc8a19bfa243d63093b4d65d21be16cb9651f50fc02b765",
+    "budgetbuddy/services/dashboard.py": "46fb392e4738c99cecc58b4be891d254a82df5a858793f46a96a099ef594fb8e",
+    "budgetbuddy/services/google_oauth.py": "a0b09edd428372a1cb093cd876bdb6a253e249a2425381330d6955e58b3af881",
+    "budgetbuddy/services/page_context.py": "14f98d7ea2b9162bdaf02a2d9c3d99b0f92cd347e831723390e48a879467ddb0",
+    "budgetbuddy/services/period_filter.py": "baaebb9a5058e44ffbca8933ad58518ad4743a9cc14984c2a942b9fc81ace064",
+    "budgetbuddy/services/profile.py": "eea9108f691d26498bb5164587f373ca48c9009ca6d1e227231b92e1fc3a05ca",
+    "budgetbuddy/services/profile_page.py": "26cdfaf02fbb747fe21c8096e477239ecb593010f3568e93c4b50c0c4e9b64e5",
+    "budgetbuddy/services/savings.py": "b8b5874d6bd686ea8f3a3093ae064d47d3476f16ba2d9f079648264280ba5857",
+    "budgetbuddy/services/supabase_jwt.py": "1d193a540139518614df0a36d061dec0c0af3e7c0db3885eae14009b4aa27f1b",
+    "budgetbuddy/services/transactions.py": "550b32c904786688a7f0be77cd01c0f06b50aa7406d1ad522c85c87ca182fa86",
+    "budgetbuddy/services/transfers.py": "1449446aec295b2d0da54af64198a0a96dce8395a4cce1a3005db95a82667b6f",
+    "budgetbuddy/static/budgetbuddy/css/auth.css": "72c600b014927a0e0d1847814c4a7c5b8905990155c7270ee7ba9c0f765ce7ce",
+    "budgetbuddy/static/budgetbuddy/css/dash.css": "21cd462438aff9fc4847259c46f0eca32e1fa8f5ac7ecbafcf5f712a44cbd277",
+    "budgetbuddy/static/budgetbuddy/css/dashboard.css": "3d5ed3e8581686b205e24ca5c8a80b15ae5f850e1c3f3ef5d1addb2db605164c",
+    "budgetbuddy/static/budgetbuddy/css/motion.css": "d55699500117b97e596db7d3695f0981b92a4889d24fb83c1c32a40c48e3a8ee",
+    "budgetbuddy/static/budgetbuddy/js/app.js": "7a9beba1332b2db8fc99cf87fef1959b421e0e23375f91df4ef3d4e376913c08",
+    "budgetbuddy/static/budgetbuddy/js/auth.js": "c05aa3240a9180a789b37da9cebd51964059a50344bac5bd88cb73230607e95c",
+    "budgetbuddy/static/budgetbuddy/js/supabase_realtime.js": "3fe75120f8069b474d6d0e655836c3bdff76f2a5936de23c343dc3946e39ca5d",
+    "budgetbuddy/static/budgetbuddy/js/sw.js": "4cf0f66252b69cb21b8fcfe94c8ee85528d0c66a1fe8762d07d62ceee8991591",
+    "budgetbuddy/static/budgetbuddy/js/ugx_amounts.js": "9c047e4c52c403eca53f99192fcfa34623dd2121951083f23045f5e513cf4a36",
+    "budgetbuddy/static/budgetbuddy/vendor/boxicons.min.css": "620eea24b0cee1d8cc8395c80f295cf2e7b6fab962493c26b49a8d42b63a4dc9",
+    "budgetbuddy/templates/account/login.html": "a5780c96a6a4aad7755a74a892c2118275bec9139ebd4e2ea2b90c04dd865d65",
+    "budgetbuddy/templates/account/signup.html": "3ee243e2f34b4b80d45d5ab3e0c73a45dcb64a2254635418e819d7c79bcc9a68",
+    "budgetbuddy/templates/budgetbuddy/auth_base.html": "db25edbccf3c455d5ef13028a4966f43d927fa7284945b5b2fa89e6d8bd3fb56",
+    "budgetbuddy/templates/budgetbuddy/base.html": "b761d669281d166a4de5e70708c847866674ace668043e37399a7d624994acbe",
+    "budgetbuddy/templates/budgetbuddy/budget_setup.html": "09675df809a1458ec268674388314ca857339ce3ae6147db07cd75a171afc3e2",
+    "budgetbuddy/templates/budgetbuddy/dashboard.html": "361bb1c2b80bc6fbf829496d5b1348a85c01fae9146bdd4ea198506ef86e1f37",
+    "budgetbuddy/templates/budgetbuddy/profile.html": "13c72bf329585d2330cc93d970b1f16e19c5cb501a4874d3cc8d9c26653640c5",
+    "budgetbuddy/templates/budgetbuddy/savings.html": "4d17204fbd4a35ab7153250f26c7d6530c03480613c9b48acc49ab37b8892dac",
+    "budgetbuddy/templates/budgetbuddy/transfer.html": "a939ceaadd599946376882e1e6dd8b45b37db72054752669c5d8ef0793e61668",
+    "budgetbuddy/templates/budgetbuddy/partials/bottom_nav.html": "bee3a7979ad517f3d596079e1aa4fc7716a29e3741b0313414dab96e136f902d",
+    "budgetbuddy/templates/budgetbuddy/partials/dash_transactions.html": "162114707f88fed0b27c00b34804cf3f993a27ae3582644b849132a75bff4dcc",
+    "budgetbuddy/templates/budgetbuddy/partials/delete_budget_form.html": "0ff9d07c5512518daa749623ac8d483d2a53de2063d60f8615ab5c34665bb3ea",
+    "budgetbuddy/templates/budgetbuddy/partials/delete_budget_panel.html": "9a2f1efa2c3b53ced64b0d1612a76a1ea5a3e3e309161e243c98f5acd339d80c",
+    "budgetbuddy/templates/budgetbuddy/partials/form_errors.html": "512ea2cff42f0b49c7c78ef221cf28b00e56386c093822437393cdbd0723fb58",
+    "budgetbuddy/templates/budgetbuddy/partials/google_login_button.html": "c6cdb9b03007a702f6f4d2d6d5740ff3f236400cc41e3a18cce117e1fbab1189",
+    "budgetbuddy/templates/budgetbuddy/partials/loader.html": "bfc299b38d80d570a17e442930a7ddb94af25482689307641299092c73e29439",
+    "budgetbuddy/templates/budgetbuddy/partials/messages.html": "c85f2098b4a60e98bff208e3c5c95704dc6a4d995e92678ccdd75ab4a58d6d63",
+    "budgetbuddy/templates/budgetbuddy/partials/page_header.html": "155600b066571d7967541e9a252f68a572f6ee57942309e229fb1dd3d225c6a3",
+    "budgetbuddy/templates/budgetbuddy/partials/period_tabs.html": "b45e0ff3411036455cf018fe358253dbf36af324789a66e32294f1b9ddd61c06",
+    "budgetbuddy/templates/budgetbuddy/partials/provider_icon.html": "1c5058c67a8e09a911f1ebceec2a7a6c45cdb45528d537ea78a3a2ee69948dab",
+    "budgetbuddy/templates/budgetbuddy/partials/savings_deposits.html": "7ec605502b216333cbcc2ce81d90e4ca468be3202d3c3d1009f1696a521a1f0a",
+    "budgetbuddy/templates/budgetbuddy/partials/setup_cta.html": "0c1117d582b289bc023044357b46d0daaa2d503f1a3e758824f3d9f510c83274",
+    "budgetbuddy/templates/budgetbuddy/partials/sidebar.html": "2c7a5acfb5f63b86878a4445e169b40432b4443dbb3bde19928e7a446a5b5ac5",
+    "budgetbuddy/templates/budgetbuddy/partials/transfer_movements.html": "7d064838486a3d025fe861e4d6c53c700ae1845b4b6ed29aca506b4faf08b6a2",
+    "budgetbuddy/templatetags/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "budgetbuddy/templatetags/budgetbuddy_tags.py": "a8dcb8072acfd96e658335d88bdeffcebbb9f3988df0448c86908163d5c35b12",
+    "budgetbuddy/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "budgetbuddy/tests/helpers.py": "6308949bc4d51dc50b0e70aab672a9f05eb479af38fcb32730860daa7a31ca61",
+    "budgetbuddy/tests/test_dashboard.py": "6e2f7d57ae7061f528243764178b9491e3f8e80458ac93846b4a0aededd9999a",
+    "budgetbuddy/tests/test_savings.py": "000d35ee80cb3f9fd0f2270264a68b379412a43fbce00d6c3af528be8470c682",
+    "budgetbuddy/tests/test_supabase_realtime.py": "139082f34b50201e1a8ab137599722d74d2aca45d7c98e853c9e83c7b8d1bd23",
+    "budgetbuddy/views/__init__.py": "6bf6b7521006aebf78f1c786ac7ff57526a8960f1178409e0ad56ecea69f7b5c",
+    "budgetbuddy/views/auth_status.py": "cd11a13a523cabf1e61e5a53e5da1019d8898369e5cceb9b8ce345592d51fd39",
+    "budgetbuddy/views/budget.py": "82ed475d8101ccef921ec7c5f15c28f264e83bd744dea6db24617d5c4ddd391e",
+    "budgetbuddy/views/dashboard.py": "f9709a4223f3908736420f9b8aa5d48fa2f741021bc30709e5378410f3c6cb78",
+    "budgetbuddy/views/http_helpers.py": "e48052f85d27464da827d0d68e3a4d7820962c13dd362604a5a406dfadbd3d13",
+    "budgetbuddy/views/partials.py": "868575a8f904a284bf112e56031ecb467604290cc094d224413ecae33a6dccf8",
+    "budgetbuddy/views/profile.py": "a1cc1a5c17d15f5bbf3fb6d2a9a171c0d8b686de457b373c6e38875a4b1b5214",
+    "budgetbuddy/views/pwa.py": "faeb086be17baa9f908b7eb8008620eab677aa9241cea2738ffb1108f51f2f84",
+    "budgetbuddy/views/savings.py": "4a62188ccab7295ca9c42f87d868622ce336a0c5cd97ad9a7928f02231afb33b",
+    "budgetbuddy/views/supabase_api.py": "82d110a4c36dca6f4c0c51a198c2506169ed23841771a5ee9c701b7beafb6902",
+    "budgetbuddy/views/transfer.py": "2d6f4f63a25fa101c08aba576f50fdd1c8c1e8ffe46965c0ae80d8cb3da1385e",
+    "supabase/rls.sql": "165abd5efb6da47b2454d216e8dc3d42cdfe2582ce10c79889506900d2ff0056"
+  },
+  "requirements": [],
+  "requirements_version": 1,
+  "snapshot_hash": "f619e15d33f35928fd51616bfe0f4b33d608adbf7a84c80ad770177e50caae55",
+  "created": "2026-10-22T17:21:27.028642+00:00",
+  "status": "completed",
+  "adapter": "budgetme",
+  "focus": "",
+  "source_path": "C:\\Users\\HP\\Desktop\\capstone\\BudgetMe",
+  "project_key": "76d62de25ec587fd9b1fb8a90a557f7e925da7624297fa26287fda61e2931cc4",
+  "tests": [
+    {
+      "id": "T01",
+      "title": "Synthetic reviewed boundary fixture",
+      "requirement": "SYN-R01",
+      "expected": "Equality accepted and excess rejected",
+      "limitations": "Evaluation fixture, automatically approved for this controlled test",
+      "code": "import unittest\nfrom types import SimpleNamespace\nfrom budgetbuddy.services.budget_validation import validate_budget_within_income\nclass PlanningBoundary(unittest.TestCase):\n    def test_equal_income(self):\n        forms=SimpleNamespace(forms=[SimpleNamespace(cleaned_data={'name':'Food','allocated_amount':80})])\n        self.assertTrue(validate_budget_within_income(100,'monthly',20,forms)[0])\n    def test_over_income(self):\n        forms=SimpleNamespace(forms=[SimpleNamespace(cleaned_data={'name':'Food','allocated_amount':81})])\n        self.assertFalse(validate_budget_within_income(100,'monthly',20,forms)[0])",
+      "hash": "da630233a38659bdc586512aa746bdb9d539ad90e7e826ac7a59d0cb09086255",
+      "review_status": "approved",
+      "code_status": "ready"
+    }
+  ],
+  "approval": {
+    "at": "2026-10-22T17:21:27.062726+00:00",
+    "reviewer": "Local operator",
+    "snapshot_hash": "f619e15d33f35928fd51616bfe0f4b33d608adbf7a84c80ad770177e50caae55",
+    "tests": {
+      "T01": "da630233a38659bdc586512aa746bdb9d539ad90e7e826ac7a59d0cb09086255"
+    }
+  },
+  "results": [
+    {
+      "id": "T01",
+      "status": "passed",
+      "seconds": 7.73,
+      "output": "test_equal_income (case_T01.PlanningBoundary.test_equal_income) ... ok\ntest_over_income (case_T01.PlanningBoundary.test_over_income) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\nFound 2 test(s).\nSkipping setup of unused database(s): default.\nSystem check identified no issues (0 silenced).\nQA_RESULT_JSON={\"status\": \"passed\", \"tests_run\": 2, \"records\": [{\"name\": \"case_T01.PlanningBoundary.test_equal_income\", \"status\": \"passed\", \"detail\": \"\"}, {\"name\": \"case_T01.PlanningBoundary.test_over_income\", \"status\": \"passed\", \"detail\": \"\"}]}\n",
+      "exit_code": 0,
+      "detail": "\n",
+      "tests_run": 2
+    }
+  ],
+  "events": [
+    {
+      "at": "2026-10-22T17:21:27.036358+00:00",
+      "action": "project_connected"
+    },
+    {
+      "at": "2026-10-22T17:21:27.062751+00:00",
+      "action": "approved",
+      "test_ids": [
+        "T01"
+      ]
+    },
+    {
+      "at": "2026-10-22T17:21:27.225245+00:00",
+      "action": "run_requested"
+    },
+    {
+      "at": "2026-10-22T17:21:27.331364+00:00",
+      "action": "sandbox_tool_called",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "budgetme-sandbox:local",
+        "--format",
+        "{{.Id}}"
+      ]
+    },
+    {
+      "at": "2026-10-22T17:21:27.852187+00:00",
+      "action": "sandbox_tool_result",
+      "exit_code": 0,
+      "output": "sha256:3fd7dba4629b49bfbeaac0c47353d8e99cfa322fc4a51714a3ac14a4be95b228\n",
+      "stop_reason": null
+    },
+    {
+      "at": "2026-10-22T17:21:27.862379+00:00",
+      "action": "sandbox_tool_called",
+      "command": [
+        "docker",
+        "tag",
+        "sha256:3fd7dba4629b49bfbeaac0c47353d8e99cfa322fc4a51714a3ac14a4be95b228",
+        "groupo-qa-base:c0182733e20e4f31b14635ab0531f75e"
+      ]
+    },
+    {
+      "at": "2026-10-22T17:21:28.296545+00:00",
+      "action": "sandbox_tool_result",
+      "exit_code": 0,
+      "output": "",
+      "stop_reason": null
+    },
+    {
+      "at": "2026-10-22T17:21:28.643107+00:00",
+      "action": "sandbox_tool_called",
+      "command": [
+        "docker",
+        "build",
+        "--network",
+        "none",
+        "--pull=false",
+        "-t",
+        "groupo-qa-run:3a56da90f2dd403c92c05e50778cb87a",
+        "C:\\Users\\HP\\AppData\\Local\\Temp\\groupo-build-5r_mosmb"
+      ]
+    },
+    {
+      "at": "2026-10-22T17:21:32.681618+00:00",
+      "action": "sandbox_tool_result",
+      "exit_code": 0,
+      "output": "#0 building with \"desktop-linux\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 233B 0.0s done\n#1 DONE 0.1s\n\n#2 [internal] load metadata for docker.io/library/groupo-qa-base:c0182733e20e4f31b14635ab0531f75e\n#2 DONE 0.1s\n\n#3 [internal] load .dockerignore\n#3 transferring context: 2B done\n#3 DONE 0.1s\n\n#4 [internal] load build context\n#4 ...\n\n#5 [1/4] FROM docker.io/library/groupo-qa-base:c0182733e20e4f31b14635ab0531f75e@sha256:3fd7dba4629b49bfbeaac0c47353d8e99cfa322fc4a51714a3ac14a4be95b228\n#5 resolve docker.io/library/groupo-qa-base:c0182733e20e4f31b14635ab0531f75e@sha256:3fd7dba4629b49bfbeaac0c47353d8e99cfa322fc4a51714a3ac14a4be95b228 0.1s done\n#5 DONE 0.1s\n\n#4 [internal] load build context\n#4 transferring context: 444.46kB 0.4s done\n#4 DONE 0.5s\n\n#6 [2/4] WORKDIR /workspace\n#6 CACHED\n\n#7 [3/4] COPY source/ /workspace/\n#7 CACHED\n\n#8 [4/4] COPY qa/ /qa/\n#8 DONE 0.1s\n\n#9 exporting to image\n#9 exporting layers\n#9 exporting layers 0.2s done\n#9 exporting manifest sha256:d18f1d9170561c00114dcd3e5f60debbc555a1011046a3b3083beeef6e492e97 0.1s done\n#9 exporting config sha256:f8d6f7a29b5402992eca5a551122777d1098c86d9301e4672a1c4743a3ba73ac\n#9 exporting config sha256:f8d6f7a29b5402992eca5a551122777d1098c86d9301e4672a1c4743a3ba73ac 0.0s done\n#9 exporting attestation manifest sha256:40e988ae8dcc3f3f171db86bd1299612876d89a928868d6d3bba8ec8d4d59582\n#9 exporting attestation manifest sha256:40e988ae8dcc3f3f171db86bd1299612876d89a928868d6d3bba8ec8d4d59582 0.1s done\n#9 exporting manifest list sha256:6953fefa829c79e0b8d17dd53a8c1b61dbee335b4deb48406e48dcf805e5d83d\n#9 exporting manifest list sha256:6953fefa829c79e0b8d17dd53a8c1b61dbee335b4deb48406e48dcf805e5d83d 0.0s done\n#9 naming to docker.io/library/groupo-qa-run:3a56da90f2dd403c92c05e50778cb87a done\n#9 unpacking to docker.io/library/groupo-qa-run:3a56da90f2dd403c92c05e50778cb87a\n#9 unpacking to docker.io/library/groupo-qa-run:3a56da90f2dd403c92c05e50778cb87a 0.2s done\n#9 DONE 0.8s\n",
+      "stop_reason": null
+    },
+    {
+      "at": "2026-10-22T17:21:32.819349+00:00",
+      "action": "sandbox_tool_called",
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "groupo-qa-run:3a56da90f2dd403c92c05e50778cb87a",
+        "--format",
+        "{{.Id}}"
+      ]
+    },
+    {
+      "at": "2026-10-22T17:21:33.453011+00:00",
+      "action": "sandbox_tool_result",
+      "exit_code": 0,
+      "output": "sha256:6953fefa829c79e0b8d17dd53a8c1b61dbee335b4deb48406e48dcf805e5d83d\n",
+      "stop_reason": null
+    },
+    {
+      "at": "2026-10-22T17:21:33.592605+00:00",
+      "action": "sandbox_tool_called",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "groupo-qa-cb1298ebc4854895b8f71e6bcaf55dca",
+        "--network",
+        "none",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--memory",
+        "512m",
+        "--memory-swap",
+        "512m",
+        "--cpus",
+        "1",
+        "--pids-limit",
+        "64",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--user",
+        "10001:10001",
+        "sha256:6953fefa829c79e0b8d17dd53a8c1b61dbee335b4deb48406e48dcf805e5d83d",
+        "python",
+        "-I",
+        "/qa/runner.py",
+        "budgetme",
+        "case_T01"
+      ]
+    },
+    {
+      "at": "2026-10-22T17:21:40.855153+00:00",
+      "action": "sandbox_tool_result",
+      "exit_code": 0,
+      "output": "test_equal_income (case_T01.PlanningBoundary.test_equal_income) ... ok\ntest_over_income (case_T01.PlanningBoundary.test_over_income) ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\nFound 2 test(s).\nSkipping setup of unused database(s): default.\nSystem check identified no issues (0 silenced).\nQA_RESULT_JSON={\"status\": \"passed\", \"tests_run\": 2, \"records\": [{\"name\": \"case_T01.PlanningBoundary.test_equal_income\", \"status\": \"passed\", \"detail\": \"\"}, {\"name\": \"case_T01.PlanningBoundary.test_over_income\", \"status\": \"passed\", \"detail\": \"\"}]}\n",
+      "stop_reason": null
+    },
+    {
+      "at": "2026-10-22T17:21:40.867564+00:00",
+      "action": "sandbox_tool_called",
+      "command": [
+        "docker",
+        "rm",
+        "-f",
+        "groupo-qa-cb1298ebc4854895b8f71e6bcaf55dca"
+      ]
+    },
+    {
+      "at": "2026-10-22T17:21:41.315553+00:00",
+      "action": "sandbox_tool_result",
+      "exit_code": 0,
+      "output": "Error response from daemon: No such container: groupo-qa-cb1298ebc4854895b8f71e6bcaf55dca\n",
+      "stop_reason": null
+    },
+    {
+      "at": "2026-10-22T17:21:41.328073+00:00",
+      "action": "sandbox_tool_called",
+      "command": [
+        "docker",
+        "image",
+        "rm",
+        "groupo-qa-base:c0182733e20e4f31b14635ab0531f75e"
+      ]
+    },
+    {
+      "at": "2026-10-22T17:21:41.649477+00:00",
+      "action": "sandbox_tool_result",
+      "exit_code": 0,
+      "output": "Untagged: groupo-qa-base:c0182733e20e4f31b14635ab0531f75e\n",
+      "stop_reason": null
+    },
+    {
+      "at": "2026-10-22T17:21:41.658591+00:00",
+      "action": "sandbox_tool_called",
+      "command": [
+        "docker",
+        "image",
+        "rm",
+        "groupo-qa-run:3a56da90f2dd403c92c05e50778cb87a"
+      ]
+    },
+    {
+      "at": "2026-10-22T17:21:42.338589+00:00",
+      "action": "sandbox_tool_result",
+      "exit_code": 0,
+      "output": "Untagged: groupo-qa-run:3a56da90f2dd403c92c05e50778cb87a\nDeleted: sha256:6953fefa829c79e0b8d17dd53a8c1b61dbee335b4deb48406e48dcf805e5d83d\n",
+      "stop_reason": null
+    },
+    {
+      "at": "2026-10-22T17:21:42.350688+00:00",
+      "action": "run_finished",
+      "status": "completed",
+      "stop_reason": "completed"
+    }
+  ],
+  "error": null,
+  "knowledge_repository": "https://github.com/Joritace/BudgetMe",
+  "started": "2026-10-22T17:21:27.326456+00:00",
+  "image_id": "sha256:6953fefa829c79e0b8d17dd53a8c1b61dbee335b4deb48406e48dcf805e5d83d",
+  "base_image_id": "sha256:3fd7dba4629b49bfbeaac0c47353d8e99cfa322fc4a51714a3ac14a4be95b228",
+  "finished": "2026-10-22T17:21:42.350661+00:00"
+}

@@ -194,7 +194,7 @@ To demonstrate that memory improves the task without controlling critical decisi
 
 Every decision the agent makes is still validated by the same deterministic guards from Week 5. Prior-run context is advisory input to the model — it does not grant the model any additional authority or bypass any approval control.
 
-The historical [live demonstration](../../evidence/traces/week6_memory_demo.json) used a synthetic report in two separate Qwen3:8b processes. The second loaded one previous report; both retrieved fresh evidence and created unsubmitted drafts. Deletion survived reopening the store. All seven demonstration checks passed. The [46-test result](../../evidence/traces/week6_verification.json) also covers retention, concurrency, corruption and guards. This demonstrates continuity, not a measured improvement in diagnosis.
+Current verification: evidence/traces/offline_regression_20261022.json and evidence/traces/milestones_20261022T154858Z/verification.json. Removed historical artifacts are not required inputs to the current application.
 
 ---
 
@@ -276,8 +276,12 @@ Query access performs housekeeping: it initialises an absent store and prunes ex
 | How long is it kept? | 90 days or 500 entries for run history; indefinitely for audit traces |
 | How is it deleted? | Expiry on access, record cap on save, or individual operator deletion; traces remain separate |
 | Does it control decisions? | No — it is advisory input to the Sense step only; all guards still apply |
-| Is it synced externally? | No — local files only, listed in `.gitignore` |
+| Is it synced externally? | The database remains local; opt-in reuse sends only prior report count and last outcome to Groq. |
 
-## 11. Verification after the model change
+## 11. Current verification and project-route behavior
 
-Updated 16 October 2026. The current provider is Groq (`qwen/qwen3.8-27b`). The earlier Qwen3:8b demonstration remains evidence for that earlier setup only. The new live run generated one baseline QA response, then stopped at HTTP 429 on the first RAG call. It did not reach the memory scenarios; empty history arrays in that run are not a successful memory demonstration. Current offline verification is recorded in `evidence/traces/offline_verification_20261016.json`. The Groq memory demonstration remains pending.
+Updated 22 October 2026. Current offline regression passed 66 checks. Live opt-in memory traces completed twice, with the second run receiving prior_report_count=1 while still retrieving target evidence. Deleting the two summaries returned the retained count to zero. See evidence/final/README.md for exact trace paths. The demonstration reopened stores within one process; it is not a process-restart test.
+
+The project failure-analysis route explicitly uses use_history=False. It saves the current summary but does not consult prior summaries. The standalone triage path supports opt-in reuse. Neither path lets memory authorize execution or skip fresh retrieval.
+
+Further verification on 22 October 2026: the scenario retest completed two opt-in runs, and a separately started Python process read the stored exact-identifier summary between runs. The second agent run received prior_report_count=1 and performed fresh retrieval. See evidence/traces/final_evaluation_20261022T174959Z/verification.json. This verifies cross-process summary persistence, not a restart of the complete web application.

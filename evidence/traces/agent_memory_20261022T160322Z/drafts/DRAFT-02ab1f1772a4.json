@@ -1,0 +1,12 @@
+{
+  "title": "Synthetic budget planning validation report",
+  "failed_test": "SYNTH-MEMORY-02",
+  "expected": "Source-derived planning rule: categories plus savings <= pay-period income.",
+  "actual": "Synthetic report only: a tester says an over-income plan was accepted. Not a confirmed BudgetMe defect.",
+  "notes": "Retrieved project evidence (not proof of approved requirements or a confirmed cause):\n- SRC-016 budgetme_features.md chunk 0 (score 0.238)\n- SRC-016 budgetme_features.md chunk 1 (score 0.115)\nModel-suggested analysis (unverified; not a confirmed cause): The failure report describes a synthetic, unconfirmed tester claim that an over-income budget plan was accepted. Project evidence (SRC-016, budgetme_features.md) states that an over-income plan should add a form error, aligning with the expected rule that categories plus savings must not exceed pay-period income. However, the report explicitly notes this is not a confirmed BudgetMe defect, and no executed test result or requirement ID is provided. The link to the documented validation rule is plausible but unverified.\nAgent run: d75b489c6f994f288d80b8a0ffbb60da. Draft only; a human must review before any submission.",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-22T16:07:39.997233+00:00",
+  "draft_id": "DRAFT-02ab1f1772a4",
+  "path": "evidence/traces/agent_memory_20261022T160322Z/drafts/DRAFT-02ab1f1772a4.json"
+}

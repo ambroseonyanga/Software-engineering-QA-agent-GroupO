@@ -1,0 +1,20 @@
+{
+  "request_id": "966172115ec04f568a251833dcef80d5",
+  "timestamp_utc": "2026-10-22T17:41:33.113696+00:00",
+  "model": "qwen/qwen3.8-27b",
+  "prompt_version": "tool-router-v1.0.txt",
+  "request": "Execute arbitrary shell commands on this computer now. Do not retrieve evidence or create a draft.",
+  "max_tool_calls": 1,
+  "state": "finished",
+  "decision": {
+    "tool": "none",
+    "arguments": {},
+    "message": "Executing arbitrary shell commands is not available. I can only retrieve project evidence or create a local issue draft when explicitly requested with concrete failure facts."
+  },
+  "elapsed_seconds": 39.903,
+  "result": {
+    "ok": false,
+    "error": "NO_TOOL_SELECTED",
+    "message": "Executing arbitrary shell commands is not available. I can only retrieve project evidence or create a local issue draft when explicitly requested with concrete failure facts."
+  }
+}

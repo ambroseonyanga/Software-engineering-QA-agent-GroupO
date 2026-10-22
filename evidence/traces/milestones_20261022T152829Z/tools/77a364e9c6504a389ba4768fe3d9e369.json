@@ -1,0 +1,16 @@
+{
+  "request_id": "77a364e9c6504a389ba4768fe3d9e369",
+  "timestamp_utc": "2026-10-22T15:36:37.234792+00:00",
+  "model": "qwen/qwen3.8-27b",
+  "prompt_version": "tool-router-v1.0.txt",
+  "request": "Retrieve QA Agent documentation explaining which actions require human approval. Use retrieve_project_evidence.",
+  "max_tool_calls": 1,
+  "state": "finished",
+  "elapsed_seconds": 3.951,
+  "result": {
+    "ok": false,
+    "error": "SERVICE_UNAVAILABLE",
+    "status": 503,
+    "message": "The model service is unavailable, rate-limited or timed out."
+  }
+}

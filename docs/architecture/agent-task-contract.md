@@ -108,11 +108,11 @@ Every stop other than COMPLETED is a human hand-off. The agent never overrides a
 
 - Trace per run: `evidence/traces/agent_runs/<run_id>.json`. It records model, prompt version, limits, each step's sensed state, raw decision, guard result, tool arguments, tool result, timings and the final stop reason.
 - Offline guard tests: `tests/test_agent.py`, with results in `evidence/traces/week5_agent_tests.json`. Model decisions in these tests are scripted; retrieval and draft writes are real.
-- Live traces: `scripts/verify_groq_workflows.py` prepares normal, adversarial and injected-failure scenarios. The 16 October run stopped at a Groq rate limit before these scenarios, so current live agent traces remain pending.
+- Live traces: `scripts/verify_milestones.py` and `scripts/verify_agent_memory.py` produce bounded live evidence. Three completed normal, adversarial and controlled-recovery traces are selected in `evidence/final/README.md`; interrupted attempts remain recorded.
 
 ## Known limitations
 
-- The agent does not execute tests. It triages a failure that a human reports, because test execution stays blocked until the approval path exists.
-- Retrieval is TF-IDF keyword matching over five registered documents. A grounded result means a chunk scored above the threshold, not that it is the correct requirement.
+- The agent does not execute tests. It triages a failure that a human reports, while the separate QA workflow executes only explicitly approved tests after an operator Run action.
+- The register contains nine documents. Project failure analysis searches its supplied session requirements and repository-bound corpus; unbound targets do not fall back to QA Agent governance. Retrieval uses TF-IDF keyword matching. A grounded result means a chunk scored above the threshold, not that it is the correct requirement.
 - The model analysis is unverified opinion and is labelled so in the draft.
 - Cloud calls have a 90-second timeout. Groq rate limits and network failures can stop a run; no automatic API retry is made.

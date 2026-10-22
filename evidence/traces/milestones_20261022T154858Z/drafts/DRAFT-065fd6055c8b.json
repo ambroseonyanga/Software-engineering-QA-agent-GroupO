@@ -1,0 +1,12 @@
+{
+  "title": "Synthetic over-income planning rejection report",
+  "failed_test": "SYNTH-NORMAL",
+  "expected": "Source-derived rule: category allocations plus saving goal must not exceed pay-period income.",
+  "actual": "Synthetic reported failure for orchestration demonstration only: a tester reports an over-income plan was accepted. No real BudgetMe defect is claimed.",
+  "notes": "Retrieved project evidence (not proof of approved requirements or a confirmed cause):\n- SRC-016 budgetme_features.md chunk 0 (score 0.327)\n- SRC-016 budgetme_features.md chunk 1 (score 0.087)\nModel-suggested analysis (unverified; not a confirmed cause): The failure report describes a synthetic over-income plan being accepted, which conflicts with the documented rule in budgetme_features.md (SRC-016) that an over-income plan should add a form error. The report explicitly states this is for orchestration demonstration and claims no real defect. It is uncertain whether this represents a genuine validation bypass or a test harness artifact, as no actual test execution or code inspection was performed.\nAgent run: 8d1df4864c3548c19ccbdf7fc84725f8. Draft only; a human must review before any submission.",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-22T15:57:19.444492+00:00",
+  "draft_id": "DRAFT-065fd6055c8b",
+  "path": "evidence/traces/milestones_20261022T154858Z/drafts/DRAFT-065fd6055c8b.json"
+}
