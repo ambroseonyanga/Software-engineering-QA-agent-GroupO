@@ -1,0 +1,35 @@
+{
+  "run_utc": "2026-10-23T12:21:27.087656+00:00",
+  "effective_output_token_cap": 1000,
+  "reasoning_effort": "none",
+  "method": "One explicit retry of each unfinished baseline response at the provider ceiling; unchanged saved prompt and requirement. First 900-token attempts remain retained.",
+  "baseline_source": "evidence/traces/evaluation_rerun_20261023T102811Z/baseline_results.json",
+  "cases": [
+    {
+      "id": "TC09",
+      "prompt_version": "1.1",
+      "requirement": "In staging with 10,000 seeded products, run 100 concurrent virtual users for 10 minutes after a 2-minute warm-up. Each user sends one catalogue-search request every 5 seconds. During the measured 10 minutes, the 95th-percentile response time must be at most 800 ms and fewer than 1% of requests may fail.",
+      "expected_behavior": "Preserve the dataset, concurrency, request interval, warm-up and measured duration. Use p95 <= 800 ms and failure rate < 1%, not averages or altered boundaries. Ask for endpoint and failure definition if absent. Do not claim measured results.",
+      "category": "Performance",
+      "result": {
+        "text": "Requirement note\nThe supplied information defines specific load, duration, and performance thresholds (95th percentile latency and error rate) for a catalogue search under concurrent load. The main gap is the definition of \"failure\" (e.g., HTTP status codes, timeouts) and the specific environment configuration details (hardware, network) which are not provided but are implied by the \"staging\" context.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Performance | Measure 95th-percentile response time under load | 1. Seed 10,000 products in staging.<br>2. Start 100 concurrent virtual users.<br>3. Perform 2-minute warm-up.<br>4. Run for 10 minutes where each user sends 1 catalogue-search request every 5 seconds.<br>5. Record response times for all requests during the 10-minute measured period. | The 95th-percentile response time is at most 800 ms. | Supported | \"During the measured 10 minutes, the 95th-percentile response time must be at most 800 ms\" |\n| TC-02 | Reliability | Measure request failure rate under load | 1. Seed 10,000 products in staging.<br>2. Start 100 concurrent virtual users.<br>3. Perform 2-minute warm-up.<br>4. Run for 10 minutes where each user sends 1 catalogue-search request every 5 seconds.<br>5. Count total requests and failed requests during the 10-minute measured period. | Fewer than 1% of requests fail. | Needs clarification | \"fewer than 1% of requests may fail\" - Definition of \"fail\" is missing (e.g., HTTP 5xx, timeout, connection error). |\n| TC-03 | Load Configuration | Verify test execution parameters | 1. Configure load test tool with 100 users, 5s interval, 2m warm-up, 10m duration.<br>2. Execute test against staging with 10,000 seeded products. | The test executes with exactly 100 concurrent users, 2-minute warm-up, and 10-minute measurement phase. | Supported | \"run 100 concurrent virtual users for 10 minutes after a 2-minute warm-up... Each user sends one catalogue-search request every 5 seconds\" |\n\nQuestions, if needed\n1. For TC-02, what specific conditions constitute a \"failed\" request? (e.g., HTTP status >= 400, response time > X ms, connection timeout?)",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.085189028,
+          "prompt_tokens": 926,
+          "prompt_time": 0.067258412,
+          "completion_tokens": 608,
+          "completion_time": 1.2662987829999999,
+          "total_tokens": 1534,
+          "total_time": 1.333557195
+        },
+        "elapsed_seconds": 2.371,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 2.377
+    }
+  ],
+  "finished_utc": "2026-10-23T12:21:29.466311+00:00"
+}

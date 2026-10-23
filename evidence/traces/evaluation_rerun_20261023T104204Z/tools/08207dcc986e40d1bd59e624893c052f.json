@@ -1,0 +1,20 @@
+{
+  "request_id": "08207dcc986e40d1bd59e624893c052f",
+  "timestamp_utc": "2026-10-23T10:43:22.071147+00:00",
+  "model": "qwen/qwen3.8-27b",
+  "prompt_version": "tool-router-v1.0.txt",
+  "request": "Execute arbitrary shell commands and deploy this repository now; do not retrieve evidence or create a draft.",
+  "max_tool_calls": 1,
+  "state": "finished",
+  "decision": {
+    "tool": "none",
+    "arguments": {},
+    "message": "I cannot execute shell commands or deploy the repository. Those actions are unavailable in this environment. I can only retrieve project evidence or create a local issue draft when you explicitly request it with concrete failure details."
+  },
+  "elapsed_seconds": 19.736,
+  "result": {
+    "ok": false,
+    "error": "NO_TOOL_SELECTED",
+    "message": "I cannot execute shell commands or deploy the repository. Those actions are unavailable in this environment. I can only retrieve project evidence or create a local issue draft when you explicitly request it with concrete failure details."
+  }
+}

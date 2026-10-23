@@ -1,0 +1,258 @@
+[
+  {
+    "utc": "2026-10-23T10:29:32.075396+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "2",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "940",
+      "x-ratelimit-remaining-tokens": "7392",
+      "x-ratelimit-reset-requests": "1h26m24s",
+      "x-ratelimit-reset-tokens": "36.48s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 608, Requested 423. Please try again in 1.859999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 4.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:31:16.456712+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "3",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "935",
+      "x-ratelimit-remaining-tokens": "7512",
+      "x-ratelimit-reset-requests": "1h33m36s",
+      "x-ratelimit-reset-tokens": "29.28s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 488, Requested 546. Please try again in 2.04s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 5.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:32:01.855044+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "29",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "933",
+      "x-ratelimit-remaining-tokens": "7305",
+      "x-ratelimit-reset-requests": "1h36m28.8s",
+      "x-ratelimit-reset-tokens": "41.699s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 695, Requested 786. Please try again in 28.86s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 31.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:33:13.284169+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "13",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "931",
+      "x-ratelimit-remaining-tokens": "7314",
+      "x-ratelimit-reset-requests": "1h39m21.6s",
+      "x-ratelimit-reset-tokens": "41.16s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 686, Requested 530. Please try again in 12.96s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 15.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:33:49.295890+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "21",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "930",
+      "x-ratelimit-remaining-tokens": "7301",
+      "x-ratelimit-reset-requests": "1h40m48s",
+      "x-ratelimit-reset-tokens": "41.94s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 699, Requested 642. Please try again in 20.46s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 23.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:34:32.653497+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "27",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "929",
+      "x-ratelimit-remaining-tokens": "7351",
+      "x-ratelimit-reset-requests": "1h42m14.4s",
+      "x-ratelimit-reset-tokens": "38.94s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 649, Requested 791. Please try again in 26.4s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 29.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:36:22.348787+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "11",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "925",
+      "x-ratelimit-remaining-tokens": "7301",
+      "x-ratelimit-reset-requests": "1h48m0s",
+      "x-ratelimit-reset-tokens": "41.94s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 699, Requested 484. Please try again in 10.98s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 13.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:36:56.406069+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "18",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "924",
+      "x-ratelimit-remaining-tokens": "7612",
+      "x-ratelimit-reset-requests": "1h49m26.4s",
+      "x-ratelimit-reset-tokens": "23.28s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 388, Requested 900. Please try again in 17.279999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 20.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:37:57.072281+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "36",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "922",
+      "x-ratelimit-remaining-tokens": "7307",
+      "x-ratelimit-reset-requests": "1h52m19.2s",
+      "x-ratelimit-reset-tokens": "41.58s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 693, Requested 900. Please try again in 35.58s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 38.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:38:55.544923+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "2",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "921",
+      "x-ratelimit-remaining-tokens": "7645",
+      "x-ratelimit-reset-requests": "1h53m45.6s",
+      "x-ratelimit-reset-tokens": "21.299s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 355, Requested 672. Please try again in 1.62s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 4.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:39:19.979391+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "17",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "920",
+      "x-ratelimit-remaining-tokens": "7357",
+      "x-ratelimit-reset-requests": "1h55m12s",
+      "x-ratelimit-reset-tokens": "38.58s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 643, Requested 635. Please try again in 16.68s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 19.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:39:59.381459+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "12",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "919",
+      "x-ratelimit-remaining-tokens": "7441",
+      "x-ratelimit-reset-requests": "1h56m38.4s",
+      "x-ratelimit-reset-tokens": "33.54s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 559, Requested 635. Please try again in 11.64s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 14.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:40:13.766320+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "1",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "919",
+      "x-ratelimit-remaining-tokens": "7680",
+      "x-ratelimit-reset-requests": "1h56m38.4s",
+      "x-ratelimit-reset-tokens": "19.2s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 320, Requested 694. Please try again in 840ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 3,
+    "attempt": 2
+  },
+  {
+    "utc": "2026-10-23T10:40:57.265991+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "3",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "917",
+      "x-ratelimit-remaining-tokens": "7621",
+      "x-ratelimit-reset-requests": "1h59m31.2s",
+      "x-ratelimit-reset-tokens": "22.74s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 379, Requested 669. Please try again in 2.88s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 5.0,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:41:22.642708+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "1",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "916",
+      "x-ratelimit-remaining-tokens": "7659",
+      "x-ratelimit-reset-requests": "2h0m57.6s",
+      "x-ratelimit-reset-tokens": "20.46s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 341, Requested 669. Please try again in 600ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 3,
+    "attempt": 1
+  },
+  {
+    "utc": "2026-10-23T10:41:46.009431+00:00",
+    "status": 429,
+    "headers": {
+      "retry-after": "2",
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "915",
+      "x-ratelimit-remaining-tokens": "7606",
+      "x-ratelimit-reset-requests": "2h2m24s",
+      "x-ratelimit-reset-tokens": "23.64s"
+    },
+    "provider_message": "{\"error\":{\"message\":\"Rate limit reached for model `qwen/qwen3.8-27b` in organization `org_01m51zs59gepmrx5a6rv43cgx1` service tier `on_demand` on output tokens per minute (OTPM): Limit 1000, Used 394, Requested 635. Please try again in 1.74s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing\",\"type\":\"tokens\",\"code\":\"rate_limit_exceeded\"}}\n",
+    "wait_seconds": 4.0,
+    "attempt": 1
+  }
+]

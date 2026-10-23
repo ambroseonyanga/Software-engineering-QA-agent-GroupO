@@ -1,0 +1,27 @@
+{
+  "run_utc": "2026-10-23T10:07:50.738503+00:00",
+  "tests_run": 66,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "method": "Offline regression; model transport scripted by the existing tests. Original evidence destinations redirected.",
+  "source_hashes": {
+    "src/agent.py": "c4c8d9062c693550ec6ea80b9068e4934374d471962685329bf72e5a5bedad6f",
+    "src/agent_contracts.py": "90e7842e74c00e089a60231e48dac9595bda30c8e24a3cdf715baa1463df79fe",
+    "src/app.py": "869cd3bd879f93677dbef979966dcb0a74217846bcc0c2cd575b7207d0ea4c30",
+    "src/budgetme_target.py": "bde5bfa644dab0df804de407df3d2073d54a68dd8561ff9593e7b3d6a88e95a3",
+    "src/memory_service.py": "3b56ce6cafdb018f126a5abf1321472ac97d662a9792869f9fef6c43bd08ff9f",
+    "src/model_service.py": "9857eabfdc9a1fd117a1ad7d30ad74e095b907f0cbe506dd34f32f9e24a4f94e",
+    "src/output_format.py": "685f03c9f92d157e58245ea31703ae71ec67801823e3917ea11caf7c2c09d4c0",
+    "src/qa_service.py": "4a66145b63cf212fc6c5e5d8bf600834944fa95370c1f8ebece982d69775b564",
+    "src/rag_service.py": "f92a13068a491039182475b85ff835b892223abc33afa2ee764885be8ba7dd99",
+    "src/requirement_extraction.py": "6677896f2872003789bd90f799e9249ac95d9153827fa4935779a3d3ff0b78c8",
+    "src/tool_contracts.py": "0b99560d0cd2c9d5bbe0361a0f4ea063c43dcfa19fa90c460ad43de989060e2f",
+    "src/tool_router.py": "0c5945c8808a6c06615a2a1c61bfad2be768de37e9c013074153521f51a65ae7",
+    "src/tool_service.py": "220b78dd9fc04ed4653a843e5dff14555e37572af1a4e63c2a40a069f682dcf0",
+    "src/workflow_report.py": "7cbdd8fc246760dfe83a3a464c5d30e9dc2b6fb74fc601911d081cbe61b34969",
+    "src/workflow_routes.py": "5e99f6aeecac91b16c9b23cd7aab04cf7c3f5f1db76634d0eee487d952c4e3f9",
+    "src/workflow_runner.py": "8ca77a06284ab0efe79a2ce388aca1eec571217bf817fdd8b9bf0a4b48df9412",
+    "src/workflow_service.py": "6c1ffcaf828b19700ff08709e998215e63ea2741d14da2a572d9ede6ba6ba77a"
+  }
+}

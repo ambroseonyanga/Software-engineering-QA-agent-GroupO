@@ -9,7 +9,7 @@
 
 Week 5 kept working state within a run and saved separate audit traces. Week 6 adds one justified case of **persistent memory**: a **triage-run history store** that lets the agent and operator find earlier reports for the same test. These are reported failures, not independently executed test results.
 
-This document defines what is stored, why, how it is structured, who can access it, and when it is deleted.
+We describe what we store, why we store it, its structure, access rules and deletion policy in this note.
 
 ---
 
@@ -22,7 +22,7 @@ This document defines what is stored, why, how it is structured, who can access 
 | **Run history store** | Cross-run, persistent | `memory/run_history.sqlite3` (new, Week 6) | Week 6 |
 | **Known-flaky-test register** | Proposed, not implemented | Proposed `memory/known_flaky_tests.json` | Deferred |
 
-The audit trace already existed from Week 5. The SQLite store is the implemented Week 6 addition. The original flaky-register proposal is retained in section 4.2 for context.
+We kept the audit trace from Week 5 and added the SQLite store in Week 6. The original flaky-register proposal is retained in section 4.2 for context.
 
 ---
 
@@ -90,7 +90,7 @@ A SQLite `runs` table stores the run ID, test identifier, timestamp and a JSON s
 
 ### 4.2 Proposed known-flaky-test register (not implemented)
 
-The original design proposed a JSON object at `memory/known_flaky_tests.json`, keyed by `failed_test`, with entries managed only by a **human operator**. This remains a proposal; the current application neither creates nor reads this file. The original illustrative structure is retained below:
+We originally proposed a JSON object at `memory/known_flaky_tests.json`, keyed by `failed_test`, with entries managed only by a **human operator**. This remains a proposal; the current application neither creates nor reads this file. The original illustrative structure is retained below:
 
 ```json
 {
@@ -202,7 +202,7 @@ Current verification: evidence/traces/offline_regression_20261022.json and evide
 
 To satisfy the Week 6 "implement one external integration OR document one project capability as an MCP-style interface" requirement, the **run history query capability** is documented as an MCP-style tool interface below.
 
-This is a specification of how an external client (e.g., a CI system or another agent) could call the QA agent's memory query capability if it were exposed. It is not yet implemented as a live MCP server; it is a documented interface.
+We specify how an external client (e.g., a CI system or another agent) could call the QA agent's memory query capability if it were exposed. It is not yet implemented as a live MCP server; it is a documented interface.
 
 The Python capability is implemented in `src/memory_service.py`, with a local `GET /api/history` adapter. The schema below describes successful responses. Invalid inputs return `ok: false` with `VALIDATION_ERROR` (HTTP 400); unavailable storage returns `SERVICE_UNAVAILABLE` (HTTP 503). No matches return HTTP 200 with zero count, null last outcome and an empty `runs` array. See the [interface specification](Week6_Interface_Specification.docx) for the complete boundary.
 
@@ -282,6 +282,6 @@ Query access performs housekeeping: it initialises an absent store and prunes ex
 
 Updated 22 October 2026. Current offline regression passed 66 checks. Live opt-in memory traces completed twice, with the second run receiving prior_report_count=1 while still retrieving target evidence. Deleting the two summaries returned the retained count to zero. See evidence/final/README.md for exact trace paths. The demonstration reopened stores within one process; it is not a process-restart test.
 
-The project failure-analysis route explicitly uses use_history=False. It saves the current summary but does not consult prior summaries. The standalone triage path supports opt-in reuse. Neither path lets memory authorize execution or skip fresh retrieval.
+Our project failure-analysis route explicitly uses use_history=False. It saves the current summary but does not consult prior summaries. The standalone triage path supports opt-in reuse. Neither path lets memory authorize execution or skip fresh retrieval.
 
 Further verification on 22 October 2026: the scenario retest completed two opt-in runs, and a separately started Python process read the stored exact-identifier summary between runs. The second agent run received prior_report_count=1 and performed fresh retrieval. See evidence/traces/final_evaluation_20261022T174959Z/verification.json. This verifies cross-process summary persistence, not a restart of the complete web application.

@@ -1,0 +1,838 @@
+{
+  "method": "AI-assisted comparison against the saved expected_behavior per requirement. Review considers unsupported expected outcomes, coverage, contradictions and usable fixtures. Prompt outputs are proposals, not executed product tests.",
+  "initial_execution_counts": {
+    "COMPLETED": 29,
+    "ERROR": 1
+  },
+  "counts_by_version": {
+    "1.0": {
+      "FAIL": 6,
+      "PARTIAL": 2,
+      "PASS": 2
+    },
+    "1.1": {
+      "FAIL": 2,
+      "PARTIAL": 5,
+      "PASS": 3
+    },
+    "1.2": {
+      "PARTIAL": 2,
+      "FAIL": 2,
+      "PASS": 6
+    }
+  },
+  "cases": [
+    {
+      "id": "TC01",
+      "category": "Functional",
+      "requirement": "An active registered user requests a password reset. Send a single-use link to their verified email. The link is valid for 15 minutes and expires at 15 minutes. A valid link lets the user set a new password. After success, the old password no longer works and the user must log in again.",
+      "expected_behavior": "Cover link delivery, a valid reset, expiry just before and at 15 minutes, reuse after success, rejection of the old password and no automatic login. Ask about password rules if needed; do not invent them.",
+      "prompt_version": "1.0",
+      "result": {
+        "text": "Requirement note\nThe requirement is sufficiently clear for testing the core password reset flow, including link validity, expiration, and post-reset authentication behavior. No major gaps prevent proposing candidate tests.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result |\n| :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Valid link used within time limit | User clicks a valid reset link sent to their verified email and submits a new password within 15 minutes. | New password is set successfully; old password no longer works; user is logged out and must log in again. |\n| TC-02 | Negative | Expired link used | User clicks a reset link after 15 minutes have passed since it was sent. | System rejects the link as expired; no password change occurs; user is prompted to request a new reset link. |\n| TC-03 | Boundary | Link used at exact expiration | User submits a new password at exactly 15 minutes and 0 seconds after link generation. | System rejects the link as expired (based on \"expires at 15 minutes\" interpretation); no password change occurs. |\n| TC-04 | Negative | Reuse of single-use link | User successfully resets password using a valid link, then attempts to use the same link again. | System rejects the link as already used; no password change occurs. |\n| TC-05 | Negative | Unverified email address | User requests a password reset for an account with an unverified email address. | System does not send a reset link (or sends a generic message not revealing account existence); no reset link is generated. |\n| TC-06 | Normal | Login with old password after reset | User attempts to log in with the old password immediately after successfully resetting it. | Login fails; system prompts for correct credentials. |\n| TC-07 | Normal | Login with new password after reset | User attempts to log in with the new password immediately after successfully resetting it. | Login succeeds; user is authenticated. |\n| TC-08 | Negative | Invalid email address | User requests a password reset using an email address not associated with any account. | System does not send a reset link; response does not reveal whether the email is registered. |\n\nQuestions, if needed\n- What is the exact behavior when a user requests a reset for an unverified email? Should the system send a verification email instead, or simply reject the request?\n- Is there a rate limit on how many reset links can be requested per user or IP address?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.004104032,
+          "prompt_tokens": 447,
+          "prompt_time": 0.040100337,
+          "completion_tokens": 545,
+          "completion_time": 1.129948738,
+          "total_tokens": 992,
+          "total_time": 1.170049075
+        },
+        "elapsed_seconds": 1.831,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 1.832,
+      "status": "FAIL",
+      "review_notes": "Adds unsupported outcomes for unverified or unregistered email addresses and response secrecy."
+    },
+    {
+      "id": "TC02",
+      "category": "Functional",
+      "requirement": "A guest can use a cart. Adding a new product sets quantity to 1; adding it again increases quantity by 1. Quantities are whole numbers from 1 to 10. Updating to 0 removes the product. Other invalid quantities are rejected without changing the cart. Total equals unit price times quantity, summed across items; no tax, shipping or discounts apply.",
+      "expected_behavior": "Cover guest access, first and repeat addition, quantity updates, removal at zero, invalid quantities and recalculated totals. Use labelled example prices with correct arithmetic. Do not require login.",
+      "prompt_version": "1.0",
+      "result": {
+        "text": "Requirement note\nThe requirement is sufficiently clear for testing core cart logic, though it lacks specific details on how \"invalid\" quantities (e.g., non-integers, negatives) are communicated to the user (error message vs. silent ignore).\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result |\n| :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Add new product | Add Product A (Unit Price: $10) | Cart contains Product A with Quantity 1; Total is $10. |\n| TC-02 | Normal | Add existing product | Add Product A again | Cart contains Product A with Quantity 2; Total is $20. |\n| TC-03 | Boundary | Max quantity limit | Set Product A quantity to 10 | Cart contains Product A with Quantity 10; Total is $100. |\n| TC-04 | Boundary | Exceed max quantity | Set Product A quantity to 11 | Quantity remains 10 (or previous valid value); Total unchanged; Invalid input rejected. |\n| TC-05 | Boundary | Min quantity limit | Set Product A quantity to 1 | Cart contains Product A with Quantity 1; Total is $10. |\n| TC-06 | Negative | Remove product via zero | Set Product A quantity to 0 | Product A is removed from cart; Total is $0 (or sum of remaining items). |\n| TC-07 | Negative | Invalid negative quantity | Set Product A quantity to -1 | Quantity remains unchanged; Total unchanged; Invalid input rejected. |\n| TC-08 | Negative | Invalid non-integer quantity | Set Product A quantity to 1.5 | Quantity remains unchanged; Total unchanged; Invalid input rejected. |\n| TC-09 | Normal | Multiple items total | Add Product A ($10, Qty 2) and Product B ($5, Qty 3) | Total is $35 ($20 + $15). |\n| TC-10 | Normal | Update quantity mid-cart | Change Product A quantity from 2 to 5 | Product A Quantity is 5; Total recalculated based on new quantity. |\n\nQuestions, if needed\n1. How should the system respond to invalid quantity inputs (e.g., -1, 11, 1.5)? Should it display a specific error message, or simply ignore the input?\n2. Is there a maximum limit on the number of distinct products in the cart?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.038316805,
+          "prompt_tokens": 459,
+          "prompt_time": 0.037945675,
+          "completion_tokens": 546,
+          "completion_time": 1.078029338,
+          "total_tokens": 1005,
+          "total_time": 1.115975013
+        },
+        "elapsed_seconds": 20.671,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 20.671,
+      "status": "PARTIAL",
+      "review_notes": "Covers cart arithmetic and quantity boundaries, but lacks an explicit guest-access check."
+    },
+    {
+      "id": "TC03",
+      "category": "Boundary",
+      "requirement": "An upload accepts PDF files only, with a maximum size of 5,000,000 bytes inclusive. Empty files are rejected. A rejected file must not be stored. Other file-validation rules are outside this requirement.",
+      "expected_behavior": "Cover a non-empty PDF below and exactly at the limit, a PDF one byte above it, an empty PDF and a non-PDF. Rejected files must not be stored. Do not invent MIME-detection methods or error wording.",
+      "prompt_version": "1.0",
+      "result": {
+        "text": "Requirement note\nThe requirement is sufficiently clear for testing file type, size, and empty file validation. The main gap is the specific error message or status code expected for rejections, which is not defined.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result |\n| :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Valid PDF within size limit | Upload a 100 KB PDF file | File is accepted and stored |\n| TC-02 | Boundary | PDF at maximum size | Upload a PDF file exactly 5,000,000 bytes in size | File is accepted and stored |\n| TC-03 | Boundary | PDF exceeding maximum size | Upload a PDF file 5,000,001 bytes in size | File is rejected and not stored |\n| TC-04 | Negative | Non-PDF file type | Upload a 100 KB .txt file | File is rejected and not stored |\n| TC-05 | Negative | Non-PDF file type | Upload a 100 KB .jpg file | File is rejected and not stored |\n| TC-06 | Negative | Empty PDF file | Upload a 0-byte file with .pdf extension | File is rejected and not stored |\n| TC-07 | Negative | Empty non-PDF file | Upload a 0-byte file with .txt extension | File is rejected and not stored |\n| TC-08 | Negative | Corrupted PDF | Upload a 100 KB file with .pdf extension but invalid PDF header | File is rejected and not stored (assuming content validation is part of \"PDF files only\") |\n\nQuestions, if needed\n1. What specific error message or HTTP status code should be returned for each rejection type (wrong type, too large, empty)?\n2. Does \"PDF files only\" imply content validation (checking magic bytes/header) or just file extension validation?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.038763663,
+          "prompt_tokens": 430,
+          "prompt_time": 0.034317005,
+          "completion_tokens": 423,
+          "completion_time": 0.867353238,
+          "total_tokens": 853,
+          "total_time": 0.901670243
+        },
+        "elapsed_seconds": 19.053,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 19.053,
+      "status": "FAIL",
+      "review_notes": "Adds PDF-header/content-validation rejection even though other validation rules are outside scope."
+    },
+    {
+      "id": "TC04",
+      "category": "Access control",
+      "requirement": "In a project, an owner may invite members and remove other members. A member may view the member list but cannot invite or remove anyone. An unauthorised invite or removal must leave membership unchanged. The owner cannot remove their own membership.",
+      "expected_behavior": "Cover owner permissions, member viewing, blocked member invite/removal, unchanged membership after denial and blocked owner self-removal. Do not prescribe an HTTP status or interface unless supplied.",
+      "prompt_version": "1.0",
+      "result": {
+        "text": "Requirement note\nThe requirement is sufficiently clear for testing core permission logic and state integrity. The main gap is the definition of \"unauthorised\" (e.g., does it include expired tokens or specific error codes?) and the expected system response (error message vs. silent failure) for denied actions.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result |\n| :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Owner invites a new member | Owner sends invite request for User B | User B is added to the member list with \"Member\" role |\n| TC-02 | Normal | Owner removes an existing member | Owner sends remove request for User C | User C is removed from the member list |\n| TC-03 | Normal | Member views member list | Member sends view list request | Member list is returned successfully |\n| TC-04 | Negative | Member attempts to invite | Member sends invite request for User D | Invite is rejected; membership list remains unchanged |\n| TC-05 | Negative | Member attempts to remove | Member sends remove request for User E | Removal is rejected; membership list remains unchanged |\n| TC-06 | Boundary | Owner attempts to remove self | Owner sends remove request for their own ID | Removal is rejected; owner remains in the member list |\n| TC-07 | Negative | Unauthorised user attempts invite | User with no role sends invite request | Invite is rejected; membership list remains unchanged |\n| TC-08 | Negative | Unauthorised user attempts remove | User with no role sends remove request | Removal is rejected; membership list remains unchanged |\n\nQuestions, if needed\n1. What is the specific expected system response (e.g., HTTP status code, error message) when an unauthorised action is attempted?\n2. Does \"unauthorised\" include scenarios where a valid member's session has expired, or only users without the required role?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.483786351,
+          "prompt_tokens": 431,
+          "prompt_time": 0.032622307,
+          "completion_tokens": 419,
+          "completion_time": 0.844149612,
+          "total_tokens": 850,
+          "total_time": 0.876771919
+        },
+        "elapsed_seconds": 20.131,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 20.132,
+      "status": "FAIL",
+      "review_notes": "Assumes an invitation immediately adds the invitee as a Member; invitation completion behavior was not supplied."
+    },
+    {
+      "id": "TC05",
+      "category": "State rules",
+      "requirement": "A booking starts as Pending. Only Pending bookings may be confirmed or cancelled. Confirming changes the state to Confirmed; cancelling changes it to Cancelled. Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state.",
+      "expected_behavior": "Cover both allowed transitions and both actions from each terminal state. Check that rejected actions leave the state unchanged. Do not add refund or notification behaviour.",
+      "prompt_version": "1.0",
+      "result": {
+        "text": "Requirement note\nThe requirement clearly defines the state machine transitions and rejection rules for Pending, Confirmed, and Cancelled states. No significant gaps affect the core logic testing.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result |\n| :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Confirm a pending booking | Booking state: Pending; Action: Confirm | State changes to Confirmed |\n| TC-02 | Normal | Cancel a pending booking | Booking state: Pending; Action: Cancel | State changes to Cancelled |\n| TC-03 | Negative | Confirm a confirmed booking | Booking state: Confirmed; Action: Confirm | Request rejected; State remains Confirmed |\n| TC-04 | Negative | Cancel a confirmed booking | Booking state: Confirmed; Action: Cancel | Request rejected; State remains Confirmed |\n| TC-05 | Negative | Confirm a cancelled booking | Booking state: Cancelled; Action: Confirm | Request rejected; State remains Cancelled |\n| TC-06 | Negative | Cancel a cancelled booking | Booking state: Cancelled; Action: Cancel | Request rejected; State remains Cancelled |",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.070327793,
+          "prompt_tokens": 431,
+          "prompt_time": 0.037130541,
+          "completion_tokens": 258,
+          "completion_time": 0.614959867,
+          "total_tokens": 689,
+          "total_time": 0.652090408
+        },
+        "elapsed_seconds": 23.741,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 23.742,
+      "status": "PASS",
+      "review_notes": "Covers both allowed transitions and both actions from each terminal state while preserving state after rejection."
+    },
+    {
+      "id": "TC06",
+      "category": "Missing procedure",
+      "requirement": "A staff member can download an existing invoice as a PDF. The PDF must show the same invoice number and total as the stored invoice. The interface, download procedure and storage location will be supplied later.",
+      "expected_behavior": "Propose high-level download and content checks with a staff member and existing invoice as preconditions. Retain the known PDF and matching-value outcomes; ask for execution details without inventing buttons, URLs or paths.",
+      "prompt_version": "1.0",
+      "result": {
+        "text": "Requirement note\nThe core functional requirement is clear, but the specific UI interaction, file format details, and storage mechanism are missing, which limits the scope of interface-specific tests.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result |\n| :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Download valid invoice | Select an existing invoice with a known number and total; trigger download. | A PDF file is generated and downloaded successfully. |\n| TC-02 | Normal | Verify PDF content accuracy | Open the downloaded PDF from TC-01. | The PDF displays the exact same invoice number and total amount as the stored invoice record. |\n| TC-03 | Negative | Attempt to download non-existent invoice | Trigger download for an invoice ID that does not exist in the system. | The system returns an appropriate error message; no PDF is generated. |\n| TC-04 | Boundary | Invoice with maximum length fields | Download an invoice with the longest allowed invoice number and highest possible total value. | The PDF renders correctly without truncating the invoice number or total. |\n| TC-05 | Negative | Download invoice with null/missing total | Attempt to download an invoice record where the total field is null or undefined. | The system handles the missing data gracefully (e.g., shows \"N/A\" or errors out) without crashing; PDF content reflects the stored state. |\n\nQuestions, if needed\n1. What is the expected behavior if the invoice total is negative (e.g., credit notes)?\n2. Are there specific font or layout requirements for the PDF that need to be verified?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.175421416,
+          "prompt_tokens": 423,
+          "prompt_time": 0.036615015,
+          "completion_tokens": 353,
+          "completion_time": 0.717159442,
+          "total_tokens": 776,
+          "total_time": 0.753774457
+        },
+        "elapsed_seconds": 20.224,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 20.225,
+      "status": "FAIL",
+      "review_notes": "Adds unsupported missing-invoice, maximum-field and null-total behavior beyond the supported download/content outcomes."
+    },
+    {
+      "id": "TC07",
+      "category": "Missing rule",
+      "requirement": "A user can submit an expense claim with an amount and receipt. A positive amount and attached receipt are required; otherwise reject the claim without storing it. Valid claims are stored as Pending. Treatment of a second submission with the same receipt has not been decided.",
+      "expected_behavior": "Cover valid Pending storage, non-positive amounts and missing receipts with no storage. Ask what should happen to duplicate receipts; do not prescribe rejection or acceptance for duplicates.",
+      "prompt_version": "1.0",
+      "result": {
+        "text": "Requirement note\nThe requirement is sufficiently clear for testing validation logic and state transitions, but the handling of duplicate receipts is undefined, preventing tests for that specific scenario.\n\nCandidate tests\n| Test ID | Test type | Scenario | Input or action | Expected result |\n| :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Valid claim submission | Submit claim with amount > 0 and valid receipt attached | Claim is stored with status \"Pending\" |\n| TC-02 | Negative | Zero amount | Submit claim with amount = 0 and valid receipt attached | Claim is rejected and not stored |\n| TC-03 | Negative | Negative amount | Submit claim with amount < 0 and valid receipt attached | Claim is rejected and not stored |\n| TC-04 | Negative | Missing receipt | Submit claim with amount > 0 and no receipt attached | Claim is rejected and not stored |\n| TC-05 | Boundary | Minimum positive amount | Submit claim with smallest valid positive amount (e.g., 0.01) and valid receipt | Claim is stored with status \"Pending\" |\n\nQuestions, if needed\nWhat is the expected behavior when a user submits a second claim using the same receipt ID? Should it be rejected, allowed, or flagged for review?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.036480853,
+          "prompt_tokens": 434,
+          "prompt_time": 0.035947603,
+          "completion_tokens": 276,
+          "completion_time": 0.556385412,
+          "total_tokens": 710,
+          "total_time": 0.592333015
+        },
+        "elapsed_seconds": 19.684,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 19.685,
+      "status": "PARTIAL",
+      "review_notes": "Covers valid/invalid claims and asks about duplicates, but describes 0.01 as an example of the smallest valid positive amount without a supplied granularity rule."
+    },
+    {
+      "id": "TC08",
+      "category": "Conflicting rules",
+      "requirement": "Two current documents describe report access. Requirement A says only managers may download monthly reports. Requirement B says all signed-in users may download them. No precedence is specified. Both documents agree that signed-out users must be denied access.",
+      "expected_behavior": "Test manager access and signed-out denial where the sources agree. Identify the conflict for signed-in non-managers and ask which rule applies. Leave that outcome unresolved rather than choosing a document.",
+      "prompt_version": "1.0",
+      "result": {
+        "text": "**Requirement note**\nThe requirement is insufficiently clear for testing because there is a direct conflict between Requirement A and Requirement B regarding who can download reports, with no specified precedence. The only unambiguous behavior is that signed-out users must be denied access.\n\n**Candidate tests**\n\n| Test ID | Test type | Scenario | Input or action | Expected result |\n| :--- | :--- | :--- | :--- | :--- |\n| TC-001 | Negative | Signed-out user attempts download | User is not authenticated; clicks \"Download Monthly Report\" | Access is denied; user is prompted to sign in or receives an error message. |\n| TC-002 | Normal | Manager attempts download (per Req A) | User is authenticated as a Manager; clicks \"Download Monthly Report\" | Report downloads successfully. |\n| TC-003 | Normal | Non-manager signed-in user attempts download (per Req B) | User is authenticated as a standard user (non-manager); clicks \"Download Monthly Report\" | Report downloads successfully. |\n| TC-004 | Boundary | User with no role attempts download | User is authenticated but has no specific role assigned; clicks \"Download Monthly Report\" | Access is denied (assuming \"signed-in\" implies valid role, or clarify if role-less users are allowed). |\n\n**Questions, if needed**\n1. Which requirement takes precedence: Requirement A (Managers only) or Requirement B (All signed-in users)?\n2. Are there any specific roles other than \"Manager\" that should be explicitly allowed or denied?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.042822451,
+          "prompt_tokens": 428,
+          "prompt_time": 0.033607411,
+          "completion_tokens": 329,
+          "completion_time": 0.651931305,
+          "total_tokens": 757,
+          "total_time": 0.685538716
+        },
+        "elapsed_seconds": 20.132,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 20.133,
+      "status": "FAIL",
+      "review_notes": "Provides a definite signed-in non-manager download outcome despite the unresolved access-rule conflict."
+    },
+    {
+      "id": "TC09",
+      "category": "Performance",
+      "requirement": "In staging with 10,000 seeded products, run 100 concurrent virtual users for 10 minutes after a 2-minute warm-up. Each user sends one catalogue-search request every 5 seconds. During the measured 10 minutes, the 95th-percentile response time must be at most 800 ms and fewer than 1% of requests may fail.",
+      "expected_behavior": "Preserve the dataset, concurrency, request interval, warm-up and measured duration. Use p95 <= 800 ms and failure rate < 1%, not averages or altered boundaries. Ask for endpoint and failure definition if absent. Do not claim measured results.",
+      "prompt_version": "1.0",
+      "result": {
+        "text": "Requirement note\nThe requirement is sufficiently clear for testing performance metrics and load parameters. The main gap is the definition of \"failure\" (e.g., HTTP 5xx, timeout, or specific error codes) and the exact search query parameters used by the virtual users.\n\nCandidate tests\n| Test ID | Test type | Scenario | Input or action | Expected result |\n| :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Performance | 95th-percentile response time compliance | Run 100 concurrent users for 10 minutes (after 2-min warm-up) with 1 request per user every 5 seconds against 10,000 seeded products. | The 95th-percentile response time is \u00e2\u2030\u00a4 800 ms. |\n| TC-02 | Reliability | Request failure rate compliance | Execute the same load profile as TC-01. | Fewer than 1% of total requests result in a failure (e.g., HTTP 5xx or timeout). |\n| TC-03 | Boundary | Warm-up exclusion verification | Monitor system metrics during the first 2 minutes and the subsequent 10 minutes. | The 2-minute warm-up period is excluded from the calculation of the 95th-percentile response time and failure rate. |\n| TC-04 | Negative | System stability under sustained load | Observe system resource usage (CPU, memory, DB connections) during the 10-minute measured period. | No resource exhaustion, crashes, or service interruptions occur; the system remains stable throughout the test. |\n\nQuestions, if needed\n1. What specific HTTP status codes or error conditions are defined as a \"failure\" for the <1% threshold?\n2. What specific search query parameters (e.g., keyword, category, pagination) should the virtual users use to ensure consistent load?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.047119828,
+          "prompt_tokens": 466,
+          "prompt_time": 0.041653924,
+          "completion_tokens": 398,
+          "completion_time": 0.851441105,
+          "total_tokens": 864,
+          "total_time": 0.893095029
+        },
+        "elapsed_seconds": 20.182,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 20.182,
+      "status": "FAIL",
+      "review_notes": "Preserves the stated load profile and thresholds but adds an unsupported absolute no-crashes/no-resource-exhaustion expectation."
+    },
+    {
+      "id": "TC10",
+      "category": "Insufficient evidence",
+      "requirement": "The checkout service should be reliable and easy to use. No workflows, measurable targets, implementation or execution evidence are supplied. Suggest what is needed to test it and say whether its quality can currently be confirmed.",
+      "expected_behavior": "Ask for checkout workflows, operating conditions, reliability targets and usability criteria. State that quality cannot yet be confirmed. Do not invent thresholds, payment methods, test results or an executable test table.",
+      "prompt_version": "1.0",
+      "result": {
+        "text": "Requirement note\nThe requirement is too vague to define specific test cases because it lacks measurable targets, functional specifications, and defined workflows. Quality cannot currently be confirmed as \"reliable\" and \"easy to use\" are subjective without objective criteria.\n\nCandidate tests\n| Test ID | Test type | Scenario | Input or action | Expected result |\n| :--- | :--- | :--- | :--- | :--- |\n| N/A | N/A | Insufficient information | N/A | N/A |\n\nQuestions, if needed\n1. What are the specific functional steps of the checkout workflow (e.g., cart review, payment method selection, confirmation)?\n2. What are the measurable targets for \"reliability\" (e.g., 99.9% uptime, <2s response time, 0% transaction failure rate)?\n3. What are the criteria for \"easy to use\" (e.g., maximum number of clicks, specific UI/UX guidelines, accessibility standards)?\n4. What are the supported payment methods and error handling requirements (e.g., card declined, network timeout)?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.365915852,
+          "prompt_tokens": 425,
+          "prompt_time": 0.03806909,
+          "completion_tokens": 228,
+          "completion_time": 0.523521819,
+          "total_tokens": 653,
+          "total_time": 0.561590909
+        },
+        "elapsed_seconds": 25.349,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 25.35,
+      "status": "PASS",
+      "review_notes": "States that quality cannot be confirmed and asks for workflows, conditions, reliability and usability criteria; example thresholds are posed as questions, not asserted requirements."
+    },
+    {
+      "id": "TC01",
+      "category": "Functional",
+      "requirement": "An active registered user requests a password reset. Send a single-use link to their verified email. The link is valid for 15 minutes and expires at 15 minutes. A valid link lets the user set a new password. After success, the old password no longer works and the user must log in again.",
+      "expected_behavior": "Cover link delivery, a valid reset, expiry just before and at 15 minutes, reuse after success, rejection of the old password and no automatic login. Ask about password rules if needed; do not invent them.",
+      "prompt_version": "1.1",
+      "result": {
+        "text": "Requirement note\nThe supplied information is sufficient to test the core password reset flow, including link validity, expiration, and post-reset authentication behavior. No major gaps prevent testing the stated rules.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Valid link used within time limit | 1. Active registered user requests reset.<br>2. User clicks the single-use link sent to verified email within 15 minutes.<br>3. User sets a new password. | The new password is set successfully. | Supported | \"A valid link lets the user set a new password.\" |\n| TC-02 | Normal | Authentication with new password | 1. User has successfully reset password via valid link.<br>2. User attempts to log in with the new password. | Login is successful. | Supported | \"A valid link lets the user set a new password.\" (Implies new password is the valid credential) |\n| TC-03 | Negative | Authentication with old password | 1. User has successfully reset password via valid link.<br>2. User attempts to log in with the old password. | Login fails; the old password no longer works. | Supported | \"After success, the old password no longer works\" |\n| TC-04 | Boundary | Link used exactly at 15 minutes | 1. User requests reset.<br>2. User clicks the link at exactly 15 minutes after generation. | The link is expired and cannot be used to set a new password. | Supported | \"The link is valid for 15 minutes and expires at 15 minutes.\" |\n| TC-05 | Negative | Link used after 15 minutes | 1. User requests reset.<br>2. User clicks the link at 15 minutes and 1 second after generation. | The link is expired and cannot be used to set a new password. | Supported | \"The link is valid for 15 minutes and expires at 15 minutes.\" |\n| TC-06 | Negative | Link used twice | 1. User requests reset.<br>2. User clicks the link and sets a new password successfully.<br>3. User attempts to click the same link again. | The link is invalid (single-use) and cannot be used to set a new password. | Supported | \"Send a single-use link\" |\n| TC-07 | Negative | Unverified email address | 1. User with an unverified email requests a password reset. | No reset link is sent (or request is rejected). | Needs clarification | Requirement states \"Send a single-use link to their verified email.\" It does not specify the behavior if the email is *not* verified (e.g., error message, silent failure, or blocking the request). |\n| TC-08 | Recommendation | Session invalidation | 1. User is logged in on Device A.<br>2. User resets password via link on Device B.<br>3. User attempts to perform an action on Device A. | The session on Device A is invalidated, and the user must log in again. | Recommendation | \"The user must log in again\" implies the previous session is no longer valid, but it is not explicitly stated that *all* existing sessions are terminated. This is a common security practice but not explicitly defined in the text. |\n\nQuestions, if needed\n1. For TC-07: What is the expected system behavior when a password reset is requested for an account with an unverified email address? Should the request be rejected with an error, or should it be silently ignored?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.004324282,
+          "prompt_tokens": 907,
+          "prompt_time": 0.076658104,
+          "completion_tokens": 799,
+          "completion_time": 1.602643331,
+          "total_tokens": 1706,
+          "total_time": 1.679301435
+        },
+        "elapsed_seconds": 20.804,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 20.805,
+      "status": "FAIL",
+      "review_notes": "Marks the unverified-email case as needing clarification but still assigns a definite no-link/rejection outcome; also omits the explicit just-before-expiry and no-automatic-login checks."
+    },
+    {
+      "id": "TC02",
+      "category": "Functional",
+      "requirement": "A guest can use a cart. Adding a new product sets quantity to 1; adding it again increases quantity by 1. Quantities are whole numbers from 1 to 10. Updating to 0 removes the product. Other invalid quantities are rejected without changing the cart. Total equals unit price times quantity, summed across items; no tax, shipping or discounts apply.",
+      "expected_behavior": "Cover guest access, first and repeat addition, quantity updates, removal at zero, invalid quantities and recalculated totals. Use labelled example prices with correct arithmetic. Do not require login.",
+      "prompt_version": "1.1",
+      "result": {
+        "text": "Requirement note\nThe supplied information clearly defines cart quantity logic, validation boundaries, and total calculation. The main gap is the specific behavior for \"invalid quantities\" other than 0 (e.g., negative numbers, decimals, or values >10), as the requirement states they are rejected but does not specify if the cart remains unchanged or if an error message is displayed.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| T1 | Normal | Add new product to empty cart | Add Product A (Unit Price: $10) | Product A is in cart with Quantity 1. Total is $10. | Supported | \"Adding a new product sets quantity to 1\"; \"Total equals unit price times quantity\" |\n| T2 | Normal | Add existing product to cart | Add Product A again (already in cart with Qty 1) | Product A Quantity becomes 2. Total is $20. | Supported | \"adding it again increases quantity by 1\" |\n| T3 | Boundary | Update quantity to minimum valid value | Update Product A Quantity to 1 | Product A Quantity remains 1. Total is $10. | Supported | \"Quantities are whole numbers from 1 to 10\" |\n| T4 | Boundary | Update quantity to maximum valid value | Update Product A Quantity to 10 | Product A Quantity becomes 10. Total is $100. | Supported | \"Quantities are whole numbers from 1 to 10\" |\n| T5 | Negative | Update quantity to 0 | Update Product A Quantity to 0 | Product A is removed from the cart. Total is $0. | Supported | \"Updating to 0 removes the product\" |\n| T6 | Negative | Update quantity to value > 10 | Update Product A Quantity to 11 | Quantity remains unchanged (e.g., stays at previous valid value). Total remains unchanged. | Supported | \"Other invalid quantities are rejected without changing the cart\" |\n| T7 | Negative | Update quantity to negative number | Update Product A Quantity to -1 | Quantity remains unchanged. Total remains unchanged. | Supported | \"Other invalid quantities are rejected without changing the cart\" |\n| T8 | Negative | Update quantity to non-integer | Update Product A Quantity to 1.5 | Quantity remains unchanged. Total remains unchanged. | Supported | \"Quantities are whole numbers\"; \"Other invalid quantities are rejected without changing the cart\" |\n| T9 | Normal | Calculate total with multiple items | Cart contains Product A (Qty 2, $10) and Product B (Qty 3, $5) | Total is $35 ($20 + $15). | Supported | \"Total equals unit price times quantity, summed across items\" |\n| T10 | Normal | No tax/shipping/discounts applied | Cart contains Product A (Qty 1, $10) | Total is exactly $10. No additional fees are added. | Supported | \"no tax, shipping or discounts apply\" |\n\nQuestions, if needed\n1. For T6, T7, and T8: Does the system provide a specific error message to the user when an invalid quantity is rejected, or is the rejection silent (only the cart state remains unchanged)?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.169544216,
+          "prompt_tokens": 919,
+          "prompt_time": 0.076356622,
+          "completion_tokens": 728,
+          "completion_time": 1.735310953,
+          "total_tokens": 1647,
+          "total_time": 1.811667575
+        },
+        "elapsed_seconds": 51.674,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 51.674,
+      "status": "PARTIAL",
+      "review_notes": "Covers quantities and arithmetic, but lacks an explicit guest-access check and the introductory note incorrectly says unchanged-cart behavior is unspecified."
+    },
+    {
+      "id": "TC03",
+      "category": "Boundary",
+      "requirement": "An upload accepts PDF files only, with a maximum size of 5,000,000 bytes inclusive. Empty files are rejected. A rejected file must not be stored. Other file-validation rules are outside this requirement.",
+      "expected_behavior": "Cover a non-empty PDF below and exactly at the limit, a PDF one byte above it, an empty PDF and a non-PDF. Rejected files must not be stored. Do not invent MIME-detection methods or error wording.",
+      "prompt_version": "1.1",
+      "result": {
+        "text": "Requirement note\nThe supplied information is sufficient to test file type, size, and empty file validation. The main gap is the specific behavior (e.g., error message, HTTP status) for rejected files, which is not defined.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Valid PDF within size limit | Upload a non-empty PDF file with size 1 byte | File is accepted and stored | Supported | \"An upload accepts PDF files only... maximum size of 5,000,000 bytes inclusive\" |\n| TC-02 | Boundary | PDF at maximum size | Upload a non-empty PDF file with size exactly 5,000,000 bytes | File is accepted and stored | Supported | \"maximum size of 5,000,000 bytes inclusive\" |\n| TC-03 | Boundary | PDF exceeding maximum size | Upload a non-empty PDF file with size 5,000,001 bytes | File is rejected and not stored | Supported | \"maximum size of 5,000,000 bytes inclusive\" and \"A rejected file must not be stored\" |\n| TC-04 | Negative | Non-PDF file | Upload a non-empty file with a valid extension other than PDF (e.g., .txt) | File is rejected and not stored | Supported | \"An upload accepts PDF files only\" |\n| TC-05 | Negative | Empty PDF file | Upload a PDF file with size 0 bytes | File is rejected and not stored | Supported | \"Empty files are rejected\" and \"A rejected file must not be stored\" |\n| TC-06 | Negative | Empty non-PDF file | Upload a non-PDF file with size 0 bytes | File is rejected and not stored | Supported | \"Empty files are rejected\" and \"A rejected file must not be stored\" |\n| TC-07 | Negative | Rejection behavior details | Upload any invalid file (e.g., .txt) | TBD - needs clarification | Needs clarification | Specific error message, HTTP status code, or user feedback for rejection is not defined |\n\nQuestions, if needed\n1. For TC-07: What specific error message, HTTP status code, or user interface feedback should be provided when a file is rejected?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.004182948,
+          "prompt_tokens": 890,
+          "prompt_time": 0.065124247,
+          "completion_tokens": 530,
+          "completion_time": 1.065380104,
+          "total_tokens": 1420,
+          "total_time": 1.130504351
+        },
+        "elapsed_seconds": 19.167,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 19.167,
+      "status": "PARTIAL",
+      "review_notes": "Covers the stated acceptance/rejection boundaries, but proposes a one-byte valid PDF fixture, which is not a realizable PDF; a genuine valid below-limit file is needed."
+    },
+    {
+      "id": "TC04",
+      "category": "Access control",
+      "requirement": "In a project, an owner may invite members and remove other members. A member may view the member list but cannot invite or remove anyone. An unauthorised invite or removal must leave membership unchanged. The owner cannot remove their own membership.",
+      "expected_behavior": "Cover owner permissions, member viewing, blocked member invite/removal, unchanged membership after denial and blocked owner self-removal. Do not prescribe an HTTP status or interface unless supplied.",
+      "prompt_version": "1.1",
+      "result": {
+        "text": "Requirement note\nThe supplied information clearly defines role-based permissions for inviting, removing, and viewing members, as well as specific constraints on self-removal and unauthorized actions. No major gaps prevent testing the core behaviors, though specific error handling details (e.g., specific error messages) are not defined.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Owner invites a new member | Owner initiates invite for User A | User A is added to the project member list | Supported | \"an owner may invite members\" |\n| TC-02 | Normal | Owner removes an existing member | Owner initiates removal for User B | User B is removed from the project member list | Supported | \"an owner may ... remove other members\" |\n| TC-03 | Normal | Member views the member list | Member accesses the member list view | The list of current project members is displayed | Supported | \"A member may view the member list\" |\n| TC-04 | Negative | Member attempts to invite a member | Member initiates invite for User C | Invite action is rejected; membership remains unchanged | Supported | \"cannot invite or remove anyone\"; \"unauthorised invite ... must leave membership unchanged\" |\n| TC-05 | Negative | Member attempts to remove a member | Member initiates removal for User D | Removal action is rejected; membership remains unchanged | Supported | \"cannot invite or remove anyone\"; \"unauthorised ... removal must leave membership unchanged\" |\n| TC-06 | Boundary | Owner attempts to remove their own membership | Owner initiates removal for themselves | Removal action is rejected; owner remains a member | Supported | \"The owner cannot remove their own membership\" |\n| TC-07 | Negative | Unauthorized user attempts to invite | Non-member (or unauthorized role) initiates invite | Invite action is rejected; membership remains unchanged | Supported | \"unauthorised invite ... must leave membership unchanged\" |\n| TC-08 | Negative | Unauthorized user attempts to remove | Non-member (or unauthorized role) initiates removal | Removal action is rejected; membership remains unchanged | Supported | \"unauthorised ... removal must leave membership unchanged\" |\n| TC-09 | Recommendation | Verify specific error feedback for unauthorized actions | Member attempts to invite/remove | System displays a clear error message indicating lack of permission | Recommendation | Specific error messages are not defined in the requirement; this is a common UX practice but not explicitly required. |\n\nQuestions, if needed\n1. For TC-09: What specific error messages or user feedback should be displayed when an unauthorized invite or removal is attempted?\n2. For TC-07/TC-08: Does \"unauthorized\" include users who are not members at all, or only members with insufficient permissions? (The requirement implies both, but clarifying the scope of \"unauthorized\" ensures test coverage is precise.)",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.036800684,
+          "prompt_tokens": 891,
+          "prompt_time": 0.071485787,
+          "completion_tokens": 642,
+          "completion_time": 1.271513412,
+          "total_tokens": 1533,
+          "total_time": 1.3429991989999999
+        },
+        "elapsed_seconds": 36.823,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 36.824,
+      "status": "FAIL",
+      "review_notes": "Treats an invitation as immediate membership creation, which is not specified."
+    },
+    {
+      "id": "TC05",
+      "category": "State rules",
+      "requirement": "A booking starts as Pending. Only Pending bookings may be confirmed or cancelled. Confirming changes the state to Confirmed; cancelling changes it to Cancelled. Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state.",
+      "expected_behavior": "Cover both allowed transitions and both actions from each terminal state. Check that rejected actions leave the state unchanged. Do not add refund or notification behaviour.",
+      "prompt_version": "1.1",
+      "result": {
+        "text": "Requirement note\nThe supplied information clearly defines the state transition rules for booking confirmation and cancellation. No major gaps exist for the core logic, though specific error handling details (e.g., specific error codes or messages) are not defined.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Confirm a Pending booking | Attempt to confirm a booking currently in `Pending` state | Booking state changes to `Confirmed` | Supported | \"Confirming changes the state to Confirmed\" |\n| TC-02 | Normal | Cancel a Pending booking | Attempt to cancel a booking currently in `Pending` state | Booking state changes to `Cancelled` | Supported | \"Cancelling changes it to Cancelled\" |\n| TC-03 | Negative | Confirm a Confirmed booking | Attempt to confirm a booking currently in `Confirmed` state | Request is rejected; booking state remains `Confirmed` | Supported | \"Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state\" |\n| TC-04 | Negative | Cancel a Confirmed booking | Attempt to cancel a booking currently in `Confirmed` state | Request is rejected; booking state remains `Confirmed` | Supported | \"Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state\" |\n| TC-05 | Negative | Confirm a Cancelled booking | Attempt to confirm a booking currently in `Cancelled` state | Request is rejected; booking state remains `Cancelled` | Supported | \"Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state\" |\n| TC-06 | Negative | Cancel a Cancelled booking | Attempt to cancel a booking currently in `Cancelled` state | Request is rejected; booking state remains `Cancelled` | Supported | \"Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state\" |\n| TC-07 | Boundary | Confirm a booking in an undefined state | Attempt to confirm a booking in a state other than `Pending`, `Confirmed`, or `Cancelled` (if such states exist) | TBD - needs clarification | Needs clarification | The requirement only defines behavior for `Pending`, `Confirmed`, and `Cancelled`. It does not specify if other states exist or how they should be handled. |\n| TC-08 | Recommendation | Verify idempotency of state retention | Attempt to confirm a `Confirmed` booking multiple times | Each request is rejected, and the state remains `Confirmed` after each attempt | Recommendation | Suggested to ensure consistent rejection behavior over multiple attempts, though single rejection is already covered in TC-03. |\n\nQuestions, if needed\n1. For TC-07: Are there any other booking states (e.g., `Expired`, `NoShow`) defined in the system? If so, what is the expected behavior when attempting to confirm or cancel them?\n2. For all Negative tests (TC-03 to TC-06): What specific error response (e.g., HTTP status code, error message) should be returned when a request is rejected?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.004237332,
+          "prompt_tokens": 891,
+          "prompt_time": 0.074230952,
+          "completion_tokens": 672,
+          "completion_time": 1.375517389,
+          "total_tokens": 1563,
+          "total_time": 1.449748341
+        },
+        "elapsed_seconds": 43.38,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 43.38,
+      "status": "PASS",
+      "review_notes": "Covers all six stated state transitions/rejections; extra-state behavior remains explicitly unresolved."
+    },
+    {
+      "id": "TC06",
+      "category": "Missing procedure",
+      "requirement": "A staff member can download an existing invoice as a PDF. The PDF must show the same invoice number and total as the stored invoice. The interface, download procedure and storage location will be supplied later.",
+      "expected_behavior": "Propose high-level download and content checks with a staff member and existing invoice as preconditions. Retain the known PDF and matching-value outcomes; ask for execution details without inventing buttons, URLs or paths.",
+      "prompt_version": "1.1",
+      "result": {
+        "text": "Requirement note\nThe core behavior of downloading an invoice as a PDF with matching data is defined, but the interface, download procedure, and storage location are explicitly deferred. This limits the scope of testable interactions to the data integrity of the generated file.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Download a valid existing invoice | Select an existing invoice with a known number and total; initiate download | A PDF file is generated and downloaded. The PDF contains the exact same invoice number and total as the stored invoice record. | Supported | \"The PDF must show the same invoice number and total as the stored invoice.\" |\n| TC-02 | Boundary | Download an invoice with maximum length fields | Select an invoice with the longest allowed invoice number and highest possible total; initiate download | The PDF is generated successfully. The invoice number and total are displayed in full without truncation or formatting errors. | Recommendation | Common practice suggests testing boundary values to ensure rendering integrity, but specific field limits are not supplied. |\n| TC-03 | Negative | Attempt to download a non-existent invoice | Attempt to trigger a download for an invoice ID that does not exist in the system | TBD - needs clarification | Needs clarification | The requirement only specifies behavior for \"existing\" invoices. The expected error handling or response for missing invoices is not defined. |\n| TC-04 | Normal | Verify PDF format validity | Download a valid invoice | The downloaded file is a valid PDF file that can be opened by standard PDF readers. | Recommendation | While implied by \"download as a PDF\", explicit validation of file format integrity is a standard quality check not explicitly detailed in the requirement. |\n\nQuestions, if needed\n1. For TC-03: What is the expected system behavior (e.g., error message, 404 response) when a staff member attempts to download an invoice that does not exist?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.214371756,
+          "prompt_tokens": 883,
+          "prompt_time": 0.079303624,
+          "completion_tokens": 434,
+          "completion_time": 0.853652511,
+          "total_tokens": 1317,
+          "total_time": 0.932956135
+        },
+        "elapsed_seconds": 48.549,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 48.549,
+      "status": "PARTIAL",
+      "review_notes": "Keeps the supported download and matching-value outcomes, but omits the staff precondition and does not request the deferred execution details."
+    },
+    {
+      "id": "TC07",
+      "category": "Missing rule",
+      "requirement": "A user can submit an expense claim with an amount and receipt. A positive amount and attached receipt are required; otherwise reject the claim without storing it. Valid claims are stored as Pending. Treatment of a second submission with the same receipt has not been decided.",
+      "expected_behavior": "Cover valid Pending storage, non-positive amounts and missing receipts with no storage. Ask what should happen to duplicate receipts; do not prescribe rejection or acceptance for duplicates.",
+      "prompt_version": "1.1",
+      "result": {
+        "text": "Requirement note\nThe requirements clearly define validation rules for amount and receipt, as well as the storage state for valid claims. The main gap is the undefined behavior for duplicate receipt submissions.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Normal | Valid expense claim submission | Submit claim with positive amount (e.g., 50.00) and attached receipt | Claim is stored with status \"Pending\" | Supported | \"Valid claims are stored as Pending\"; \"A positive amount and attached receipt are required\" |\n| TC-02 | Negative | Claim with zero amount | Submit claim with amount 0.00 and attached receipt | Claim is rejected and not stored | Supported | \"A positive amount... are required; otherwise reject the claim without storing it\" |\n| TC-03 | Negative | Claim with negative amount | Submit claim with amount -10.00 and attached receipt | Claim is rejected and not stored | Supported | \"A positive amount... are required; otherwise reject the claim without storing it\" |\n| TC-04 | Negative | Claim without receipt | Submit claim with positive amount (e.g., 20.00) and no receipt attached | Claim is rejected and not stored | Supported | \"A positive amount and attached receipt are required; otherwise reject the claim without storing it\" |\n| TC-05 | Boundary | Claim with minimal positive amount | Submit claim with smallest valid positive amount (e.g., 0.01) and attached receipt | Claim is stored with status \"Pending\" | Supported | \"A positive amount... are required\"; \"Valid claims are stored as Pending\" |\n| TC-06 | Negative | Duplicate receipt submission | Submit a second claim using the same receipt as a previously stored valid claim | TBD - needs clarification | Needs clarification | \"Treatment of a second submission with the same receipt has not been decided\" |\n\nQuestions, if needed\n1. For TC-06: What is the expected behavior when a user submits a claim with a receipt that has already been used in a previous claim? Should it be rejected, allowed, or flagged?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.021087292,
+          "prompt_tokens": 894,
+          "prompt_time": 0.063158718,
+          "completion_tokens": 484,
+          "completion_time": 1.050668703,
+          "total_tokens": 1378,
+          "total_time": 1.113827421
+        },
+        "elapsed_seconds": 20.386,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 20.386,
+      "status": "PARTIAL",
+      "review_notes": "Covers the claim rules and leaves duplicates unresolved, but introduces a smallest-positive-amount fixture without a supplied granularity rule."
+    },
+    {
+      "id": "TC08",
+      "category": "Conflicting rules",
+      "requirement": "Two current documents describe report access. Requirement A says only managers may download monthly reports. Requirement B says all signed-in users may download them. No precedence is specified. Both documents agree that signed-out users must be denied access.",
+      "expected_behavior": "Test manager access and signed-out denial where the sources agree. Identify the conflict for signed-in non-managers and ask which rule applies. Leave that outcome unresolved rather than choosing a document.",
+      "prompt_version": "1.1",
+      "result": {
+        "text": "Requirement note\nThe supplied information contains a direct conflict regarding which signed-in users can download monthly reports, preventing a definite expected result for that specific behavior. Access rules for signed-out users are clearly defined and testable.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Negative | Signed-out user attempts to download monthly report | User is not authenticated; user clicks \"Download Monthly Report\" | Access is denied | Supported | Both Requirement A and Requirement B state signed-out users must be denied access. |\n| TC-02 | Normal | Manager attempts to download monthly report | User is authenticated as a manager; user clicks \"Download Monthly Report\" | Download is permitted | Needs clarification | Requirement A supports this, but Requirement B implies all signed-in users can download. Precedence between documents is missing. |\n| TC-03 | Normal | Non-manager signed-in user attempts to download monthly report | User is authenticated as a non-manager; user clicks \"Download Monthly Report\" | TBD - needs clarification | Needs clarification | Requirement B supports this, but Requirement A restricts access to managers only. Precedence between documents is missing. |\n\nQuestions, if needed\n1. Which document takes precedence for signed-in user access: Requirement A (managers only) or Requirement B (all signed-in users)? (Resolves TC-02 and TC-03)",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.016686833,
+          "prompt_tokens": 888,
+          "prompt_time": 0.079978485,
+          "completion_tokens": 325,
+          "completion_time": 0.6386016,
+          "total_tokens": 1213,
+          "total_time": 0.718580085
+        },
+        "elapsed_seconds": 20.888,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 20.888,
+      "status": "PARTIAL",
+      "review_notes": "Leaves signed-in non-manager access unresolved, but incorrectly treats agreed manager access as needing precedence clarification."
+    },
+    {
+      "id": "TC09",
+      "category": "Performance",
+      "requirement": "In staging with 10,000 seeded products, run 100 concurrent virtual users for 10 minutes after a 2-minute warm-up. Each user sends one catalogue-search request every 5 seconds. During the measured 10 minutes, the 95th-percentile response time must be at most 800 ms and fewer than 1% of requests may fail.",
+      "expected_behavior": "Preserve the dataset, concurrency, request interval, warm-up and measured duration. Use p95 <= 800 ms and failure rate < 1%, not averages or altered boundaries. Ask for endpoint and failure definition if absent. Do not claim measured results.",
+      "prompt_version": "1.1",
+      "execution_status": "COMPLETED",
+      "error": "ModelUnavailable: The model did not finish its response. No incomplete decision was executed.",
+      "elapsed_seconds": 2.377,
+      "result": {
+        "text": "Requirement note\nThe supplied information defines specific load, duration, and performance thresholds (95th percentile latency and error rate) for a catalogue search under concurrent load. The main gap is the definition of \"failure\" (e.g., HTTP status codes, timeouts) and the specific environment configuration details (hardware, network) which are not provided but are implied by the \"staging\" context.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| TC-01 | Performance | Measure 95th-percentile response time under load | 1. Seed 10,000 products in staging.<br>2. Start 100 concurrent virtual users.<br>3. Perform 2-minute warm-up.<br>4. Run for 10 minutes where each user sends 1 catalogue-search request every 5 seconds.<br>5. Record response times for all requests during the 10-minute measured period. | The 95th-percentile response time is at most 800 ms. | Supported | \"During the measured 10 minutes, the 95th-percentile response time must be at most 800 ms\" |\n| TC-02 | Reliability | Measure request failure rate under load | 1. Seed 10,000 products in staging.<br>2. Start 100 concurrent virtual users.<br>3. Perform 2-minute warm-up.<br>4. Run for 10 minutes where each user sends 1 catalogue-search request every 5 seconds.<br>5. Count total requests and failed requests during the 10-minute measured period. | Fewer than 1% of requests fail. | Needs clarification | \"fewer than 1% of requests may fail\" - Definition of \"fail\" is missing (e.g., HTTP 5xx, timeout, connection error). |\n| TC-03 | Load Configuration | Verify test execution parameters | 1. Configure load test tool with 100 users, 5s interval, 2m warm-up, 10m duration.<br>2. Execute test against staging with 10,000 seeded products. | The test executes with exactly 100 concurrent users, 2-minute warm-up, and 10-minute measurement phase. | Supported | \"run 100 concurrent virtual users for 10 minutes after a 2-minute warm-up... Each user sends one catalogue-search request every 5 seconds\" |\n\nQuestions, if needed\n1. For TC-02, what specific conditions constitute a \"failed\" request? (e.g., HTTP status >= 400, response time > X ms, connection timeout?)",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.085189028,
+          "prompt_tokens": 926,
+          "prompt_time": 0.067258412,
+          "completion_tokens": 608,
+          "completion_time": 1.2662987829999999,
+          "total_tokens": 1534,
+          "total_time": 1.333557195
+        },
+        "elapsed_seconds": 2.371,
+        "finish_reason": "stop"
+      },
+      "review_status": "REVIEW_PENDING",
+      "explicit_retry_source": "evidence/traces/evaluation_rerun_20261023T122127Z/baseline_retries.json",
+      "status": "PASS",
+      "review_notes": "Explicit 1000-token retry preserves the full load profile, p95 <= 800 ms and failure rate < 1%; requests the missing failure definition and claims no measurements."
+    },
+    {
+      "id": "TC10",
+      "category": "Insufficient evidence",
+      "requirement": "The checkout service should be reliable and easy to use. No workflows, measurable targets, implementation or execution evidence are supplied. Suggest what is needed to test it and say whether its quality can currently be confirmed.",
+      "expected_behavior": "Ask for checkout workflows, operating conditions, reliability targets and usability criteria. State that quality cannot yet be confirmed. Do not invent thresholds, payment methods, test results or an executable test table.",
+      "prompt_version": "1.1",
+      "result": {
+        "text": "Requirement note\nThe supplied information contains only general quality goals (\"reliable\" and \"easy to use\") without measurable criteria, specific workflows, or functional rules. Consequently, no specific test cases can be generated, and the system's quality cannot currently be confirmed.\n\nCandidate tests\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| N/A | N/A | No testable behaviour defined | N/A | N/A | Needs clarification | \"Reliable\" and \"easy to use\" are subjective quality goals lacking measurable criteria (e.g., uptime %, error rate, task completion time) and specific functional requirements. |\n\nQuestions, if needed\n1. What specific measurable criteria define \"reliable\" (e.g., 99.9% uptime, <1% error rate) and \"easy to use\" (e.g., task completion in <3 steps, <5 seconds load time)?\n2. What are the specific functional workflows or acceptance criteria for the checkout service (e.g., payment processing, inventory deduction, order confirmation)?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.016913608,
+          "prompt_tokens": 885,
+          "prompt_time": 0.062738916,
+          "completion_tokens": 249,
+          "completion_time": 0.53452932,
+          "total_tokens": 1134,
+          "total_time": 0.597268236
+        },
+        "elapsed_seconds": 33.033,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 33.033,
+      "status": "PASS",
+      "review_notes": "States quality cannot be confirmed, requests measurable criteria and workflows, and supplies no executable or measured result."
+    },
+    {
+      "id": "TC01",
+      "category": "Functional",
+      "requirement": "An active registered user requests a password reset. Send a single-use link to their verified email. The link is valid for 15 minutes and expires at 15 minutes. A valid link lets the user set a new password. After success, the old password no longer works and the user must log in again.",
+      "expected_behavior": "Cover link delivery, a valid reset, expiry just before and at 15 minutes, reuse after success, rejection of the old password and no automatic login. Ask about password rules if needed; do not invent them.",
+      "prompt_version": "1.2",
+      "result": {
+        "text": "Requirement note\nHigh-level tests can be proposed for the password reset flow, including link validity, expiration, and post-reset authentication behavior. The main gap is the specific mechanism for verifying the email address and the exact user interface steps for setting the new password.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| T01 | Functional | Reset password using a valid link | Precondition: An active registered user with a verified email requests a password reset. Action: User clicks the single-use link within 15 minutes and sets a new password. | The new password is set successfully. The old password no longer works. The user must log in again with the new password. | Supported | \"A valid link lets the user set a new password. After success, the old password no longer works and the user must log in again.\" Execution detail needed: Specific UI steps for entering the new password. |\n| T02 | Negative | Use a link after expiration | Precondition: A password reset link was sent 15 minutes ago. Action: User attempts to use the link at or after the 15-minute mark. | The link is invalid/expired. The user cannot set a new password via this link. | Supported | \"The link is valid for 15 minutes and expires at 15 minutes.\" Execution detail needed: How the system communicates the expiration to the user (e.g., error message). |\n| T03 | Negative | Reuse a single-use link | Precondition: A user successfully resets their password using a valid link. Action: The user attempts to use the same link again. | The link is invalid. The user cannot set a new password via this link. | Supported | \"Send a single-use link.\" Execution detail needed: How the system communicates that the link has already been used. |\n| T04 | Boundary | Use a link exactly at the 15-minute mark | Precondition: A password reset link was sent. Action: User attempts to use the link at exactly 15 minutes. | The link is expired/invalid. | Supported | \"The link is valid for 15 minutes and expires at 15 minutes.\" Execution detail needed: Precise timing mechanism and how \"at 15 minutes\" is defined (inclusive/exclusive). |\n| T05 | Functional | Verify email requirement | Precondition: A registered user with an unverified email requests a password reset. Action: User requests a password reset. | TBD - needs clarification | Needs clarification | Behaviour rule missing: The requirement states \"verified email\" but does not specify the behavior if the email is not verified (e.g., is the request rejected? Is a verification email sent first?). |\n| T06 | Recommendation | Check for multiple active links | Precondition: A user requests a password reset twice in quick succession. Action: User attempts to use the second link after the first has been used or expired. | Proposal requiring agreement: Only the most recent link should be valid, or all previous links should be invalidated. | Recommendation | Common practice suggests invalidating previous links, but the requirement only states \"single-use link\" without specifying behavior for multiple concurrent requests. |\n\nQuestions, if needed\n1. For T05: What is the expected behavior when a password reset is requested for an account with an unverified email address?\n2. For T06: Should requesting a new password reset invalidate any previously issued, unused reset links?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.017119881,
+          "prompt_tokens": 1226,
+          "prompt_time": 0.088886497,
+          "completion_tokens": 756,
+          "completion_time": 1.521767842,
+          "total_tokens": 1982,
+          "total_time": 1.6106543389999999
+        },
+        "elapsed_seconds": 41.245,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 41.246,
+      "status": "PARTIAL",
+      "review_notes": "Preserves single use, expiry and re-login rules, but omits an explicit just-before-15-minute boundary check."
+    },
+    {
+      "id": "TC02",
+      "category": "Functional",
+      "requirement": "A guest can use a cart. Adding a new product sets quantity to 1; adding it again increases quantity by 1. Quantities are whole numbers from 1 to 10. Updating to 0 removes the product. Other invalid quantities are rejected without changing the cart. Total equals unit price times quantity, summed across items; no tax, shipping or discounts apply.",
+      "expected_behavior": "Cover guest access, first and repeat addition, quantity updates, removal at zero, invalid quantities and recalculated totals. Use labelled example prices with correct arithmetic. Do not require login.",
+      "prompt_version": "1.2",
+      "result": {
+        "text": "Requirement note\nHigh-level tests can be proposed for cart quantity management and total calculation. The main gap is the specific interface or procedure for performing these actions, as the requirement describes logic but not UI steps.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| T01 | Functional | Add a new product to an empty cart | Precondition: Guest has an empty cart. Action: Add a new product to the cart. | The product is added to the cart with a quantity of 1. | Supported | \"Adding a new product sets quantity to 1\" |\n| T02 | Functional | Add an existing product to the cart | Precondition: Guest has a product in the cart with quantity 1. Action: Add the same product to the cart again. | The product quantity increases to 2. | Supported | \"adding it again increases quantity by 1\" |\n| T03 | Boundary | Update quantity to the maximum limit | Precondition: Guest has a product in the cart. Action: Update the quantity to 10. | The quantity is updated to 10. | Supported | \"Quantities are whole numbers from 1 to 10\" |\n| T04 | Boundary | Update quantity to the minimum limit | Precondition: Guest has a product in the cart with quantity > 1. Action: Update the quantity to 1. | The quantity is updated to 1. | Supported | \"Quantities are whole numbers from 1 to 10\" |\n| T05 | Negative | Update quantity to 0 | Precondition: Guest has a product in the cart. Action: Update the quantity to 0. | The product is removed from the cart. | Supported | \"Updating to 0 removes the product\" |\n| T06 | Negative | Update quantity to a value below the minimum | Precondition: Guest has a product in the cart. Action: Update the quantity to -1 (or any value < 1). | The quantity remains unchanged; the invalid input is rejected. | Supported | \"Other invalid quantities are rejected without changing the cart\" |\n| T07 | Negative | Update quantity to a value above the maximum | Precondition: Guest has a product in the cart. Action: Update the quantity to 11 (or any value > 10). | The quantity remains unchanged; the invalid input is rejected. | Supported | \"Other invalid quantities are rejected without changing the cart\" |\n| T08 | Functional | Calculate total for a single item | Precondition: Cart contains one product with unit price $10 and quantity 2. Action: View cart total. | The total is $20. | Supported | \"Total equals unit price times quantity, summed across items\" |\n| T09 | Functional | Calculate total for multiple items | Precondition: Cart contains Product A ($10 x 2) and Product B ($5 x 1). Action: View cart total. | The total is $25 ($20 + $5). | Supported | \"Total equals unit price times quantity, summed across items\" |\n| T10 | Functional | Verify no extra charges are applied | Precondition: Cart contains items with a calculated subtotal. Action: View cart total. | The total equals the sum of (unit price * quantity) for all items, with no tax, shipping, or discounts added. | Supported | \"no tax, shipping or discounts apply\" |\n\nQuestions\n1. What is the specific user interface or API endpoint used to add products and update quantities? (Needed for execution details of T01-T07)\n2. How is the \"unit price\" determined for each product? Is it static or dynamic? (Needed to set up specific test data for T08-T10)",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.033483964,
+          "prompt_tokens": 1238,
+          "prompt_time": 0.111784184,
+          "completion_tokens": 834,
+          "completion_time": 1.729333802,
+          "total_tokens": 2072,
+          "total_time": 1.841117986
+        },
+        "elapsed_seconds": 20.077,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 20.078,
+      "status": "FAIL",
+      "review_notes": "The negative case says any value below 1 is rejected, which includes zero and contradicts the separate zero-removes rule; fractional quantities are also untested."
+    },
+    {
+      "id": "TC03",
+      "category": "Boundary",
+      "requirement": "An upload accepts PDF files only, with a maximum size of 5,000,000 bytes inclusive. Empty files are rejected. A rejected file must not be stored. Other file-validation rules are outside this requirement.",
+      "expected_behavior": "Cover a non-empty PDF below and exactly at the limit, a PDF one byte above it, an empty PDF and a non-PDF. Rejected files must not be stored. Do not invent MIME-detection methods or error wording.",
+      "prompt_version": "1.2",
+      "result": {
+        "text": "Requirement note\nHigh-level tests can be proposed for file type, size, and empty file validation. The main gap is the specific interface or procedure for performing the upload and verifying storage status.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| T01 | Functional | Upload a valid PDF within size limit | Precondition: A valid PDF file of 1 byte is available. Action: Upload the file. | The file is accepted and stored. | Supported | \"An upload accepts PDF files only... maximum size of 5,000,000 bytes inclusive.\" Execution detail needed: Upload interface and method to verify storage. |\n| T02 | Boundary | Upload a PDF at maximum size | Precondition: A valid PDF file of exactly 5,000,000 bytes is available. Action: Upload the file. | The file is accepted and stored. | Supported | \"maximum size of 5,000,000 bytes inclusive.\" Execution detail needed: Upload interface and method to verify storage. |\n| T03 | Boundary | Upload a PDF exceeding maximum size | Precondition: A valid PDF file of 5,000,001 bytes is available. Action: Upload the file. | The file is rejected and not stored. | Supported | \"maximum size of 5,000,000 bytes inclusive\" implies >5,000,000 is invalid; \"A rejected file must not be stored.\" Execution detail needed: Upload interface and method to verify non-storage. |\n| T04 | Negative | Upload a non-PDF file | Precondition: A valid text file (.txt) of 1 byte is available. Action: Upload the file. | The file is rejected and not stored. | Supported | \"An upload accepts PDF files only\"; \"A rejected file must not be stored.\" Execution detail needed: Upload interface and method to verify non-storage. |\n| T05 | Negative | Upload an empty PDF file | Precondition: A PDF file of 0 bytes is available. Action: Upload the file. | The file is rejected and not stored. | Supported | \"Empty files are rejected\"; \"A rejected file must not be stored.\" Execution detail needed: Upload interface and method to verify non-storage. |\n| T06 | Recommendation | Verify rejection message content | Precondition: A non-PDF file is available. Action: Upload the file. | Proposal requiring agreement: A specific error message is displayed to the user. | Recommendation | No specific error message text is defined in the requirement. |\n\nQuestions\n1. What is the specific interface (e.g., API endpoint, UI form) used to perform the upload?\n2. How can the storage status of a file be verified (e.g., database query, file system check, API response)?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.098438491,
+          "prompt_tokens": 1209,
+          "prompt_time": 0.091023743,
+          "completion_tokens": 635,
+          "completion_time": 1.283269932,
+          "total_tokens": 1844,
+          "total_time": 1.374293675
+        },
+        "elapsed_seconds": 58.314,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 58.315,
+      "status": "PARTIAL",
+      "review_notes": "Covers the required boundaries but proposes an unrealizable one-byte valid PDF fixture."
+    },
+    {
+      "id": "TC04",
+      "category": "Access control",
+      "requirement": "In a project, an owner may invite members and remove other members. A member may view the member list but cannot invite or remove anyone. An unauthorised invite or removal must leave membership unchanged. The owner cannot remove their own membership.",
+      "expected_behavior": "Cover owner permissions, member viewing, blocked member invite/removal, unchanged membership after denial and blocked owner self-removal. Do not prescribe an HTTP status or interface unless supplied.",
+      "prompt_version": "1.2",
+      "result": {
+        "text": "Requirement note\nHigh-level tests can be proposed for owner and member permissions regarding invitations and removals. The main gap is the specific interface or procedure used to perform these actions and verify the member list.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| T01 | Functional | Owner invites a new member | Precondition: User is the project owner. Action: Invite a new user to the project. | The new user is added to the project membership. | Supported | \"An owner may invite members.\" Execution detail needed: The specific UI or API method to send the invite and verify the new member's presence. |\n| T02 | Functional | Owner removes an existing member | Precondition: User is the project owner; another member exists in the project. Action: Remove the existing member from the project. | The removed user is no longer in the project membership. | Supported | \"An owner may ... remove other members.\" Execution detail needed: The specific UI or API method to remove the member and verify their absence. |\n| T03 | Negative | Member attempts to invite a new member | Precondition: User is a standard member (not owner). Action: Attempt to invite a new user to the project. | The invitation is not processed; the new user is not added to the project membership. | Supported | \"A member ... cannot invite ... anyone.\" Execution detail needed: The specific UI or API method to attempt the invite and verify the member list remains unchanged. |\n| T04 | Negative | Member attempts to remove an existing member | Precondition: User is a standard member (not owner); another member exists in the project. Action: Attempt to remove the existing member from the project. | The removal is not processed; the existing member remains in the project membership. | Supported | \"A member ... cannot ... remove anyone.\" Execution detail needed: The specific UI or API method to attempt the removal and verify the member list remains unchanged. |\n| T05 | Negative | Owner attempts to remove their own membership | Precondition: User is the project owner. Action: Attempt to remove the owner's own membership from the project. | The removal is not processed; the owner remains in the project membership. | Supported | \"The owner cannot remove their own membership.\" Execution detail needed: The specific UI or API method to attempt self-removal and verify the owner's status remains unchanged. |\n| T06 | Functional | Member views the member list | Precondition: User is a standard member (not owner). Action: View the project member list. | The member list is displayed to the user. | Supported | \"A member may view the member list.\" Execution detail needed: The specific UI or API method to view the list and verify its contents. |\n\nQuestions, if needed\n1. What is the specific interface (UI button, API endpoint, etc.) used to invite, remove, or view members for tests T01-T06?\n2. How should the \"membership unchanged\" state be verified in tests T03, T04, and T05 (e.g., specific error message, no change in database, UI feedback)?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.036756316,
+          "prompt_tokens": 1210,
+          "prompt_time": 0.10085325,
+          "completion_tokens": 694,
+          "completion_time": 1.4115509849999999,
+          "total_tokens": 1904,
+          "total_time": 1.512404235
+        },
+        "elapsed_seconds": 24.564,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 24.565,
+      "status": "FAIL",
+      "review_notes": "Assumes inviting a user immediately creates membership, which the requirement does not specify."
+    },
+    {
+      "id": "TC05",
+      "category": "State rules",
+      "requirement": "A booking starts as Pending. Only Pending bookings may be confirmed or cancelled. Confirming changes the state to Confirmed; cancelling changes it to Cancelled. Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state.",
+      "expected_behavior": "Cover both allowed transitions and both actions from each terminal state. Check that rejected actions leave the state unchanged. Do not add refund or notification behaviour.",
+      "prompt_version": "1.2",
+      "result": {
+        "text": "Requirement note\nHigh-level tests can be proposed for the state transition rules. The main gap is the specific interface or procedure used to trigger confirmation and cancellation actions.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| T01 | Functional | Confirm a pending booking | Precondition: A booking is in Pending state. Action: Request confirmation. | The booking state changes to Confirmed. | Supported | \"Confirming changes the state to Confirmed.\" Execution detail needed: How the confirmation request is initiated. |\n| T02 | Functional | Cancel a pending booking | Precondition: A booking is in Pending state. Action: Request cancellation. | The booking state changes to Cancelled. | Supported | \"Cancelling changes it to Cancelled.\" Execution detail needed: How the cancellation request is initiated. |\n| T03 | Negative | Confirm a confirmed booking | Precondition: A booking is in Confirmed state. Action: Request confirmation. | The booking state remains Confirmed; the request is rejected. | Supported | \"Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state.\" Execution detail needed: How rejection is indicated to the user/system. |\n| T04 | Negative | Cancel a confirmed booking | Precondition: A booking is in Confirmed state. Action: Request cancellation. | The booking state remains Confirmed; the request is rejected. | Supported | \"Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state.\" Execution detail needed: How rejection is indicated to the user/system. |\n| T05 | Negative | Confirm a cancelled booking | Precondition: A booking is in Cancelled state. Action: Request confirmation. | The booking state remains Cancelled; the request is rejected. | Supported | \"Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state.\" Execution detail needed: How rejection is indicated to the user/system. |\n| T06 | Negative | Cancel a cancelled booking | Precondition: A booking is in Cancelled state. Action: Request cancellation. | The booking state remains Cancelled; the request is rejected. | Supported | \"Confirmed and Cancelled bookings reject further confirmation or cancellation requests and retain their state.\" Execution detail needed: How rejection is indicated to the user/system. |\n\nQuestions, if needed\n1. What is the specific interface or API endpoint used to trigger confirmation and cancellation requests (referencing T01-T06)?\n2. How is the rejection of invalid state transitions communicated to the user or calling system (referencing T03-T06)?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.037559083,
+          "prompt_tokens": 1210,
+          "prompt_time": 0.108313806,
+          "completion_tokens": 572,
+          "completion_time": 1.143761604,
+          "total_tokens": 1782,
+          "total_time": 1.25207541
+        },
+        "elapsed_seconds": 39.183,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 39.184,
+      "status": "PASS",
+      "review_notes": "Covers both allowed transitions and both actions from each terminal state, with unchanged state after rejection."
+    },
+    {
+      "id": "TC06",
+      "category": "Missing procedure",
+      "requirement": "A staff member can download an existing invoice as a PDF. The PDF must show the same invoice number and total as the stored invoice. The interface, download procedure and storage location will be supplied later.",
+      "expected_behavior": "Propose high-level download and content checks with a staff member and existing invoice as preconditions. Retain the known PDF and matching-value outcomes; ask for execution details without inventing buttons, URLs or paths.",
+      "prompt_version": "1.2",
+      "result": {
+        "text": "Requirement note\nHigh-level tests can be proposed for the PDF content consistency. The main gaps are the specific interface, download procedure, and storage location, which are required for execution but do not change the expected behavior.\n\nCandidate tests\nTest ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail\nT01 | Functional | Download an existing invoice as PDF | Precondition: An existing invoice is stored in the system. Action: Staff member initiates the download of the invoice as a PDF using the application's procedure. | The downloaded PDF displays the same invoice number and total as the stored invoice record. | Supported | \"A staff member can download an existing invoice as a PDF. The PDF must show the same invoice number and total as the stored invoice.\" Execution detail needed: Specific UI steps to trigger the download and method to verify the stored invoice values.\nT02 | Negative | Attempt to download a non-existent invoice | Precondition: An invoice ID that does not exist in the system is selected. Action: Staff member attempts to download the invoice as a PDF. | TBD - needs clarification | Needs clarification | Behaviour rule missing: The requirement does not specify the system behavior (e.g., error message, empty file, 404) when a non-existent invoice is requested.\n\nQuestions\n1. For T02, what is the expected system behavior when a staff member attempts to download an invoice that does not exist?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.004430985,
+          "prompt_tokens": 1202,
+          "prompt_time": 0.127558588,
+          "completion_tokens": 301,
+          "completion_time": 0.581800105,
+          "total_tokens": 1503,
+          "total_time": 0.709358693
+        },
+        "elapsed_seconds": 37.135,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 37.135,
+      "status": "PASS",
+      "review_notes": "Preserves staff/existing-invoice preconditions and the PDF/matching-value outcome; missing execution details are identified and unsupported missing-invoice behavior remains unresolved."
+    },
+    {
+      "id": "TC07",
+      "category": "Missing rule",
+      "requirement": "A user can submit an expense claim with an amount and receipt. A positive amount and attached receipt are required; otherwise reject the claim without storing it. Valid claims are stored as Pending. Treatment of a second submission with the same receipt has not been decided.",
+      "expected_behavior": "Cover valid Pending storage, non-positive amounts and missing receipts with no storage. Ask what should happen to duplicate receipts; do not prescribe rejection or acceptance for duplicates.",
+      "prompt_version": "1.2",
+      "result": {
+        "text": "Requirement note\nHigh-level tests can be proposed for valid submission, rejection of invalid data, and the storage status. The main gap is the undefined behavior for duplicate receipt submissions.\n\nCandidate tests\nTest ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail\nT01 | Functional | Submit a valid expense claim | Precondition: User is authenticated. Action: Submit a claim with a positive amount and a valid attached receipt. | The claim is stored with status \"Pending\" | Supported | \"Valid claims are stored as Pending.\" Execution detail needed: Specific UI fields or API endpoint for submission.\nT02 | Negative | Submit claim with zero amount | Precondition: User is authenticated. Action: Submit a claim with amount 0 and a valid attached receipt. | The claim is rejected and not stored | Supported | \"A positive amount... are required; otherwise reject the claim without storing it.\" Execution detail needed: How rejection is communicated to the user (e.g., error message).\nT03 | Negative | Submit claim with negative amount | Precondition: User is authenticated. Action: Submit a claim with a negative amount (e.g., -10) and a valid attached receipt. | The claim is rejected and not stored | Supported | \"A positive amount... are required; otherwise reject the claim without storing it.\" Execution detail needed: How rejection is communicated to the user.\nT04 | Negative | Submit claim without receipt | Precondition: User is authenticated. Action: Submit a claim with a positive amount but no attached receipt. | The claim is rejected and not stored | Supported | \"...and attached receipt are required; otherwise reject the claim without storing it.\" Execution detail needed: How rejection is communicated to the user.\nT05 | Functional | Submit duplicate receipt | Precondition: A valid claim with Receipt ID X has already been stored as Pending. Action: Submit a new claim with a positive amount and the same Receipt ID X. | TBD - needs clarification | Needs clarification | Behaviour rule missing: \"Treatment of a second submission with the same receipt has not been decided.\"\n\nQuestions\n1. For T05, what is the expected behavior when a user submits a claim with a receipt that has already been used in a previous claim? (e.g., reject, allow, or update?)",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.011668406,
+          "prompt_tokens": 1213,
+          "prompt_time": 0.103612728,
+          "completion_tokens": 481,
+          "completion_time": 0.969890403,
+          "total_tokens": 1694,
+          "total_time": 1.073503131
+        },
+        "elapsed_seconds": 20.395,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 20.395,
+      "status": "PASS",
+      "review_notes": "Covers positive/zero/negative amounts, missing receipt, Pending storage and unresolved duplicate handling without inventing the duplicate outcome."
+    },
+    {
+      "id": "TC08",
+      "category": "Conflicting rules",
+      "requirement": "Two current documents describe report access. Requirement A says only managers may download monthly reports. Requirement B says all signed-in users may download them. No precedence is specified. Both documents agree that signed-out users must be denied access.",
+      "expected_behavior": "Test manager access and signed-out denial where the sources agree. Identify the conflict for signed-in non-managers and ask which rule applies. Leave that outcome unresolved rather than choosing a document.",
+      "prompt_version": "1.2",
+      "result": {
+        "text": "Requirement note\nHigh-level tests can be proposed for the agreed denial of signed-out users, but the expected behavior for signed-in non-managers is unresolved due to a direct conflict between Requirement A and Requirement B.\n\nCandidate tests\nTest ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail\nT01 | Negative | Signed-out user attempts to download a monthly report | Precondition: User is not signed in. Action: Attempt to download a monthly report. | Access is denied | Supported | \"Both documents agree that signed-out users must be denied access.\" Execution detail needed: specific interface or endpoint for the download attempt.\nT02 | Functional | Manager attempts to download a monthly report | Precondition: User is signed in and has the manager role. Action: Attempt to download a monthly report. | The report is downloaded successfully | Supported | \"Requirement A says only managers may download monthly reports.\" Execution detail needed: specific interface or endpoint for the download attempt.\nT03 | Functional | Non-manager signed-in user attempts to download a monthly report | Precondition: User is signed in and does not have the manager role. Action: Attempt to download a monthly report. | TBD - needs clarification | Needs clarification | Behaviour rule missing: Conflict between Requirement A (\"only managers\") and Requirement B (\"all signed-in users\").\nT04 | Recommendation | Verify report content integrity | Precondition: User has valid access rights (per resolved rule). Action: Download the report and verify file format and data accuracy. | Proposal requiring agreement: The downloaded file is valid and contains the expected monthly data. | Recommendation | Optional check beyond access control requirements.\n\nQuestions, if needed\n1. Regarding T03: Which requirement takes precedence for signed-in non-manager users: Requirement A (managers only) or Requirement B (all signed-in users)?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.073152946,
+          "prompt_tokens": 1207,
+          "prompt_time": 0.091624153,
+          "completion_tokens": 384,
+          "completion_time": 0.758765192,
+          "total_tokens": 1591,
+          "total_time": 0.850389345
+        },
+        "elapsed_seconds": 25.352,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 25.352,
+      "status": "PASS",
+      "review_notes": "Tests agreed manager access and signed-out denial, leaves signed-in non-manager access unresolved and requests precedence clarification."
+    },
+    {
+      "id": "TC09",
+      "category": "Performance",
+      "requirement": "In staging with 10,000 seeded products, run 100 concurrent virtual users for 10 minutes after a 2-minute warm-up. Each user sends one catalogue-search request every 5 seconds. During the measured 10 minutes, the 95th-percentile response time must be at most 800 ms and fewer than 1% of requests may fail.",
+      "expected_behavior": "Preserve the dataset, concurrency, request interval, warm-up and measured duration. Use p95 <= 800 ms and failure rate < 1%, not averages or altered boundaries. Ask for endpoint and failure definition if absent. Do not claim measured results.",
+      "prompt_version": "1.2",
+      "result": {
+        "text": "Requirement note\nHigh-level performance tests can be proposed based on the explicit load profile and success criteria. The main gap is the specific tooling and environment configuration details required to execute the test.\n\nCandidate tests\n\n| Test ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| T01 | Performance | Validate 95th-percentile response time under load | Precondition: Staging environment with 10,000 seeded products. Action: Run 100 concurrent virtual users for 10 minutes (after 2-min warm-up), each sending one catalogue-search request every 5 seconds. | The 95th-percentile response time is at most 800 ms. | Supported | \"During the measured 10 minutes, the 95th-percentile response time must be at most 800 ms.\" Execution detail needed: Specific load testing tool, script configuration, and how to extract the 95th-percentile metric from the results. |\n| T02 | Performance | Validate request failure rate under load | Precondition: Staging environment with 10,000 seeded products. Action: Run 100 concurrent virtual users for 10 minutes (after 2-min warm-up), each sending one catalogue-search request every 5 seconds. | Fewer than 1% of requests fail. | Supported | \"During the measured 10 minutes... fewer than 1% of requests may fail.\" Execution detail needed: Definition of \"fail\" (e.g., HTTP 5xx, timeout, connection error) and how to calculate the percentage from the test results. |\n\nQuestions, if needed\n1. For T01 and T02: What specific load testing tool and script configuration should be used to generate the traffic and extract the metrics?\n2. For T02: What specific conditions define a \"failed\" request (e.g., HTTP status codes, timeouts, or specific error messages)?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.015753238,
+          "prompt_tokens": 1245,
+          "prompt_time": 0.111939427,
+          "completion_tokens": 442,
+          "completion_time": 0.998269976,
+          "total_tokens": 1687,
+          "total_time": 1.110209403
+        },
+        "elapsed_seconds": 23.523,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 23.524,
+      "status": "PASS",
+      "review_notes": "Retains the load profile and both precise thresholds; asks for load-script configuration and failure definition without claiming execution."
+    },
+    {
+      "id": "TC10",
+      "category": "Insufficient evidence",
+      "requirement": "The checkout service should be reliable and easy to use. No workflows, measurable targets, implementation or execution evidence are supplied. Suggest what is needed to test it and say whether its quality can currently be confirmed.",
+      "expected_behavior": "Ask for checkout workflows, operating conditions, reliability targets and usability criteria. State that quality cannot yet be confirmed. Do not invent thresholds, payment methods, test results or an executable test table.",
+      "prompt_version": "1.2",
+      "result": {
+        "text": "Requirement note\nHigh-level tests cannot be proposed because the requirement contains only vague quality goals (\"reliable and easy to use\") without specific behaviors, measurable targets, or execution evidence. The quality of the checkout service cannot currently be confirmed.\n\nCandidate tests\nTest ID | Test type | Scenario | Input or action | Expected result | Classification | Basis or missing detail\nN/A | N/A | N/A | N/A | N/A | N/A | N/A\n\nQuestions, if needed\nTo propose test cases, please provide:\n1. Concrete behaviors: What specific actions can a user take in the checkout service (e.g., add item, apply coupon, submit payment)?\n2. Assessment criteria: What defines \"reliable\" (e.g., success rate, error handling for specific failures) and \"easy to use\" (e.g., number of steps, specific UI flows)?\n3. Relevant context: Are there any existing workflows, error states, or business rules that should be tested?",
+        "model": "qwen/qwen3.8-27b",
+        "usage": {
+          "queue_time": 0.004101306,
+          "prompt_tokens": 1204,
+          "prompt_time": 0.088185718,
+          "completion_tokens": 204,
+          "completion_time": 0.454871397,
+          "total_tokens": 1408,
+          "total_time": 0.543057115
+        },
+        "elapsed_seconds": 23.778,
+        "finish_reason": "stop"
+      },
+      "execution_status": "COMPLETED",
+      "review_status": "REVIEW_PENDING",
+      "elapsed_seconds": 23.778,
+      "status": "PASS",
+      "review_notes": "States quality cannot currently be confirmed and requests workflows and measurable assessment criteria without inventing results."
+    }
+  ]
+}

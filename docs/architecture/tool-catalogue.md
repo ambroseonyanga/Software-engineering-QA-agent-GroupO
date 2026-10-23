@@ -4,7 +4,7 @@ Project: Software Engineering QA Agent
 Group: Group O
 Week: 4 — Tools and Function Calling
 
-This catalogue defines the first two explicit tools for the Software Engineering QA Agent. The tools continue the Week 1 workflow and the Week 1 AI Boundary Matrix. The model may request a tool by name. Deterministic application code validates the request, checks authorization, and then executes the tool. The model does not invent tool results, execute tests, or submit issues.
+In this catalogue, we define the first two explicit tools for the Software Engineering QA Agent. The tools continue the Week 1 workflow and the Week 1 AI Boundary Matrix. The model may request a tool by name. Deterministic application code validates the request, checks authorization, and then executes the tool. The model does not invent tool results, execute tests, or submit issues.
 
 ## Allow-list
 

@@ -4,13 +4,13 @@ Project: Software Engineering QA Agent
 Group: Group O
 Week: 5 — Agent Architecture and Bounded Autonomy
 
-This contract defines the one bounded agent task implemented in `src/agent.py`. The numeric limits are executable constants in `src/agent_contracts.py`; the orchestrator enforces them, the model does not.
+We define our single bounded agent task in this contract; it is implemented in `src/agent.py`. The numeric limits are executable constants in `src/agent_contracts.py`; the orchestrator enforces them, the model does not.
 
 ## Task
 
 **Failure triage and draft preparation.** Given one human-reported test failure, the agent links the failure to authorized project requirements and prepares one local draft issue for human review. It supports user stories US-07 (investigate failed tests), US-09 (prepare an issue report), US-10 (review agent actions) and US-11 (control agent execution).
 
-This task needs multi-step decisions because the right next step depends on what the last step returned. A retrieval may find nothing, so the agent must re-plan with different wording or hand off. A tool may fail, so the agent must retry within a limit or stop. A draft is only worth saving after evidence has been looked for.
+We use multi-step decisions for this task because the right next step depends on what the last step returned. A retrieval may find nothing, so the agent must re-plan with different wording or hand off. A tool may fail, so the agent must retry within a limit or stop. A draft is only worth saving after evidence has been looked for.
 
 **Goal state (done):** one draft exists in `evidence/drafts/` with `status: draft` and `submitted: false`, its notes list the retrieved requirement sources (or state that none were found), and a complete trace exists in `evidence/traces/agent_runs/`.
 

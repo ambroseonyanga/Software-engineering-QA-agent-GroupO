@@ -1,0 +1,12 @@
+{
+  "title": "Synthetic evaluation rerun issue",
+  "failed_test": "SYN-RERUN-TOOLS",
+  "expected": "synthetic equality accepted",
+  "actual": "synthetic report of rejection",
+  "notes": "This is a synthetic evaluation fixture, not a confirmed product defect.",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-23T10:43:22.063750+00:00",
+  "draft_id": "DRAFT-c19969c4c40a",
+  "path": "evidence/traces/evaluation_rerun_20261023T104204Z/drafts/DRAFT-c19969c4c40a.json"
+}

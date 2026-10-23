@@ -1,0 +1,15 @@
+[
+  {
+    "utc": "2026-10-23T12:21:29.460686+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.367,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "976",
+      "x-ratelimit-remaining-tokens": "6981",
+      "x-ratelimit-reset-requests": "34m33.6s",
+      "x-ratelimit-reset-tokens": "7.642s"
+    }
+  }
+]

@@ -1,0 +1,79 @@
+{
+  "run_utc": "2026-10-23T10:13:44.862274+00:00",
+  "method": "Four separate diagnostics: enable the documented Google setting, match current worker version, and inspect the weekly context/label. Original four failures remain retained; these are not replacement verdicts.",
+  "exit_code": 0,
+  "image_id": "sha256:3fd7dba4629b49bfbeaac0c47353d8e99cfa322fc4a51714a3ac14a4be95b228",
+  "snapshot_hash": "f619e15d33f35928fd51616bfe0f4b33d608adbf7a84c80ad770177e50caae55",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--network",
+    "none",
+    "--read-only",
+    "--tmpfs",
+    "/tmp:rw,noexec,nosuid,size=128m",
+    "--memory",
+    "768m",
+    "--cpus",
+    "1",
+    "--pids-limit",
+    "64",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--user",
+    "10001:10001",
+    "--mount",
+    "type=bind,source=C:\\Users\\HP\\Documents\\Codex\\2026-10-23\\referenced-chatgpt-conversation-this-is-an-3\\work\\target-sessions\\6d5dc848f2bd4b878c5c10ed6e75bc46\\source,target=/workspace,readonly",
+    "--mount",
+    "type=bind,source=C:\\Users\\HP\\Documents\\Codex\\2026-10-23\\referenced-chatgpt-conversation-this-is-an-3\\work\\target-qa,target=/qa,readonly",
+    "sha256:3fd7dba4629b49bfbeaac0c47353d8e99cfa322fc4a51714a3ac14a4be95b228",
+    "python",
+    "-I",
+    "/qa/target_suite.py"
+  ],
+  "result": {
+    "tests_run": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "records": [
+      {
+        "test": "target_diagnostics.ConfigurationDiagnostics.test_guest_google_button_with_setting_enabled",
+        "status": "passed"
+      },
+      {
+        "test": "target_diagnostics.ConfigurationDiagnostics.test_login_google_button_with_setting_enabled",
+        "status": "passed"
+      },
+      {
+        "test": "target_diagnostics.ConfigurationDiagnostics.test_service_worker_serves_current_declared_version",
+        "status": "passed"
+      },
+      {
+        "test": "target_diagnostics.ConfigurationDiagnostics.test_weekly_filter_context_and_current_label",
+        "status": "passed"
+      }
+    ]
+  },
+  "harness_hashes": {
+    "target_diagnostics.py": "a3a16fb2cb0684c875081f0a650098ff44833f3b312458c44e027300928b3323",
+    "target_signup_retest.py": "13b19e65eb68b8a2c960db0b6bde0dc3cde263e891b06caa173752cba032ddd9",
+    "target_suite.py": "b6fa663b99d262347ec655556d45a7b1793ecbb40625e8cfef9ecfaa9652d8b6",
+    "_qa_settings.py": "f1a9f6d41e1cd0bc6c4a9702a4d1e54f5650ef6c9f31a15962400b7ff94d0a18"
+  },
+  "retained_harness_sources": {
+    "target_diagnostics.py": "from django.test import TestCase,override_settings\nfrom django.urls import reverse\nfrom budgetbuddy.tests.helpers import create_budget_via_form\nfrom budgetbuddy.tests.test_dashboard import BudgetSetupViewTests\nfrom pathlib import Path\nimport re\nclass ConfigurationDiagnostics(TestCase):\n @override_settings(GOOGLE_OAUTH_CONFIGURED=True)\n def test_guest_google_button_with_setting_enabled(self):\n  t=BudgetSetupViewTests('test_empty_dashboard_shows_google_when_configured');t.client=self.client;t.test_empty_dashboard_shows_google_when_configured()\n @override_settings(GOOGLE_OAUTH_CONFIGURED=True)\n def test_login_google_button_with_setting_enabled(self):\n  t=BudgetSetupViewTests('test_login_page_shows_google_option');t.client=self.client;t.test_login_page_shows_google_option()\n def test_service_worker_serves_current_declared_version(self):\n  source=Path('/workspace/budgetbuddy/static/budgetbuddy/js/sw.js').read_text();version=re.search(r\"SW_VERSION\\s*=\\s*'([^']+)'\",source).group(1)\n  response=self.client.get(reverse('service_worker'));self.assertEqual(response.status_code,200);self.assertContains(response,version)\n def test_weekly_filter_context_and_current_label(self):\n  create_budget_via_form(self.client);response=self.client.get(reverse('dashboard'),{'period':'weekly'})\n  self.assertEqual(response.context['period'],'weekly');self.assertEqual(response.context['period_choices']['weekly'],'This week');self.assertContains(response,'This week')\r\n",
+    "target_signup_retest.py": "from django.test import TestCase\nfrom django.contrib.auth import get_user_model\nfrom allauth.account.forms import SignupForm\nclass SignupFixtureRetest(TestCase):\n def test_user_fixture_includes_required_username(self):\n  user=get_user_model().objects.create_user(username='synthetic-rerun',email='synthetic@example.com',password='synthetic-only-password')\n  self.assertEqual(user.username,'synthetic-rerun')\n def test_signup_rejects_invalid_email(self):\n  form=SignupForm(data={'email':'invalid-email','password1':'Syntheticonly123!','password2':'Syntheticonly123!'})\n  self.assertFalse(form.is_valid());self.assertIn('email',form.errors)\r\n",
+    "target_suite.py": "import sys,os,json,unittest\nsys.path[:0]=['/workspace','/qa'];os.environ['DJANGO_SETTINGS_MODULE']='_qa_settings'\nimport django;django.setup()\nfrom django.test.runner import DiscoverRunner\nrecords=[]\nclass Result(unittest.TextTestResult):\n def addSuccess(self,test):super().addSuccess(test);records.append({'test':test.id(),'status':'passed'})\n def addFailure(self,test,err):super().addFailure(test,err);records.append({'test':test.id(),'status':'failed','detail':self._exc_info_to_string(err,test)})\n def addError(self,test,err):super().addError(test,err);records.append({'test':test.id(),'status':'error','detail':self._exc_info_to_string(err,test)})\n def addSkip(self,test,reason):super().addSkip(test,reason);records.append({'test':test.id(),'status':'skipped','reason':reason})\nclass Runner(unittest.TextTestRunner):\n resultclass=Result\nclass DjangoRunner(DiscoverRunner):\n test_runner=Runner\nrunner=DjangoRunner(verbosity=2,interactive=False);failures=runner.run_tests(['target_diagnostics.ConfigurationDiagnostics'])\nprint('RESULT_JSON:'+json.dumps({'tests_run':len(records),'failures':sum(x['status']=='failed' for x in records),'errors':sum(x['status']=='error' for x in records),'skipped':sum(x['status']=='skipped' for x in records),'records':records}))\nsys.exit(bool(failures))\r\n\r\n",
+    "_qa_settings.py": "\"\"\"BudgetMe settings used only inside the disposable test container.\"\"\"\nSECRET_KEY = 'local-disposable-test-key'\nDEBUG = False\nALLOWED_HOSTS = ['testserver', 'localhost']\nINSTALLED_APPS = [\n    'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',\n    'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles',\n    'django.contrib.sites', 'allauth', 'allauth.account', 'allauth.socialaccount',\n    'allauth.socialaccount.providers.google', 'budgetbuddy',\n]\nDATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': ':memory:', 'TEST': {'NAME': ':memory:'}}}\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'\nROOT_URLCONF = 'BudgetMe.urls'\nSITE_ID = 1\nMIDDLEWARE = [\n    'django.contrib.sessions.middleware.SessionMiddleware',\n    'django.middleware.common.CommonMiddleware',\n    'django.middleware.csrf.CsrfViewMiddleware',\n    'django.contrib.auth.middleware.AuthenticationMiddleware',\n    'django.contrib.messages.middleware.MessageMiddleware',\n    'allauth.account.middleware.AccountMiddleware',\n]\nTEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates', 'DIRS': ['/workspace/budgetbuddy/templates'], 'APP_DIRS': True,\n              'OPTIONS': {'context_processors': [\n                  'django.template.context_processors.request',\n                  'django.contrib.auth.context_processors.auth',\n                  'django.contrib.messages.context_processors.messages',\n                  'budgetbuddy.context_processors.auth_providers',\n                  'budgetbuddy.context_processors.supabase_realtime',\n              ]}}]\nAUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend', 'allauth.account.auth_backends.AuthenticationBackend']\nLOGIN_URL = 'account_login'\nLOGIN_REDIRECT_URL = 'dashboard'\nLOGOUT_REDIRECT_URL = 'account_login'\nACCOUNT_LOGIN_METHODS = {'email'}\nACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']\nACCOUNT_EMAIL_VERIFICATION = 'none'\nACCOUNT_ADAPTER = 'budgetbuddy.adapters.BudgetAccountAdapter'\nSOCIALACCOUNT_ADAPTER = 'budgetbuddy.adapters.BudgetSocialAccountAdapter'\nSOCIALACCOUNT_PROVIDERS = {'google': {'SCOPE': ['profile', 'email']}}\nEMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'\nPASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']\nUSE_TZ = True\nTIME_ZONE = 'Africa/Kampala'\nLANGUAGE_CODE = 'en'\nSTATIC_URL = '/static/'\nMEDIA_ROOT = '/tmp/media'\nSUPABASE_REALTIME_ENABLED = False\nSUPABASE_URL = SUPABASE_ANON_KEY = SUPABASE_JWT_SECRET = ''\nGOOGLE_OAUTH_CONFIGURED = False\nGOOGLE_CLIENT_ID = GOOGLE_CLIENT_SECRET = GOOGLE_OAUTH_CALLBACK_URI = ''\nBUDGETME_CURRENCY = 'UGX'\nBUDGETME_COUNTRY = 'Uganda'\n"
+  },
+  "harness_source_hashes_verified": [
+    "target_diagnostics.py",
+    "target_signup_retest.py",
+    "target_suite.py",
+    "_qa_settings.py"
+  ]
+}

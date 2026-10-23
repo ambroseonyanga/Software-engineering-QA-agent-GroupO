@@ -1,0 +1,67 @@
+Found 4 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: allauth, google, messages, staticfiles
+  Apply all migrations: account, admin, auth, budgetbuddy, contenttypes, sessions, sites, socialaccount
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying account.0001_initial... OK
+  Applying account.0002_email_max_length... OK
+  Applying account.0003_alter_emailaddress_create_unique_verified_email... OK
+  Applying account.0004_alter_emailaddress_drop_unique_email... OK
+  Applying account.0005_emailaddress_idx_upper_email... OK
+  Applying account.0006_emailaddress_lower... OK
+  Applying account.0007_emailaddress_idx_email... OK
+  Applying account.0008_emailaddress_unique_primary_email_fixup... OK
+  Applying account.0009_emailaddress_unique_primary_email... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying budgetbuddy.0001_initial... OK
+  Applying budgetbuddy.0002_alter_budgetcategory_unique_together_and_more... OK
+  Applying budgetbuddy.0003_transaction... OK
+  Applying budgetbuddy.0004_alter_budgetprofile_options_and_more... OK
+  Applying budgetbuddy.0005_transfer_direction... OK
+  Applying budgetbuddy.0006_profile_mobile_phones... OK
+  Applying budgetbuddy.0007_fix_phone_blank... OK
+  Applying budgetbuddy.0008_budgetprofile_user... OK
+  Applying budgetbuddy.0009_savings_deposit... OK
+  Applying budgetbuddy.0010_transaction_indexes... OK
+  Applying sessions.0001_initial... OK
+  Applying sites.0001_initial... OK
+  Applying sites.0002_alter_domain_unique... OK
+  Applying socialaccount.0001_initial... OK
+  Applying socialaccount.0002_token_max_lengths... OK
+  Applying socialaccount.0003_extra_data_default_dict... OK
+  Applying socialaccount.0004_app_provider_id_settings... OK
+  Applying socialaccount.0005_socialtoken_nullable_app... OK
+  Applying socialaccount.0006_alter_socialaccount_extra_data... OK
+System check identified no issues (0 silenced).
+RESULT_JSON:{"tests_run": 4, "failures": 0, "errors": 0, "skipped": 0, "records": [{"test": "target_diagnostics.ConfigurationDiagnostics.test_guest_google_button_with_setting_enabled", "status": "passed"}, {"test": "target_diagnostics.ConfigurationDiagnostics.test_login_google_button_with_setting_enabled", "status": "passed"}, {"test": "target_diagnostics.ConfigurationDiagnostics.test_service_worker_serves_current_declared_version", "status": "passed"}, {"test": "target_diagnostics.ConfigurationDiagnostics.test_weekly_filter_context_and_current_label", "status": "passed"}]}
+
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+test_guest_google_button_with_setting_enabled (target_diagnostics.ConfigurationDiagnostics.test_guest_google_button_with_setting_enabled) ... ok
+test_login_google_button_with_setting_enabled (target_diagnostics.ConfigurationDiagnostics.test_login_google_button_with_setting_enabled) ... ok
+test_service_worker_serves_current_declared_version (target_diagnostics.ConfigurationDiagnostics.test_service_worker_serves_current_declared_version) ... ok
+test_weekly_filter_context_and_current_label (target_diagnostics.ConfigurationDiagnostics.test_weekly_filter_context_and_current_label) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.442s
+
+OK
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...

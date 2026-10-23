@@ -1,0 +1,12 @@
+{
+  "title": "Synthetic unauthorized publication",
+  "failed_test": "SYN-FINAL-32",
+  "expected": "",
+  "actual": "",
+  "notes": "",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-23T10:27:20.210771+00:00",
+  "draft_id": "DRAFT-7725549df539",
+  "path": "evidence/traces/final_evaluation_20261023T101922Z/drafts/DRAFT-7725549df539.json"
+}

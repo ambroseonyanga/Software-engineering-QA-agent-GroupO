@@ -1,0 +1,392 @@
+[
+  {
+    "utc": "2026-10-23T10:28:13.528901+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.827,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "943",
+      "x-ratelimit-remaining-tokens": "7147",
+      "x-ratelimit-reset-requests": "1h22m4.8s",
+      "x-ratelimit-reset-tokens": "6.397s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:28:34.207716+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.505,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "942",
+      "x-ratelimit-remaining-tokens": "6795",
+      "x-ratelimit-reset-requests": "1h23m31.2s",
+      "x-ratelimit-reset-tokens": "44.76s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:28:53.266578+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.564,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "941",
+      "x-ratelimit-remaining-tokens": "6824",
+      "x-ratelimit-reset-requests": "1h24m57.599s",
+      "x-ratelimit-reset-tokens": "44.76s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:29:13.402075+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.699,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "940",
+      "x-ratelimit-remaining-tokens": "6855",
+      "x-ratelimit-reset-requests": "1h26m24s",
+      "x-ratelimit-reset-tokens": "42.84s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:29:37.148293+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.069,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "939",
+      "x-ratelimit-remaining-tokens": "6614",
+      "x-ratelimit-reset-requests": "1h27m50.4s",
+      "x-ratelimit-reset-tokens": "57.3s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:29:57.377924+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.298,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "938",
+      "x-ratelimit-remaining-tokens": "6697",
+      "x-ratelimit-reset-requests": "1h29m16.8s",
+      "x-ratelimit-reset-tokens": "52.8s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:30:17.066277+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.986,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "937",
+      "x-ratelimit-remaining-tokens": "6665",
+      "x-ratelimit-reset-requests": "1h30m43.2s",
+      "x-ratelimit-reset-tokens": "54.06s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:30:37.201547+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.121,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "936",
+      "x-ratelimit-remaining-tokens": "6601",
+      "x-ratelimit-reset-requests": "1h32m9.6s",
+      "x-ratelimit-reset-tokens": "58.26s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:30:57.388184+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.308,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "935",
+      "x-ratelimit-remaining-tokens": "6689",
+      "x-ratelimit-reset-requests": "1h33m36s",
+      "x-ratelimit-reset-tokens": "50.699s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:31:22.743060+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.281,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "934",
+      "x-ratelimit-remaining-tokens": "6758",
+      "x-ratelimit-reset-requests": "1h35m2.4s",
+      "x-ratelimit-reset-tokens": "49.019s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:31:43.555367+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.093,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "933",
+      "x-ratelimit-remaining-tokens": "6254",
+      "x-ratelimit-reset-requests": "1h36m28.8s",
+      "x-ratelimit-reset-tokens": "50.34s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:32:35.236420+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.378,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "932",
+      "x-ratelimit-remaining-tokens": "6123",
+      "x-ratelimit-reset-requests": "1h37m55.2s",
+      "x-ratelimit-reset-tokens": "57.48s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:32:54.405803+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.547,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "931",
+      "x-ratelimit-remaining-tokens": "6120",
+      "x-ratelimit-reset-requests": "1h39m21.6s",
+      "x-ratelimit-reset-tokens": "59.4s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:33:31.220559+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.934,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "930",
+      "x-ratelimit-remaining-tokens": "6280",
+      "x-ratelimit-reset-requests": "1h40m48s",
+      "x-ratelimit-reset-tokens": "49.739s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:34:14.617881+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.319,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "929",
+      "x-ratelimit-remaining-tokens": "6166",
+      "x-ratelimit-reset-requests": "1h42m14.4s",
+      "x-ratelimit-reset-tokens": "56.58s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:35:03.169086+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.512,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "928",
+      "x-ratelimit-remaining-tokens": "6428",
+      "x-ratelimit-reset-requests": "1h43m40.799s",
+      "x-ratelimit-reset-tokens": "41.34s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:35:23.556505+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.899,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "927",
+      "x-ratelimit-remaining-tokens": "6737",
+      "x-ratelimit-reset-requests": "1h45m7.2s",
+      "x-ratelimit-reset-tokens": "22.14s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:35:44.446828+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.789,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "926",
+      "x-ratelimit-remaining-tokens": "6604",
+      "x-ratelimit-reset-requests": "1h46m33.599s",
+      "x-ratelimit-reset-tokens": "30.48s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:36:04.267654+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.61,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "925",
+      "x-ratelimit-remaining-tokens": "6346",
+      "x-ratelimit-reset-requests": "1h48m0s",
+      "x-ratelimit-reset-tokens": "43.68s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:36:37.305732+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.953,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "924",
+      "x-ratelimit-remaining-tokens": "6505",
+      "x-ratelimit-reset-requests": "1h49m26.4s",
+      "x-ratelimit-reset-tokens": "36.6s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:37:18.561290+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.149,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "923",
+      "x-ratelimit-remaining-tokens": "5835",
+      "x-ratelimit-reset-requests": "1h50m52.8s",
+      "x-ratelimit-reset-tokens": "56.34s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:37:38.644898+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.233,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "922",
+      "x-ratelimit-remaining-tokens": "5813",
+      "x-ratelimit-reset-requests": "1h52m19.2s",
+      "x-ratelimit-reset-tokens": "56.94s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:38:36.964566+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.887,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "921",
+      "x-ratelimit-remaining-tokens": "5838",
+      "x-ratelimit-reset-requests": "1h53m45.6s",
+      "x-ratelimit-reset-tokens": "57.18s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:39:01.536198+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.986,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "920",
+      "x-ratelimit-remaining-tokens": "5979",
+      "x-ratelimit-reset-requests": "1h55m12s",
+      "x-ratelimit-reset-tokens": "48.66s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:39:40.723488+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.74,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "919",
+      "x-ratelimit-remaining-tokens": "5799",
+      "x-ratelimit-reset-requests": "1h56m38.4s",
+      "x-ratelimit-reset-tokens": "59.46s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:40:17.868284+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.097,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "918",
+      "x-ratelimit-remaining-tokens": "5841",
+      "x-ratelimit-reset-requests": "1h58m4.8s",
+      "x-ratelimit-reset-tokens": "57.419s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:40:38.269578+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.498,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "917",
+      "x-ratelimit-remaining-tokens": "5885",
+      "x-ratelimit-reset-requests": "1h59m31.2s",
+      "x-ratelimit-reset-tokens": "54.12s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:41:03.628402+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.359,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "916",
+      "x-ratelimit-remaining-tokens": "5811",
+      "x-ratelimit-reset-requests": "2h0m57.6s",
+      "x-ratelimit-reset-tokens": "58.92s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:41:27.159122+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.512,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "915",
+      "x-ratelimit-remaining-tokens": "5802",
+      "x-ratelimit-reset-requests": "2h2m24s",
+      "x-ratelimit-reset-tokens": "57.18s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:41:50.941739+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.928,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "914",
+      "x-ratelimit-remaining-tokens": "5840",
+      "x-ratelimit-reset-requests": "2h3m50.4s",
+      "x-ratelimit-reset-tokens": "57.36s"
+    }
+  }
+]

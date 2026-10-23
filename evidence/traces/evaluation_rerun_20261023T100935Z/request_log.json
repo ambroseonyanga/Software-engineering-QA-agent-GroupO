@@ -1,0 +1,730 @@
+[
+  {
+    "utc": "2026-10-23T10:09:40.419324+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.06,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "999",
+      "x-ratelimit-remaining-tokens": "6570",
+      "x-ratelimit-reset-requests": "1m26.4s",
+      "x-ratelimit-reset-tokens": "10.725s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:09:59.942723+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.583,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "998",
+      "x-ratelimit-remaining-tokens": "6689",
+      "x-ratelimit-reset-requests": "2m52.8s",
+      "x-ratelimit-reset-tokens": "9.832s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:10:20.094485+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.734,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "997",
+      "x-ratelimit-remaining-tokens": "7226",
+      "x-ratelimit-reset-requests": "4m19.2s",
+      "x-ratelimit-reset-tokens": "5.805s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:10:40.256506+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.896,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "996",
+      "x-ratelimit-remaining-tokens": "6969",
+      "x-ratelimit-reset-requests": "5m45.6s",
+      "x-ratelimit-reset-tokens": "7.732s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:11:00.605440+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.245,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "995",
+      "x-ratelimit-remaining-tokens": "6881",
+      "x-ratelimit-reset-requests": "7m12s",
+      "x-ratelimit-reset-tokens": "8.392s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:11:19.911190+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.55,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "994",
+      "x-ratelimit-remaining-tokens": "7237",
+      "x-ratelimit-reset-requests": "8m38.4s",
+      "x-ratelimit-reset-tokens": "5.722s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:11:40.218674+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.856,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "993",
+      "x-ratelimit-remaining-tokens": "7392",
+      "x-ratelimit-reset-requests": "10m4.8s",
+      "x-ratelimit-reset-tokens": "4.56s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:12:00.108390+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.746,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "992",
+      "x-ratelimit-remaining-tokens": "6897",
+      "x-ratelimit-reset-requests": "11m31.2s",
+      "x-ratelimit-reset-tokens": "8.272s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:12:20.469321+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.106,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "991",
+      "x-ratelimit-remaining-tokens": "6925",
+      "x-ratelimit-reset-requests": "12m57.599s",
+      "x-ratelimit-reset-tokens": "8.062s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:12:40.519969+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.156,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "990",
+      "x-ratelimit-remaining-tokens": "6899",
+      "x-ratelimit-reset-requests": "14m24s",
+      "x-ratelimit-reset-tokens": "8.257s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:13:00.086985+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.723,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "989",
+      "x-ratelimit-remaining-tokens": "7431",
+      "x-ratelimit-reset-requests": "15m50.4s",
+      "x-ratelimit-reset-tokens": "4.267s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:13:20.051540+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.687,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "988",
+      "x-ratelimit-remaining-tokens": "6896",
+      "x-ratelimit-reset-requests": "17m16.8s",
+      "x-ratelimit-reset-tokens": "8.28s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:13:40.230588+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.866,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "987",
+      "x-ratelimit-remaining-tokens": "7053",
+      "x-ratelimit-reset-requests": "18m43.2s",
+      "x-ratelimit-reset-tokens": "7.102s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:14:00.170811+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.805,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "986",
+      "x-ratelimit-remaining-tokens": "7333",
+      "x-ratelimit-reset-requests": "20m9.6s",
+      "x-ratelimit-reset-tokens": "5.002s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:14:20.108867+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.743,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "985",
+      "x-ratelimit-remaining-tokens": "6783",
+      "x-ratelimit-reset-requests": "21m36s",
+      "x-ratelimit-reset-tokens": "9.127s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:14:41.243386+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.877,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "984",
+      "x-ratelimit-remaining-tokens": "6386",
+      "x-ratelimit-reset-requests": "23m2.4s",
+      "x-ratelimit-reset-tokens": "12.105s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:15:00.959546+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.593,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "983",
+      "x-ratelimit-remaining-tokens": "6356",
+      "x-ratelimit-reset-requests": "24m28.8s",
+      "x-ratelimit-reset-tokens": "17.88s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:15:20.131407+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.765,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "982",
+      "x-ratelimit-remaining-tokens": "6230",
+      "x-ratelimit-reset-requests": "25m55.199s",
+      "x-ratelimit-reset-tokens": "43.8s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:15:41.767046+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.4,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "981",
+      "x-ratelimit-remaining-tokens": "6240",
+      "x-ratelimit-reset-requests": "27m21.6s",
+      "x-ratelimit-reset-tokens": "13.2s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:15:59.896260+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.528,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "980",
+      "x-ratelimit-remaining-tokens": "6845",
+      "x-ratelimit-reset-requests": "28m48s",
+      "x-ratelimit-reset-tokens": "31.2s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:16:20.532871+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.165,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "979",
+      "x-ratelimit-remaining-tokens": "6549",
+      "x-ratelimit-reset-requests": "30m14.4s",
+      "x-ratelimit-reset-tokens": "10.882s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:16:40.393065+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.024,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "978",
+      "x-ratelimit-remaining-tokens": "5832",
+      "x-ratelimit-reset-requests": "31m40.8s",
+      "x-ratelimit-reset-tokens": "16.26s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:17:02.160751+00:00",
+    "status": 200,
+    "elapsed_seconds": 2.791,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "977",
+      "x-ratelimit-remaining-tokens": "4735",
+      "x-ratelimit-reset-requests": "33m7.2s",
+      "x-ratelimit-reset-tokens": "24.487s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:17:20.455578+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.086,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "976",
+      "x-ratelimit-remaining-tokens": "5982",
+      "x-ratelimit-reset-requests": "34m33.6s",
+      "x-ratelimit-reset-tokens": "45.9s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:17:40.536464+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.166,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "975",
+      "x-ratelimit-remaining-tokens": "6362",
+      "x-ratelimit-reset-requests": "36m0s",
+      "x-ratelimit-reset-tokens": "49.5s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:18:00.222037+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.851,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "974",
+      "x-ratelimit-remaining-tokens": "6169",
+      "x-ratelimit-reset-requests": "37m26.4s",
+      "x-ratelimit-reset-tokens": "43.74s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:18:21.291294+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.92,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "973",
+      "x-ratelimit-remaining-tokens": "6638",
+      "x-ratelimit-reset-requests": "38m52.8s",
+      "x-ratelimit-reset-tokens": "12.719s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:18:40.113205+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.741,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "972",
+      "x-ratelimit-remaining-tokens": "6879",
+      "x-ratelimit-reset-requests": "40m19.2s",
+      "x-ratelimit-reset-tokens": "8.407s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:18:59.965740+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.593,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "971",
+      "x-ratelimit-remaining-tokens": "7056",
+      "x-ratelimit-reset-requests": "41m45.6s",
+      "x-ratelimit-reset-tokens": "7.08s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:19:19.800905+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.427,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "970",
+      "x-ratelimit-remaining-tokens": "6995",
+      "x-ratelimit-reset-requests": "43m12s",
+      "x-ratelimit-reset-tokens": "7.537s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:19:40.557544+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.184,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "969",
+      "x-ratelimit-remaining-tokens": "6254",
+      "x-ratelimit-reset-requests": "44m38.4s",
+      "x-ratelimit-reset-tokens": "13.095s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:20:00.721148+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.347,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "968",
+      "x-ratelimit-remaining-tokens": "6014",
+      "x-ratelimit-reset-requests": "46m4.8s",
+      "x-ratelimit-reset-tokens": "14.895s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:20:19.781411+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.407,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "967",
+      "x-ratelimit-remaining-tokens": "6806",
+      "x-ratelimit-reset-requests": "47m31.2s",
+      "x-ratelimit-reset-tokens": "32.82s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:20:40.250398+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.875,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "966",
+      "x-ratelimit-remaining-tokens": "6506",
+      "x-ratelimit-reset-requests": "48m57.6s",
+      "x-ratelimit-reset-tokens": "11.205s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:21:00.107780+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.732,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "965",
+      "x-ratelimit-remaining-tokens": "6869",
+      "x-ratelimit-reset-requests": "50m24s",
+      "x-ratelimit-reset-tokens": "8.482s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:21:20.379676+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.003,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "964",
+      "x-ratelimit-remaining-tokens": "5998",
+      "x-ratelimit-reset-requests": "51m50.399s",
+      "x-ratelimit-reset-tokens": "15.014s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:21:40.491115+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.115,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "963",
+      "x-ratelimit-remaining-tokens": "5984",
+      "x-ratelimit-reset-requests": "53m16.799s",
+      "x-ratelimit-reset-tokens": "15.12s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:21:59.894012+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.517,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "962",
+      "x-ratelimit-remaining-tokens": "7198",
+      "x-ratelimit-reset-requests": "54m43.2s",
+      "x-ratelimit-reset-tokens": "6.015s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:22:19.912284+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.535,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "961",
+      "x-ratelimit-remaining-tokens": "6964",
+      "x-ratelimit-reset-requests": "56m9.6s",
+      "x-ratelimit-reset-tokens": "7.77s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:22:40.142847+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.765,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "960",
+      "x-ratelimit-remaining-tokens": "6808",
+      "x-ratelimit-reset-requests": "57m36s",
+      "x-ratelimit-reset-tokens": "8.94s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:23:00.278617+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.9,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "959",
+      "x-ratelimit-remaining-tokens": "7151",
+      "x-ratelimit-reset-requests": "59m2.4s",
+      "x-ratelimit-reset-tokens": "6.367s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:23:20.263008+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.884,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "958",
+      "x-ratelimit-remaining-tokens": "6156",
+      "x-ratelimit-reset-requests": "1h0m28.8s",
+      "x-ratelimit-reset-tokens": "13.83s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:23:40.345329+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.966,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "957",
+      "x-ratelimit-remaining-tokens": "6369",
+      "x-ratelimit-reset-requests": "1h1m55.2s",
+      "x-ratelimit-reset-tokens": "12.232s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:24:00.142181+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.762,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "956",
+      "x-ratelimit-remaining-tokens": "5892",
+      "x-ratelimit-reset-requests": "1h3m21.6s",
+      "x-ratelimit-reset-tokens": "15.81s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:24:20.715952+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.335,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "955",
+      "x-ratelimit-remaining-tokens": "5985",
+      "x-ratelimit-reset-requests": "1h4m48s",
+      "x-ratelimit-reset-tokens": "15.112s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:24:40.342573+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.961,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "954",
+      "x-ratelimit-remaining-tokens": "6474",
+      "x-ratelimit-reset-requests": "1h6m14.4s",
+      "x-ratelimit-reset-tokens": "11.445s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:25:01.011681+00:00",
+    "status": 200,
+    "elapsed_seconds": 1.63,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "953",
+      "x-ratelimit-remaining-tokens": "6054",
+      "x-ratelimit-reset-requests": "1h7m40.8s",
+      "x-ratelimit-reset-tokens": "14.594s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:25:20.311261+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.929,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "952",
+      "x-ratelimit-remaining-tokens": "6088",
+      "x-ratelimit-reset-requests": "1h9m7.2s",
+      "x-ratelimit-reset-tokens": "14.34s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:25:40.087014+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.704,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "951",
+      "x-ratelimit-remaining-tokens": "7438",
+      "x-ratelimit-reset-requests": "1h10m33.6s",
+      "x-ratelimit-reset-tokens": "4.215s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:26:00.236589+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.854,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "950",
+      "x-ratelimit-remaining-tokens": "6051",
+      "x-ratelimit-reset-requests": "1h12m0s",
+      "x-ratelimit-reset-tokens": "14.617s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:26:20.060078+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.676,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "949",
+      "x-ratelimit-remaining-tokens": "6947",
+      "x-ratelimit-reset-requests": "1h13m26.4s",
+      "x-ratelimit-reset-tokens": "7.897s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:26:39.970373+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.586,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "948",
+      "x-ratelimit-remaining-tokens": "6962",
+      "x-ratelimit-reset-requests": "1h14m52.8s",
+      "x-ratelimit-reset-tokens": "7.785s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:27:00.084976+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.7,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "947",
+      "x-ratelimit-remaining-tokens": "6685",
+      "x-ratelimit-reset-requests": "1h16m19.2s",
+      "x-ratelimit-reset-tokens": "9.862s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:27:20.187516+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.803,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "946",
+      "x-ratelimit-remaining-tokens": "7048",
+      "x-ratelimit-reset-requests": "1h17m45.6s",
+      "x-ratelimit-reset-tokens": "7.14s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:27:39.888196+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.503,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "945",
+      "x-ratelimit-remaining-tokens": "7164",
+      "x-ratelimit-reset-requests": "1h19m12s",
+      "x-ratelimit-reset-tokens": "6.27s"
+    }
+  },
+  {
+    "utc": "2026-10-23T10:28:00.123790+00:00",
+    "status": 200,
+    "elapsed_seconds": 0.738,
+    "rate_headers": {
+      "x-ratelimit-limit-requests": "1000",
+      "x-ratelimit-limit-tokens": "8000",
+      "x-ratelimit-remaining-requests": "944",
+      "x-ratelimit-remaining-tokens": "6536",
+      "x-ratelimit-reset-requests": "1h20m38.4s",
+      "x-ratelimit-reset-tokens": "10.98s"
+    }
+  }
+]

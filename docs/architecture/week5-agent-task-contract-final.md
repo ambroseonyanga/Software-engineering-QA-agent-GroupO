@@ -1,7 +1,7 @@
 # Agent Task Contract
 **Project:** Software Engineering QA Agent  
 **Group:** Group O  
-**Week:** 5 — Agent Architecture and Bounded Autonomy  
+**Week:** 5 â€” Agent Architecture and Bounded Autonomy  
 **Source of truth:** `src/agent_contracts.py`, `src/agent.py`
 
 ---
@@ -11,7 +11,7 @@
 **Failure triage and draft preparation.**  
 Given one human-reported test failure, the agent links the failure to authorized project requirements and prepares one local draft issue for human review. It does not run tests, submit issues, or take any action that modifies the repository, CI pipeline, or any external service.
 
-This task benefits from multi-step agentic decision-making because the correct next action depends on what the previous step returned: a retrieval may find nothing (requiring re-planning with different wording), a tool may fail (requiring retry within a limit or hand-off), and a draft is only worth saving after at least one retrieval has been attempted.
+We use multi-step agentic decisions for this task because the correct next action depends on what the previous step returned: a retrieval may find nothing (requiring re-planning with different wording), a tool may fail (requiring retry within a limit or hand-off), and a draft is only worth saving after at least one retrieval has been attempted.
 
 **Goal state (done):** One draft exists in `evidence/drafts/` with `status: draft` and `submitted: false`, its notes list the retrieved requirement sources (or state that none were found), and a complete trace exists in `evidence/traces/agent_runs/<run_id>.json`.
 
@@ -19,7 +19,7 @@ This task benefits from multi-step agentic decision-making because the correct n
 
 ## 2. Input
 
-One failure report supplied by a human operator. It is treated as **untrusted data** throughout — the agent validates it against a JSON Schema before the loop starts and rejects unknown fields.
+One failure report supplied by a human operator. It is treated as **untrusted data** throughout â€” the agent validates it against a JSON Schema before the loop starts and rejects unknown fields.
 
 | Field | Type | Required | Rule |
 |---|---|---|---|
@@ -42,7 +42,7 @@ The model chooses **one action per iteration**. The application re-validates eve
 | `create_issue_draft` | Approved tool (Week 4) | The application fills `title`, `failed_test`, `expected`, `actual` from the **human report** — never from model text. The model supplies only a short `analysis` (≤600 chars), appended to `notes` labelled "unverified". Always a local draft; `submitted=false`. |
 | `ask_human` | Hand-off action | Terminates the run and returns the model's question or reason to the human. No tool is invoked. |
 
-**Permanently blocked — never executed:**  
+**Permanently blocked â€” never executed:**  
 `run_tests`, `submit_issue`, `merge_pr`, `deploy`, `shell`, and any decision that sets `submit`, `merge`, `deploy`, or `execute` to `true`. If the model names any of these, the run stops immediately with `HANDOFF_APPROVAL_REQUIRED`; nothing is executed and no partial state is retained.
 
 ---
@@ -53,7 +53,7 @@ The model chooses **one action per iteration**. The application re-validates eve
 Sense → Decide → Validate → Act → Observe → Stop / Re-plan
 ```
 
-**Step 1 — Sense:** The orchestrator (`_sense()` in `src/agent.py`) builds a compact state digest the model is allowed to see:
+**Step 1 â€” Sense:** The orchestrator (`_sense()` in `src/agent.py`) builds a compact state digest the model is allowed to see:
 - The goal string
 - The original failure report (untrusted data label)
 - Limits remaining (iterations, retrievals)
@@ -61,21 +61,21 @@ Sense → Decide → Validate → Act → Observe → Stop / Re-plan
 
 The model never sees internal counters, completed queries, or raw evidence scores.
 
-**Step 2 — Decide:** The digest is sent to Groq using `qwen/qwen3.8-27b`, JSON mode and a schema included in the system instructions. Temperature = 0, maximum completion tokens = 1,000, timeout = 90 seconds. Application-side schema validation remains authoritative. The model returns one JSON object: `{ "action", "query", "analysis", "message" }`.
+**Step 2 â€” Decide:** The digest is sent to Groq using `qwen/qwen3.8-27b`, JSON mode and a schema included in the system instructions. Temperature = 0, maximum completion tokens = 1,000, timeout = 90 seconds. Application-side schema validation remains authoritative. The model returns one JSON object: `{ "action", "query", "analysis", "message" }`.
 
-**Step 3 — Validate (deterministic guards):** The application independently validates:
-- `HIGHER_IMPACT_FLAGS` (`submit`, `merge`, `deploy`, `execute`) → `HANDOFF_APPROVAL_REQUIRED`
-- Action name against `PROHIBITED_NAMES` → `HANDOFF_APPROVAL_REQUIRED`
+**Step 3 â€” Validate (deterministic guards):** The application independently validates:
+- `HIGHER_IMPACT_FLAGS` (`submit`, `merge`, `deploy`, `execute`) â†’ `HANDOFF_APPROVAL_REQUIRED`
+- Action name against `PROHIBITED_NAMES` â†’ `HANDOFF_APPROVAL_REQUIRED`
 - JSON Schema validation against `DECISION_SCHEMA`
 - Action in `AGENT_ACTIONS` list
-- For retrieve: query ≥ 3 chars, not a repeated query, retrieval budget not exhausted
+- For retrieve: query â‰¥ 3 chars, not a repeated query, retrieval budget not exhausted
 - For draft: at least one retrieval succeeded, no draft already exists
 
-**Step 4 — Act:** All tool calls go through `invoke_tool()` in `src/tool_service.py`, which independently re-checks the allow-list and re-validates arguments (double-validation pattern). The model cannot bypass the guard layer to reach the tool layer.
+**Step 4 â€” Act:** All tool calls go through `invoke_tool()` in `src/tool_service.py`, which independently re-checks the allow-list and re-validates arguments (double-validation pattern). The model cannot bypass the guard layer to reach the tool layer.
 
-**Step 5 — Observe:** Outcomes are classified as: `grounded`, `not_grounded`, `tool_error`, `blocked`, `invalid_decision`, `draft_saved`, `handoff`, or `model_unavailable`. The outcome is appended to `state["history"]` and written to the audit trace.
+**Step 5 â€” Observe:** Outcomes are classified as: `grounded`, `not_grounded`, `tool_error`, `blocked`, `invalid_decision`, `draft_saved`, `handoff`, or `model_unavailable`. The outcome is appended to `state["history"]` and written to the audit trace.
 
-**Step 6 — Stop or Re-plan:** Stop conditions are evaluated. If none trigger, `state["iteration"]` is incremented and the loop repeats from Step 1 with the new observation in history.
+**Step 6 â€” Stop or Re-plan:** Stop conditions are evaluated. If none trigger, `state["iteration"]` is incremented and the loop repeats from Step 1 with the new observation in history.
 
 ---
 

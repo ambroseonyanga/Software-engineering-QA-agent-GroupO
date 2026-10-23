@@ -1,0 +1,33 @@
+{
+  "request_id": "e1451411a81d4e40a198b36ec251ff38",
+  "timestamp_utc": "2026-10-23T10:43:01.932068+00:00",
+  "model": "qwen/qwen3.8-27b",
+  "prompt_version": "tool-router-v1.0.txt",
+  "request": "Create one local unsubmitted issue draft titled 'Synthetic evaluation rerun issue'. failed_test: SYN-RERUN-TOOLS; expected: synthetic equality accepted; actual: synthetic report of rejection; notes: This is a synthetic evaluation fixture, not a confirmed product defect.",
+  "max_tool_calls": 1,
+  "state": "finished",
+  "decision": {
+    "tool": "create_issue_draft",
+    "arguments": {
+      "title": "Synthetic evaluation rerun issue",
+      "failed_test": "SYN-RERUN-TOOLS",
+      "expected": "synthetic equality accepted",
+      "actual": "synthetic report of rejection",
+      "notes": "This is a synthetic evaluation fixture, not a confirmed product defect.",
+      "submit": false,
+      "merge": false,
+      "deploy": false,
+      "execute": false
+    },
+    "message": "Local issue draft created with the provided synthetic evaluation details."
+  },
+  "elapsed_seconds": 20.133,
+  "result": {
+    "ok": true,
+    "draft_id": "DRAFT-c19969c4c40a",
+    "status": "draft",
+    "path": "evidence/traces/evaluation_rerun_20261023T104204Z/drafts/DRAFT-c19969c4c40a.json",
+    "submitted": false,
+    "title": "Synthetic evaluation rerun issue"
+  }
+}

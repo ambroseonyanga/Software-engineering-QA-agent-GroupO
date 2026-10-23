@@ -1,8 +1,8 @@
 # Final evidence index
 
-Prepared 22 October 2026. This pack consolidates retained evidence and final-format deliverables. It includes the measured scenario outcomes and retained interruptions. Human acceptance review, release tagging, ClickUp completion and MUELE submission are not inferred from test execution.
+We prepared this pack on 22 October 2026 to consolidate retained evidence and final-format deliverables. We included measured scenario outcomes and retained interruptions. Human acceptance review, release tagging, ClickUp completion and MUELE submission are not inferred from test execution.
 
-## Current results
+## Recorded results for 22 October 2026
 
 - Offline regression: 66 checks passed, zero failures/errors. The model is mocked/scripted in offline cases. See evidence/traces/offline_regression_20261022.json.
 - RAG: 15 current generated-answer cases, all assessed PASS under the stated AI-assisted rubric. See docs/evaluation/RAG_Evaluation.docx, evidence/final/rag_assessment.json and evidence/traces/milestones_20261022T154858Z/verification.json. This is one run, not an independent human review or a final system reliability score.
@@ -23,17 +23,17 @@ The three scenarios use clearly synthetic reports, not verified BudgetMe defects
 
 ## What the documents mean
 
-The QA Agent is the capstone product. BudgetMe is the target application. Its current 14 target corpus records combine four original source summaries, six SRS groups and four focused evidence documents. The source-derived requirements and proposed targets retain their labels; the test-coverage and failure documents identify the exact retained execution record. Project analysis uses session requirements plus its bound repository corpus. Global legacy retrieval still serves QA Agent governance questions.
+We built the QA Agent as our capstone product and used BudgetMe as the target application. Its current 14 target corpus records combine four original source summaries, six SRS groups and four focused evidence documents. The source-derived requirements and proposed targets retain their labels; the test-coverage and failure documents identify the exact retained execution record. Project analysis uses session requirements plus its bound repository corpus. Global legacy retrieval still serves QA Agent governance questions.
 
 The project failure-analysis route sets use_history=False: it records the new summary but does not consult earlier summaries. Opt-in reuse is demonstrated through standalone triage and the dedicated memory traces. History never grants approval or skips fresh evidence retrieval.
 
 ## Deliverables
 
-The main engineering report has ten pages plus an evidence appendix. The editable presentation has 15 slides and presenter notes. The RAG evaluation, tool evidence, failure catalogue and Week 7 report are editable Word documents. The dataset and measured results are CSV. The original evaluated input is preserved as evaluated_dataset.csv, matching the run's recorded hash. The Excel source register matches the unchanged eight-column CSV schema and 19 registered sources. Architecture deliverables are SVG; existing originals were preserved.
+The main engineering report has ten pages plus an evidence appendix. The editable presentation has 15 slides and presenter notes. The RAG evaluation, tool evidence, failure catalogue and Week 7 report are editable Word documents. The dataset and measured results are CSV. The original evaluated input is preserved as evaluated_dataset.csv, matching the run's recorded hash. The Excel source register matches the unchanged eight-column CSV schema and 19 registered sources. We kept the architecture SVGs and their existing originals.
 
 ## Integrity and remaining work
 
-Every raw outcome is retained as observed. Generated-test setup errors are not confirmed application defects. The missing-username fixture was corrected and retested. Five scenario outcomes remain partial: overview completeness, proposal/result attribution, conflict clarification, setup diagnosis and stop/handoff behavior. Four target assertions remain unresolved; the target repository was not changed. The engineering report, presentation, Week 7 report and failure catalogue reflect the measured results. Individual contribution/ClickUp task links and acceptance reviews require real human confirmation.
+We kept every raw outcome as observed. Generated-test setup errors are not confirmed application defects. The missing-username fixture was corrected and retested. Five scenario outcomes remain partial: overview completeness, proposal/result attribution, conflict clarification, setup diagnosis and stop/handoff behavior. Four target assertions remain unresolved; the target repository was not changed. The engineering report, presentation, Week 7 report and failure catalogue reflect the measured results. Individual contribution/ClickUp task links and acceptance reviews require real human confirmation.
 
 sha256_manifest.csv identifies the packaged file versions. It is a file-integrity index, not proof of test correctness or an independently audited release. The pack contains source and evidence, but no credentials, local session databases, virtual environment or production database.
 
