@@ -1,4 +1,10 @@
 """Approval-checked Docker execution with bounded resources and output."""
+
+try:
+    from .console_logging import trace_operation, log_event, log_error
+except ImportError:
+    from console_logging import trace_operation, log_event, log_error
+
 import json
 import os
 from pathlib import Path
@@ -20,7 +26,9 @@ RUN_LOCK = threading.Lock()
 TEST_TIMEOUT_SECONDS = 90
 
 
+@trace_operation("SANDBOX", "Sandbox command")
 def command(args, timeout=120, cancel=None, limit=100000):
+    log_event('SANDBOX', 'Command launching', executable='docker' if args[0] == 'docker' else 'other', operation=args[1] if args[0] == 'docker' and args[1] in {'image', 'tag', 'build', 'run', 'rm'} else 'other')
     process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
     chunks, count = [], [0]
@@ -58,6 +66,7 @@ def command(args, timeout=120, cancel=None, limit=100000):
     return process.returncode, b''.join(chunks).decode('utf-8', errors='replace'), reason
 
 
+@trace_operation("SANDBOX", "Request cancellation")
 def cancel_run(session_id):
     with LOCK:
         event = CANCEL.get(session_id)
@@ -65,6 +74,50 @@ def cancel_run(session_id):
             event.set()
 
 
+
+def can_recheck(state):
+    """Only an inspect-only failed attempt can retain its unused approval."""
+    if state['status'] != 'blocked' or state.get('results') or not state.get('approval'):
+        return False
+    events = state.get('events', [])
+    starts = [i for i, e in enumerate(events) if e.get('action') == 'run_requested']
+    if not starts:
+        return False
+    calls = [e.get('command', []) for e in events[starts[-1]:]
+             if e.get('action') == 'sandbox_tool_called']
+    inspect = ['docker', 'image', 'inspect', 'budgetme-sandbox:local', '--format', '{{.Id}}']
+    return bool(calls and calls[0] == inspect and all(
+        c == inspect or (len(c) == 4 and c[:3] == ['docker', 'image', 'rm']
+                         and c[3].startswith('groupo-qa-run:')) for c in calls))
+
+
+@trace_operation("SANDBOX", "Recheck environment")
+def recheck(session_id):
+    """Read-only Docker probe; never build an image or start a container."""
+    with LOCK:
+        state = read(session_id)
+        if not can_recheck(state):
+            raise ValueError('Only a run blocked before sandbox preparation can be recovered.')
+        verify_approval(state)
+        try:
+            rc, output, reason = command(['docker', 'version', '--format', '{{.Server.Version}}'], timeout=20)
+            if rc or reason:
+                raise ValueError('Docker daemon is unavailable to this Python process: ' + (reason or output[-1000:]))
+            rc, output, reason = command(['docker', 'image', 'inspect', 'budgetme-sandbox:local', '--format', '{{.Id}}'], timeout=20)
+            if rc or reason:
+                raise ValueError('Sandbox image inspection failed: ' + (reason or output[-1000:]))
+        except OSError as error:
+            raise ValueError('Docker CLI could not be started: ' + str(error)) from error
+        state.setdefault('execution_history', []).append({key: state.get(key) for key in
+            ('started', 'finished', 'status', 'results', 'approval', 'image_id', 'base_image_id', 'error')})
+        state.update(status='approved', error=None, started=None, finished=None)
+        state['events'].append({'at': now(), 'action': 'docker_readiness_rechecked',
+                                'base_image_id': output.strip(), 'execution_started': False})
+        save(state)
+        return state
+
+
+@trace_operation("SANDBOX", "Start approved run")
 def start(session_id):
     with LOCK:
         state = read(session_id)
@@ -79,6 +132,7 @@ def start(session_id):
     thread.start()
 
 
+@trace_operation("SANDBOX", "Execute test run")
 def execute(session_id):
     tag = 'groupo-qa-run:' + uuid4().hex
     event = CANCEL[session_id]
@@ -98,6 +152,7 @@ def execute(session_id):
             state['events'].append({'at': now(), 'action': 'sandbox_tool_result',
                 'exit_code': result[0], 'output': result[1][-16000:], 'stop_reason': result[2]})
             save(state)
+        log_event('SANDBOX', 'Command returned', exit_code=result[0], stopped=bool(result[2]))
         return result
     try:
         with RUN_LOCK:
@@ -174,6 +229,7 @@ def execute(session_id):
                                           detail='\n'.join(item['detail'] for item in result['records'])[:12000])
                         except (ValueError, KeyError, TypeError):
                             record['detail'] = 'No valid test-group result was returned. Check the execution output.'
+                    log_event('RESULT', 'Test execution recorded', status=record['status'], tests_run=record['tests_run'], exit_code=rc)
                     state['results'].append(record)
                     with LOCK:
                         save(state)
@@ -181,6 +237,7 @@ def execute(session_id):
             finally:
                 traced_command(['docker', 'image', 'rm', base_tag], timeout=20)
     except Exception as error:
+        log_error('SANDBOX', 'Test run blocked or failed', error)
         state = read(session_id)
         state.update(status='cancelled' if event.is_set() else 'blocked', error=str(error)[:2000])
     finally:
@@ -190,6 +247,7 @@ def execute(session_id):
             pass
         with LOCK:
             state = locals().get('state', read(session_id))
+            log_event('RESULT', 'Run finished', status=state['status'], results=len(state.get('results', [])))
             state['finished'] = now()
             state['events'].append({'at': now(), 'action': 'run_finished', 'status': state['status'], 'stop_reason': state.get('error') or state['status']})
             save(state)

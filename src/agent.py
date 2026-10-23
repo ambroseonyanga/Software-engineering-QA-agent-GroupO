@@ -8,6 +8,12 @@ trace, and decides when the run stops.
 
 Loop per iteration:  Sense -> Decide -> Validate -> Act -> Observe -> Stop/Re-plan
 """
+
+try:
+    from .console_logging import trace_operation, log_event, log_error
+except ImportError:
+    from console_logging import trace_operation, log_event, log_error
+
 import json
 import time
 import urllib.request
@@ -45,6 +51,7 @@ EXCERPT_CHARS_FOR_PROMPT = 200
 
 
 # --------------------------------------------------------------------------- Decide
+@trace_operation("AGENT", "Decide next action")
 def decide_with_model(digest):
     result = complete(PROMPT_PATH.read_text(encoding="utf-8"), "STATE (JSON):\n" + json.dumps(digest, indent=1), temperature=0, max_tokens=1000, schema=MODEL_FORMAT_SCHEMA)
     return json.loads(result["text"])
@@ -101,6 +108,7 @@ def _persist(path, record):
 
 
 # --------------------------------------------------------------------------- Run
+@trace_operation("AGENT", "Triage run")
 def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_dir=None,
               limits=None, clock=time.monotonic, fault_injection=None,
               memory_store=None, use_history=False):
@@ -125,6 +133,7 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
         "state_transitions": [], "history_requested": use_history is True,
     }
     def transition(stage):
+        log_event("AGENT", "State changed", run_id=run_id, stage=stage)
         record["workflow_state"] = stage
         record["state_transitions"].append({"state": stage, "at_utc": datetime.now(timezone.utc).isoformat()})
     transition("RECEIVED")
@@ -303,6 +312,9 @@ def run_agent(task, *, decide_fn=None, retrieve_fn=None, draft_dir=None, trace_d
                 stop_reason, message = "SERVICE_UNAVAILABLE", "Trace storage failed mid-run; stopped for safety."
 
     linked = [{k: s[k] for k in ("source_id", "source", "chunk_id", "score")} for s in state["evidence"][:5]]
+    log_event("AGENT", "Triage stopped", run_id=run_id, stop_reason=stop_reason, iterations=len(record["steps"]))
+    if stop_reason == "HANDOFF_APPROVAL_REQUIRED":
+        log_event("APPROVAL", "Higher-impact action blocked; human decision required", run_id=run_id)
     handoff = stop_reason != "COMPLETED"
     record.update(state="finished", stop_reason=stop_reason, message=message, human_handoff=handoff,
                   iterations_used=len(record["steps"]), retrievals_used=state["retrievals"],

@@ -3,6 +3,11 @@ from collections import Counter
 from io import BytesIO
 import re
 
+try:
+    from .workflow_service import uganda_time
+except ImportError:
+    from workflow_service import uganda_time
+
 from docx import Document
 from docx.shared import Inches, Pt, RGBColor
 
@@ -30,8 +35,8 @@ def report_bytes(state):
         'These results cover the selected tests, not the whole application or SRS.')
     document.add_heading('Run summary', level=1)
     for label, value in [('Requirements document', state['pdf_name']), ('Run state', state['status']),
-                         ('Session', state['id']), ('Finished UTC', state.get('finished', 'Not finished')),
-                         ('Approved by', approved['reviewer']), ('Approved UTC', approved['at']),
+                         ('Session', state['id']), ('Finished EAT (UTC+3)', uganda_time(state.get('finished') or 'Not finished')),
+                         ('Approved by', approved['reviewer']), ('Approved EAT (UTC+3)', uganda_time(approved['at'])),
                          ('Environment', 'Django with temporary SQLite' if state['adapter'] == 'budgetme' else 'Python unittest'),
                          ('Suggested tests', len(state['tests'])), ('Approved tests', len(approved['tests']))]:
         document.add_paragraph(f'{label}: {clean(value)}')

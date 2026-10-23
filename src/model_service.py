@@ -1,4 +1,10 @@
 """Shared Groq transport; credentials stay in the environment."""
+
+try:
+    from .console_logging import trace_operation, log_event, log_error
+except ImportError:
+    from console_logging import trace_operation, log_event, log_error
+
 import json
 import os
 import time
@@ -23,6 +29,7 @@ def load_prompt(name):
     return (ROOT / "prompts" / name).read_text(encoding="utf-8-sig")
 
 
+@trace_operation("MODEL", "Model completion")
 def complete(system, user, *, temperature=0.2, max_tokens=2048, schema=None, reasoning_effort=None):
     key = os.getenv("GROQ_API_KEY", "").strip()
     if not key:

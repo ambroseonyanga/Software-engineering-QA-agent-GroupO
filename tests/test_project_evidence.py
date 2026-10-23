@@ -18,6 +18,21 @@ class ProjectEvidenceTests(unittest.TestCase):
         self.assertEqual({d['path'] for d in pipeline.documents},expected)
         self.assertTrue(all(d['source'].startswith('budgetme_') for d in pipeline.documents))
 
+    def test_git_origin_binds_legacy_session_without_using_project_name(self):
+        from tempfile import TemporaryDirectory
+        from pathlib import Path
+        with TemporaryDirectory() as temporary:
+            git = Path(temporary) / '.git'
+            git.mkdir()
+            config = git / 'config'
+            config.write_text('[remote "origin"]\nurl = https://github.com/Joritace/BudgetMe.git\n', encoding='utf-8')
+            state = {'name': 'Renamed project', 'source_path': temporary, 'requirements': []}
+            results = rag_service.project_corpus_context(state, 'budget planning')
+            self.assertTrue(results)
+            self.assertTrue(all(item['path'].startswith('knowledge/corpus/budgetme_') for item in results))
+            config.write_text('[remote "origin"]\nurl = https://github.com/example/Other\n', encoding='utf-8')
+            self.assertEqual(rag_service.project_corpus_context(state, 'budget planning'), [])
+
     def test_unbound_project_does_not_fall_back_to_global_corpus(self):
         result=rag_service.project_retrieve({'name':'Other','requirements':[]},'signup requirements')
         self.assertFalse(result['grounded'])

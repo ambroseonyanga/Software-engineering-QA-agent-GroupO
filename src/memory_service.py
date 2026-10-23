@@ -1,4 +1,10 @@
 """Bounded local triage history. Records describe reports, not executed tests."""
+
+try:
+    from .console_logging import trace_operation, log_event, log_error
+except ImportError:
+    from console_logging import trace_operation, log_event, log_error
+
 import json
 import sqlite3
 from contextlib import contextmanager
@@ -68,6 +74,7 @@ class HistoryStore:
             if connection is not None:
                 connection.close()
 
+    @trace_operation("TOOL", "Save run history")
     def save(self, summary):
         validate(summary, RECORD_SCHEMA)
         if not summary["failed_test"].strip():
@@ -81,6 +88,7 @@ class HistoryStore:
             db.execute("DELETE FROM runs WHERE run_id IN (SELECT run_id FROM runs ORDER BY recorded DESC, rowid DESC LIMIT -1 OFFSET ?)", (MAX_RECORDS,))
         return entry
 
+    @trace_operation("TOOL", "Read run history")
     def query(self, failed_test, limit=5):
         validate({"failed_test": failed_test, "limit": limit}, QUERY_SCHEMA)
         failed_test = failed_test.strip()
@@ -101,6 +109,7 @@ class HistoryStore:
         return {"ok": True, "failed_test": failed_test, "run_count": count,
                 "last_stop_reason": runs[0]["stop_reason"] if runs else None, "runs": runs}
 
+    @trace_operation("TOOL", "Delete run history")
     def delete(self, run_id):
         validate(run_id, RECORD_SCHEMA["properties"]["run_id"])
         with self._connection() as db:
@@ -108,6 +117,7 @@ class HistoryStore:
         return bool(deleted)
 
 
+@trace_operation("TOOL", "Query run history")
 def query_run_history(arguments, store=None):
     """Project capability documented as an MCP-style interface; not an MCP server."""
     try:

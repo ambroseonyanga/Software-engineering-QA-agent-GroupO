@@ -107,6 +107,16 @@ def run(session_id):
     return redirect(url_for('workflow.project_view', session_id=session_id, section='executions'))
 
 
+@workflow.route('/workflow/<session_id>/recheck', methods=['POST'])
+def recheck(session_id):
+    get_state(session_id)
+    try:
+        runner.recheck(session_id)
+    except ValueError as exception:
+        return render_workspace(get_state(session_id), 'executions', error=str(exception)), 409
+    return redirect(url_for('workflow.project_view', session_id=session_id, section='executions'))
+
+
 @workflow.route('/workflow/<session_id>/cancel', methods=['POST'])
 def cancel(session_id):
     get_state(session_id)
@@ -200,6 +210,7 @@ def render_workspace(state, screen, error=None, **extra):
             groups.append({'id': 'Unmapped', 'title': 'Requirement link needs review', 'tests': remaining})
     return render_template('workflow.html', view='workflow', state=state, screen=screen,
                            global_view='projects' if state else screen, error=error,
+                           can_recheck=runner.can_recheck(state) if state else False,
                            csrf_token=token(), projects=projects, sessions=states, activity=activity,
                            metrics=metrics, groups=groups, project_views=PROJECT_VIEWS,
                            pending_requirements=service.pending_requirements(state) if state else [],
@@ -343,7 +354,7 @@ def trace(session_id):
     for index, event in enumerate(state.get('events', [])):
         if event.get('action') == 'run_requested':
             current = 'run-' + str(index)
-            runs.append({'id': current, 'label': 'Run · ' + event.get('at', '')[:19] + ' UTC'})
+            runs.append({'id': current, 'label': 'Run · ' + service.uganda_time(event.get('at', '')) + ' EAT'})
         events.append({'at': event.get('at', ''), 'action': event.get('action', 'recorded_event'),
                        'run_id': current, 'evidence': deepcopy(event)})
     # These are current snapshot records, not reconstructed historical run events.

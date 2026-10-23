@@ -45,7 +45,7 @@ if(tracePanel){
    let li=Array.from(list.children).find(item=>item.dataset.eventKey===key);
    if(li){const pre=li.querySelector('pre'),text=JSON.stringify(event.evidence,null,2);if(pre.textContent!==text)pre.textContent=text;continue;}
    li=document.createElement('li');li.dataset.eventKey=key;const details=document.createElement('details'), summary=document.createElement('summary'), time=document.createElement('time'), evidence=document.createElement('pre');
-   summary.textContent=event.action.replaceAll('_',' ');time.dateTime=event.at;time.textContent=event.at ? new Date(event.at).toLocaleString() : 'Time not recorded';evidence.textContent=JSON.stringify(event.evidence,null,2);
+   summary.textContent=event.action.replaceAll('_',' ');time.dateTime=event.at;time.textContent=event.at ? new Date(event.at).toLocaleString('en-GB', {timeZone:'Africa/Kampala', timeZoneName:'short'}) : 'Time not recorded';evidence.textContent=JSON.stringify(event.evidence,null,2);
    details.append(summary,time,evidence);li.append(details);list.append(li);
   }
   for(const li of Array.from(list.children))if(!retained.has(li.dataset.eventKey))li.remove();

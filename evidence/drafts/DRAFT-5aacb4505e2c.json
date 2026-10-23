@@ -1,0 +1,12 @@
+{
+  "title": "Failure: New user without budget sees setup guidance and no other user data",
+  "failed_test": "T03",
+  "expected": "A newly registered user who has not yet set up a budget is shown setup guidance and does not have access to any other user's financial data.",
+  "actual": "Traceback (most recent call last):\n  File \"/qa/proposals/case_T03.py\", line 24, in test_new_user_without_budget_sees_setup_guidance_and_no_other_user_data\n    self.assertIn(b'setup guidance', response.content)\n    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: b'setup guidance' not found in b'\\n<!doctype html>\\n<html lang=\"en\">\\n<head>\\n  <title>Not Found</title>\\n</head>\\n<body>\\n  <h1>Not Found</h1><p>The requested resource was not found on this server.</p>\\n</body>\\n</html>\\n'\n\nCreating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...\nFound 1 test(s).\nOperations to perform:\n  Synchronize unmigrated apps: allauth, google, messages, staticfiles\n  Apply all migrations: account, admin, auth, budgetbuddy, contenttypes, sessions, sites, socialaccount\nSynchronizing apps without migrations:\n  Creating tables...\n    Running deferred SQL...\nRunning migrations:\n  Applying contenttypes.0001_initial... OK\n  Applying auth.0001_initial...",
+  "notes": "Retrieved project evidence (not proof of approved requirements or a confirmed cause):\n- FR-024 FR-024 chunk 0 (score 0.241)\n- FR-001 FR-001 chunk 0 (score 0.127)\n- SRC-020 budgetme_requirements_001_005.md chunk 0 (score 0.120)\nModel-suggested analysis (unverified; not a confirmed cause): The failure likely relates to FR-024 (Handle a signed in user without a budget), which requires the system to provide setup guidance. The test failed because the response was a 404 Not Found page instead of the expected guidance content. It is uncertain whether the 404 is caused by a missing route, an incorrect URL in the test, or a deployment issue.\nAgent run: 4ec1482743fc4eeaac9d2b259c74317b. Draft only; a human must review before any submission.",
+  "status": "draft",
+  "submitted": false,
+  "created_at_utc": "2026-10-23T18:37:43.601652+00:00",
+  "draft_id": "DRAFT-5aacb4505e2c",
+  "path": "evidence/drafts/DRAFT-5aacb4505e2c.json"
+}

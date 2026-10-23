@@ -1,4 +1,10 @@
 """One model decision, one validated tool call; no autonomous loop."""
+
+try:
+    from .console_logging import trace_operation, log_event, log_error
+except ImportError:
+    from console_logging import trace_operation, log_event, log_error
+
 import json
 import time
 import urllib.request
@@ -22,11 +28,13 @@ PROMPT_PATH = ROOT / "prompts" / "tool-router-v1.0.txt"
 TRACE_DIR = ROOT / "evidence" / "traces" / "tool_requests"
 
 
+@trace_operation("AGENT", "Select tool")
 def decide_tool(user_request):
     result = complete(PROMPT_PATH.read_text(encoding="utf-8") + "\nTool input schemas:\n" + json.dumps(TOOL_SCHEMAS), user_request, temperature=0, max_tokens=1000, schema=DECISION_SCHEMA)
     return json.loads(result["text"])
 
 
+@trace_operation("AGENT", "Route tool request")
 def handle_tool_request(user_request, *, decide_fn=None, generate=True, draft_dir=None, trace_dir=None):
     if not isinstance(user_request, str) or not 3 <= len(user_request.strip()) <= 2000:
         return _error("VALIDATION_ERROR", "Request must contain 3 to 2000 characters.")

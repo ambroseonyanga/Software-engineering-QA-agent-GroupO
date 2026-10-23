@@ -1,3 +1,9 @@
+
+try:
+    from .console_logging import trace_operation, log_event, log_error
+except ImportError:
+    from console_logging import trace_operation, log_event, log_error
+
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -105,6 +111,7 @@ def normalize_tool_result(tool_name, result):
     return result
 
 
+@trace_operation("TOOL", "Retrieve evidence tool")
 def retrieve_project_evidence(arguments, generate=True, retrieve_fn=None):
     query = str(arguments.get("query") or "").strip()
     if len(query) < 3:
@@ -179,6 +186,7 @@ def retrieve_project_evidence(arguments, generate=True, retrieve_fn=None):
     }
 
 
+@trace_operation("TOOL", "Create issue draft tool")
 def create_issue_draft(arguments, draft_dir=None):
     draft_dir = Path(draft_dir) if draft_dir is not None else DRAFTS_DIR
     title = str(arguments.get("title") or "").strip()
@@ -237,6 +245,7 @@ def create_issue_draft(arguments, draft_dir=None):
     }
 
 
+@trace_operation("TOOL", "Tool dispatch")
 def invoke_tool(
     tool_name,
     arguments=None,
@@ -248,6 +257,7 @@ def invoke_tool(
     arguments = {} if arguments is None else arguments
     tool_name = str(tool_name or "").strip()
 
+    log_event("TOOL", "Tool requested", tool=tool_name if tool_name in ALLOWED_TOOLS or tool_name in BLOCKED_TOOLS else "unknown")
     validation_error = None
     if tool_name in ALLOWED_TOOLS:
         try:
@@ -298,6 +308,9 @@ def invoke_tool(
             tool=tool_name,
         )
 
+    log_event("TOOL", "Dispatch outcome", ok=bool(result.get("ok")), status=result.get("status"))
+    if result.get("error") == "UNAUTHORIZED":
+        log_event("APPROVAL", "Tool request blocked by authorization policy")
     if record_trace:
         _append_trace({
             "timestamp_utc": datetime.now(timezone.utc).isoformat(),

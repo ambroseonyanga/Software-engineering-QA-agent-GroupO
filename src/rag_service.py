@@ -1,3 +1,10 @@
+
+try:
+    from .console_logging import trace_operation, log_event, log_error
+except ImportError:
+    from console_logging import trace_operation, log_event, log_error
+
+import configparser
 import csv
 import json
 import urllib.error
@@ -38,6 +45,7 @@ def load_source_register():
     return register
 
 
+@trace_operation("RAG", "Load authorized corpus")
 def load_documents():
     documents = []
 
@@ -73,6 +81,7 @@ def chunk_text(text, chunk_size=CHUNK_SIZE):
     return chunks
 
 
+@trace_operation("RAG", "Chunk documents")
 def build_chunks(documents):
     chunks = []
 
@@ -88,6 +97,7 @@ def build_chunks(documents):
     return chunks
 
 
+@trace_operation("RAG", "Build retrieval index")
 def build_index(chunks):
     texts = [chunk["text"] for chunk in chunks]
     vectorizer = TfidfVectorizer(
@@ -99,6 +109,7 @@ def build_index(chunks):
     return vectorizer, matrix
 
 
+@trace_operation("RAG", "Rank evidence passages")
 def retrieve(query, chunks, vectorizer, matrix, top_k=TOP_K):
     query_vector = vectorizer.transform([query])
     scores = cosine_similarity(query_vector, matrix)[0]
@@ -146,6 +157,7 @@ class RagPipeline:
             raise RuntimeError("No authorised project documents are available. Check the source register.")
         self.vectorizer, self.matrix = build_index(self.chunks)
 
+    @trace_operation("RAG", "Ground answer")
     def answer(self, question, generate=True, top_k=TOP_K):
         results = retrieve(
             question,
@@ -226,13 +238,35 @@ def get_pipeline():
     return _pipeline
 
 
+@trace_operation("RAG", "Answer knowledge question")
 def answer_question(question, generate=True, top_k=TOP_K):
     return get_pipeline().answer(question, generate=generate, top_k=top_k)
 
 
+
+def repository_binding(source_path):
+    """Bind only a local Git origin represented in the authorised source register."""
+    if not source_path:
+        return ''
+    config = configparser.ConfigParser(interpolation=None)
+    try:
+        config.read(Path(source_path) / '.git' / 'config', encoding='utf-8')
+        origin = config.get('remote "origin"', 'url').strip().rstrip('/')
+    except (OSError, configparser.Error):
+        return ''
+    def canonical(url):
+        return url.rstrip('/').removesuffix('.git')
+    for row in load_source_register().values():
+        repository = row.get('origin', '').split(';', 1)[0].strip().rstrip('/')
+        if row.get('access_status') == 'Authorized' and canonical(repository) == canonical(origin):
+            return repository
+    return ''
+
+
+@trace_operation("RAG", "Build project evidence pipeline")
 def project_pipeline(state):
     """Keep target-system evidence separate from the QA Agent's own requirements."""
-    repository = state.get("knowledge_repository", "").rstrip("/")
+    repository = (state.get("knowledge_repository") or repository_binding(state.get("source_path"))).rstrip("/")
     register = load_source_register()
     documents = []
     if repository:
@@ -251,6 +285,7 @@ def project_pipeline(state):
     return RagPipeline(documents=documents, register=register)
 
 
+@trace_operation("RAG", "Retrieve project corpus")
 def project_corpus_context(state, question):
     """Retrieve evidence bound to this repository/session only."""
     pipeline = project_pipeline(dict(state, requirements=[]))
@@ -261,6 +296,7 @@ def project_corpus_context(state, question):
             for item in results if item["score"] > 0]
 
 
+@trace_operation("RAG", "Retrieve project evidence")
 def project_retrieve(state, query, top_k=3):
     pipeline = project_pipeline(state)
     if pipeline is None:

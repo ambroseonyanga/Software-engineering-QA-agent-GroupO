@@ -1,4 +1,10 @@
 """Extract traceable requirement records locally, without sending PDF pages to a model."""
+
+try:
+    from .console_logging import trace_operation, log_event, log_error
+except ImportError:
+    from console_logging import trace_operation, log_event, log_error
+
 import re
 
 VERSION = 1
@@ -7,6 +13,7 @@ CRITERION = re.compile(r'^\s*((?:NFR|FR|REQ|BR|UR|SR)-\d+-AC\d+)\s*:\s*(.*)', re
 MODAL = re.compile(r'\b(?:shall|must|should|is required to)\b', re.I)
 
 
+@trace_operation("RAG", "Extract requirements")
 def extract_requirements(pages):
     candidates, current = [], None
     for page in pages:

@@ -1,4 +1,10 @@
 """Generate proposals using the evaluated Week 2 prompt file."""
+
+try:
+    from .console_logging import trace_operation, log_event, log_error
+except ImportError:
+    from console_logging import trace_operation, log_event, log_error
+
 try:
     from .model_service import MODEL, complete, load_prompt
 except ImportError:
@@ -7,5 +13,6 @@ except ImportError:
 PROMPT_FILE = "prompt-v1.2.txt"
 
 
+@trace_operation("AGENT", "Analyze requirement")
 def analyse_requirement(requirement):
     return complete(load_prompt(PROMPT_FILE), requirement, temperature=0.3)["text"]

@@ -1,6 +1,12 @@
 """Local PDF-to-report sessions. Generated Python is never executed by this process."""
+
+try:
+    from .console_logging import trace_operation, log_event, log_error
+except ImportError:
+    from console_logging import trace_operation, log_event, log_error
+
 import ast
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import hashlib
 from io import BytesIO
 import json
@@ -22,6 +28,7 @@ except ImportError:
     from requirement_extraction import extract_requirements, VERSION as REQUIREMENTS_VERSION
 
 LOCK = threading.RLock()
+CODE_WORKER_OWNER = uuid4().hex
 EXCLUDED = {'.git', '.venv', 'venv', 'node_modules', '__pycache__', 'uploads', 'media',
             'staticfiles', 'dist', 'build', '.aws', '.ssh', '.codex', '.agents'}
 EXTENSIONS = {'.py', '.html', '.css', '.js', '.ts', '.tsx', '.jsx', '.vue', '.sql'}
@@ -35,6 +42,20 @@ SCHEMA = {
                                          ('limitations', 1500), ('code', 14000)]}
     }}}
 }
+
+
+
+def uganda_time(value, fmt='%Y-%m-%d %H:%M:%S'):
+    """Convert recorded ISO timestamps to Uganda's EAT (UTC+03:00)."""
+    if not value:
+        return 'Not recorded'
+    try:
+        stamp = datetime.fromisoformat(str(value).replace('Z', '+00:00'))
+        if stamp.tzinfo is None:
+            return str(value)  # Do not invent a timezone for legacy naive records.
+        return stamp.astimezone(timezone(timedelta(hours=3), 'EAT')).strftime(fmt)
+    except ValueError:
+        return str(value)
 
 
 def now():
@@ -74,13 +95,27 @@ def read(session_id):
             state['requirements_version'] = REQUIREMENTS_VERSION
             save(state)
         changed = False
+        if state['status'] == 'code_generating' and state.get('code_generation_owner') != CODE_WORKER_OWNER:
+            # A daemon worker cannot survive a process restart. Preserve descriptions
+            # and existing execution approvals; require an explicit retry.
+            for test in state['tests']:
+                if test.get('review_status') == 'approved' and test.get('code_status') in {'queued', 'generating'}:
+                    test.update(code_status='failed', code_error='Code generation was interrupted when the application stopped. Retry code generation.')
+            state.update(status='approved' if state.get('approval') else 'review',
+                         error='Code generation was interrupted. Retry the affected approved cases.')
+            state.pop('code_generation_owner', None)
+            changed = True
+        for test in state['tests']:
+            if test.get('review_status') == 'approved' and not test.get('code') and test.get('code_status') not in {'queued', 'generating', 'failed', 'waiting'}:
+                test.update(code_status='failed', code_error='No generated code is available. Retry code generation.')
+                changed = True
         recorded = {}
         if state.get('error') and ('Code generation failed' in state['error'] or 'Approval saved.' in state['error']):
             for event in state.get('events', []):
                 if event['action'] == 'test_descriptions_approved' and event['at'] >= state.get('generated', ''):
                     recorded.update({test_id: event['at'] for test_id in event.get('test_ids', [])})
         for test in state['tests']:
-            if test['id'] in (state.get('approval') or {}).get('tests', {}):
+            if test['id'] in (state.get('approval') or {}).get('tests', {}) and test.get('code'):
                 if test.get('review_status') != 'approved' or test.get('code_status') != 'ready':
                     test.update(review_status='approved', code_status='ready')
                     changed = True
@@ -144,6 +179,7 @@ def snapshot(source, destination):
     return manifest
 
 
+@trace_operation("AGENT", "Create project snapshot")
 def create(pdf, filename, code_path, adapter, focus, manual_text="", allow_empty=False):
     if adapter not in {'budgetme', 'python'}:
         raise ValueError('Select a supported test environment.')
@@ -180,12 +216,17 @@ def create(pdf, filename, code_path, adapter, focus, manual_text="", allow_empty
             raise ValueError('The BudgetMe environment needs the folder containing manage.py and budgetbuddy.')
         if pdf and not manual_text.strip():
             (root / 'requirements.pdf').write_bytes(pdf)
+        try:
+            from .rag_service import repository_binding
+        except ImportError:
+            from rag_service import repository_binding
         state = {'id': session_id, 'name': Path(code_path).name, 'pdf_name': Path(filename).name,
                  'pdf_hash': digest(manual_text.strip().encode() if manual_text.strip() else pdf), 'pages': pages, 'manifest': manifest,
                  'requirements': extract_requirements(pages), 'requirements_version': REQUIREMENTS_VERSION,
                  'snapshot_hash': digest(json.dumps(manifest, sort_keys=True).encode()),
                  'created': now(), 'status': 'ready', 'adapter': adapter, 'focus': focus[:2000],
                  'source_path': str(Path(code_path).expanduser().resolve()),
+                 'knowledge_repository': repository_binding(Path(code_path).expanduser().resolve()),
                  'project_key': digest(str(Path(code_path).expanduser().resolve()).casefold().encode()),
                  'tests': [], 'approval': None, 'results': [], 'events': [], 'error': None}
         save(state)
@@ -195,6 +236,7 @@ def create(pdf, filename, code_path, adapter, focus, manual_text="", allow_empty
         raise
 
 
+@trace_operation("RAG", "Assemble project context")
 def context(state, requirement_ids=None):
     requirements = state.get('requirements') or extract_requirements(state['pages'])
     if not requirements:
@@ -250,6 +292,7 @@ def context(state, requirement_ids=None):
     return evidence
 
 
+@trace_operation("CODE", "Validate generated code")
 def validate_code(code):
     code = code.strip()
     if code.startswith('```') and code.endswith('```'):
@@ -280,6 +323,7 @@ def validate_code(code):
     return code
 
 
+@trace_operation("AGENT", "Generate test proposals")
 def generate(session_id, proposals_only=False):
     with LOCK:
         state = read(session_id)
@@ -322,11 +366,13 @@ def generate(session_id, proposals_only=False):
             state['events'].append({'at': now(), 'action': 'generated', 'count': len(state['tests'])})
             save(state)
     except Exception as error:
+        log_error("CODE", "Generation failed", error)
         with LOCK:
             state.update(status='generation_failed', error='Suggestions could not be generated: ' + str(error)[:500])
             save(state)
 
 
+@trace_operation("APPROVAL", "Approve executable tests")
 def approve(session_id, selected):
     with LOCK:
         state = read(session_id)
@@ -344,6 +390,7 @@ def approve(session_id, selected):
         save(state)
 
 
+@trace_operation("APPROVAL", "Verify execution approval")
 def verify_approval(state):
     approval = state.get('approval')
     if not approval or approval['snapshot_hash'] != state['snapshot_hash']:
@@ -361,6 +408,7 @@ def verify_approval(state):
     return selected
 
 
+@trace_operation("APPROVAL", "Approve test descriptions or retry code")
 def prepare_approval(session_id, selected, retry=False):
     with LOCK:
         state = read(session_id)
@@ -368,22 +416,30 @@ def prepare_approval(session_id, selected, retry=False):
         eligible = {t['id'] for t in state['tests'] if
                     (t.get('review_status') == 'approved' and t.get('code_status') in {'failed', 'waiting'} if retry
                      else t.get('review_status') not in {'approved', 'rejected'})}
-        ready = set((state.get('approval') or {}).get('tests', {}))
-        if state['status'] not in {'review', 'approved'} or not ids or not ids.issubset(eligible) or ids & ready:
+        terminal_retry = retry and state['status'] in {'completed', 'blocked', 'cancelled'}
+        ready = set() if terminal_retry else set((state.get('approval') or {}).get('tests', {}))
+        if state['status'] not in ({'review', 'approved', 'completed', 'blocked', 'cancelled'} if retry else {'review', 'approved'}) or not ids or not ids.issubset(eligible) or ids & ready:
             raise ValueError('Select cases awaiting approval.' if not retry else 'Select approved cases whose code needs retrying.')
         if ready:
             verify_approval(state)
+        if terminal_retry:
+            state.setdefault('execution_history', []).append({key: state.get(key) for key in
+                ('started', 'finished', 'status', 'results', 'approval', 'image_id', 'base_image_id', 'error')})
+            state.update(approval=None, results=[])
+            for key in ('started', 'finished', 'image_id', 'base_image_id'):
+                state.pop(key, None)
         at = now()
         for test in state['tests']:
             if test['id'] in ids:
                 test.update(review_status='approved', code_status='queued', code_error=None)
                 test.setdefault('approved_at', at)
-        state.update(status='code_generating', error=None, selected_for_code=sorted(ids),
+        state.update(status='code_generating', error=None, selected_for_code=sorted(ids), code_generation_owner=CODE_WORKER_OWNER,
                      prior_approval=state.get('approval'))
         state['events'].append({'at': at, 'action': 'code_retry_requested' if retry else 'test_descriptions_approved', 'test_ids': sorted(ids)})
         save(state)
 
 
+@trace_operation("CODE", "Generate approved code")
 def generate_approved_code(session_id):
     state = read(session_id)
     if state['status'] != 'code_generating':
@@ -417,9 +473,11 @@ def generate_approved_code(session_id):
                 test['hash'] = digest(test['code'].encode())
                 test['code_model'] = response['model']
                 test['code_generated'] = now()
+            log_event('CODE', 'Approved test code ready')
             test.update(code_status='ready', code_error=None)
             state['events'].append({'at': now(), 'action': 'code_validation_passed', 'test_id': test['id'], 'sha256': test['hash']})
         except Exception as error:
+            log_error("CODE", "Code generation or validation failed", error)
             failed = str(error)[:500]
             test.pop('code', None)
             test.pop('hash', None)
@@ -435,6 +493,7 @@ def generate_approved_code(session_id):
                 hashes[test['id']] = test['hash']
         state['approval'] = prior if failed and hashes == (prior or {}).get('tests', {}) else ({'at': now(), 'reviewer': 'Local operator', 'snapshot_hash': state['snapshot_hash'], 'tests': hashes} if hashes else None)
         state.update(status='approved' if hashes else 'review', error=('Approval saved. Code generation failed: ' + failed) if failed else None)
+        state.pop('code_generation_owner', None)
         state['events'].append({'at': now(), 'action': 'code_generation_failed' if failed else 'approved_code_generated', 'test_ids': state['selected_for_code']})
         save(state)
 
@@ -451,6 +510,7 @@ def pending_requirements(state):
     return [r['id'] for r in state['requirements'] if r['id'] not in covered]
 
 
+@trace_operation("AGENT", "Queue requirement batch")
 def prepare_requirement_batch(session_id, requested=None):
     with LOCK:
         state = read(session_id)
@@ -474,6 +534,7 @@ def prepare_requirement_batch(session_id, requested=None):
         save(state)
 
 
+@trace_operation("AGENT", "Generate requirement test cases")
 def generate_requirement_batch(session_id):
     with LOCK:
         state = read(session_id)
@@ -504,10 +565,12 @@ def generate_requirement_batch(session_id):
             state['generation_completed'] += 1
             state['model'] = response['model']
             state['generated'] = now()
+            log_event('AGENT', 'Requirement test cases generated', count=len(payload['tests']))
             state['events'].append({'at': now(), 'action': 'requirement_cases_generated', 'requirement_id': rid, 'count': len(payload['tests'])})
             with LOCK:
                 save(state)
         except Exception as error:
+            log_error("CODE", "Code generation or validation failed", error)
             failed = str(error)[:500]
             state.setdefault('requirement_generation_errors', {})[rid] = failed
             break
@@ -526,6 +589,7 @@ def connect(code_path, adapter, name=''):
     return state
 
 
+@trace_operation("RAG", "Import requirements")
 def add_requirements(session_id, *, identifier='', title='', text='', pdf=b'', filename=''):
     """Append new IDs without changing existing cases, approvals or execution evidence."""
     with LOCK:
@@ -577,6 +641,7 @@ def add_requirements(session_id, *, identifier='', title='', text='', pdf=b'', f
         save(state)
 
 
+@trace_operation("APPROVAL", "Review test case")
 def review_case(session_id, test_id, action, fields=None):
     with LOCK:
         state = read(session_id)
@@ -619,6 +684,7 @@ def record_model_trace(state, prompt_name, evidence, response):
         save(state)
 
 
+@trace_operation("AGENT", "Change project connection")
 def set_project_connection(session_id, connected):
     """Soft disconnect all snapshots of a project; retain evidence and source files."""
     with LOCK:
