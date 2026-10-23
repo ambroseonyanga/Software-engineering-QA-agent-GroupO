@@ -1,0 +1,212 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1740" viewBox="0 0 1500 1740">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#526579"></path>
+    </marker>
+    <style>
+      .node { stroke-width: 1.8; rx: 10; }
+      .blue { fill: #dae8fc; stroke: #6c8ebf; }
+      .yellow { fill: #fff2cc; stroke: #d6b656; }
+      .green { fill: #d5e8d4; stroke: #82b366; }
+      .red { fill: #f8cecc; stroke: #b85450; }
+      .gray { fill: #f5f5f5; stroke: #777; }
+      .plain { fill: white; stroke: #526579; }
+      .heading { font: bold 25px Arial, sans-serif; fill: #203047; }
+      .label { font: bold 15px Arial, sans-serif; fill: #172b4d; }
+      .body { font: 14px Arial, sans-serif; fill: #263746; }
+      .edge { fill: none; stroke: #526579; stroke-width: 1.8; marker-end: url(#arrow); }
+      .dashed { stroke-dasharray: 7 5; }
+      .edgeLabel { font: 12px Arial, sans-serif; fill: #34495e; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="1740" fill="#ffffff"></rect>
+
+  <!-- PAGE 1: RAG AND TOOL ARCHITECTURE -->
+  <text x="750" y="42" text-anchor="middle" class="heading">WEEK 4 — RAG AND TOOLS ARCHITECTURE</text>
+  <text x="750" y="66" text-anchor="middle" class="body">Evidence retrieval, model requests, controlled tools and execution tracing</text>
+
+  <!-- RAG connections -->
+  <path class="edge" d="M260 140 H350"></path>
+  <path class="edge" d="M465 185 V220 H465 V245"></path>
+  <path class="edge" d="M260 290 H350"></path>
+  <path class="edge" d="M580 290 H680"></path>
+  <path class="edge" d="M465 335 V370"></path>
+  <path class="edge" d="M795 290 H880"></path>
+  <path class="edge" d="M995 335 V370"></path>
+  <path class="edge" d="M995 415 V450"></path>
+  <path class="edge" d="M580 415 V450"></path>
+
+  <!-- RAG nodes -->
+  <rect class="node plain" x="30" y="95" width="230" height="90"></rect>
+  <text x="145" y="130" text-anchor="middle" class="label">Authorised source register</text>
+  <text x="145" y="154" text-anchor="middle" class="body">Approved source files</text>
+
+  <rect class="node plain" x="350" y="95" width="230" height="90"></rect>
+  <text x="465" y="123" text-anchor="middle" class="label">Ingestion and index</text>
+  <text x="465" y="148" text-anchor="middle" class="body">180-word chunks, TF-IDF</text>
+  <text x="465" y="168" text-anchor="middle" class="body">26 chunks in snapshot</text>
+
+  <path class="edge" d="M260 140 H315 V290 H350"></path>
+  <text x="278" y="132" class="edgeLabel">Registered files</text>
+  <text x="475" y="211" class="edgeLabel">Index</text>
+
+  <rect class="node blue" x="30" y="245" width="230" height="90"></rect>
+  <text x="145" y="278" text-anchor="middle" class="label">User question</text>
+  <text x="145" y="301" text-anchor="middle" class="body">or tool request</text>
+  <text x="145" y="320" text-anchor="middle" class="body">Flask interface</text>
+
+  <rect class="node blue" x="350" y="245" width="230" height="90"></rect>
+  <text x="465" y="273" text-anchor="middle" class="label">retrieve_project_evidence</text>
+  <text x="465" y="298" text-anchor="middle" class="body">Retrieve and filter</text>
+  <text x="465" y="318" text-anchor="middle" class="body">Top 3; score ≥ 0.08</text>
+
+  <rect class="node blue" x="680" y="245" width="230" height="90"></rect>
+  <text x="795" y="275" text-anchor="middle" class="label">Build model context</text>
+  <text x="795" y="299" text-anchor="middle" class="body">Question + labelled excerpts</text>
+  <text x="795" y="319" text-anchor="middle" class="body">Grounding prompt</text>
+
+  <rect class="node plain" x="880" y="245" width="250" height="90"></rect>
+  <text x="1005" y="274" text-anchor="middle" class="label">Model-selected tool router</text>
+  <text x="1005" y="299" text-anchor="middle" class="body">JSON decision</text>
+  <text x="1005" y="319" text-anchor="middle" class="body">No tool executes yet</text>
+
+  <path class="edge" d="M910 290 H880"></path>
+  <text x="795" y="230" text-anchor="middle" class="edgeLabel">Retained excerpts</text>
+
+  <rect class="node red" x="350" y="370" width="230" height="80"></rect>
+  <text x="465" y="399" text-anchor="middle" class="label">No retained evidence</text>
+  <text x="465" y="422" text-anchor="middle" class="body">Return insufficient information</text>
+  <text x="465" y="440" text-anchor="middle" class="body">No model request</text>
+
+  <rect class="node yellow" x="680" y="370" width="230" height="80"></rect>
+  <text x="795" y="400" text-anchor="middle" class="label">Groq cloud model</text>
+  <text x="795" y="423" text-anchor="middle" class="body">qwen/qwen3.8-27b</text>
+  <text x="795" y="440" text-anchor="middle" class="body">90-second timeout; no retry</text>
+
+  <rect class="node blue" x="680" y="480" width="230" height="80"></rect>
+  <text x="795" y="510" text-anchor="middle" class="label">Response and evidence</text>
+  <text x="795" y="533" text-anchor="middle" class="body">Answer + source excerpts</text>
+  <text x="795" y="550" text-anchor="middle" class="body">Claims need review</text>
+
+  <path class="edge" d="M795 450 V480"></path>
+  <text x="810" y="469" class="edgeLabel">Answer or error</text>
+  <path class="edge" d="M910 410 H1160 V520 H1210"></path>
+
+  <!-- Tool safety lane -->
+  <rect class="node yellow" x="1160" y="245" width="300" height="90"></rect>
+  <text x="1310" y="273" text-anchor="middle" class="label">Decision validation</text>
+  <text x="1310" y="297" text-anchor="middle" class="body">Allow-list and schema checks</text>
+  <text x="1310" y="318" text-anchor="middle" class="body">Invalid / prohibited: stop</text>
+  <path class="edge" d="M1130 290 H1160"></path>
+  <text x="1145" y="278" class="edgeLabel">Decision</text>
+
+  <rect class="node green" x="1160" y="385" width="300" height="80"></rect>
+  <text x="1310" y="414" text-anchor="middle" class="label">Approved tool execution</text>
+  <text x="1310" y="438" text-anchor="middle" class="body">Retrieval or local issue draft</text>
+  <path class="edge" d="M1310 335 V385"></path>
+  <text x="1325" y="362" class="edgeLabel">Valid request</text>
+
+  <rect class="node gray" x="1160" y="505" width="300" height="80"></rect>
+  <text x="1310" y="534" text-anchor="middle" class="label">Execution trace</text>
+  <text x="1310" y="557" text-anchor="middle" class="body">Request, decision, result, timing</text>
+  <path class="edge" d="M1310 465 V505"></path>
+
+  <path class="edge dashed" d="M910 520 H1030 V545 H1160"></path>
+  <text x="1030" y="535" class="edgeLabel">Retrieval result / error</text>
+
+  <line x1="30" y1="625" x2="1470" y2="625" stroke="#d0d7de" stroke-width="2"></line>
+
+  <!-- PAGE 2: TOOL FLOW -->
+  <text x="750" y="670" text-anchor="middle" class="heading">WEEK 4 — MODEL-SELECTED TOOL FLOW</text>
+
+  <rect class="node gray" x="400" y="700" width="700" height="55"></rect>
+  <text x="750" y="734" text-anchor="middle" class="label">Controlled dispatch: the model proposes; the application validates and executes</text>
+
+  <rect class="node blue" x="560" y="790" width="280" height="65"></rect>
+  <text x="700" y="817" text-anchor="middle" class="label">Local Flask interface</text>
+  <text x="700" y="840" text-anchor="middle" class="body">POST /tool-request</text>
+
+  <rect class="node yellow" x="100" y="890" width="270" height="75"></rect>
+  <text x="235" y="918" text-anchor="middle" class="label">Versioned router prompt</text>
+  <text x="235" y="941" text-anchor="middle" class="body">Executable JSON schemas</text>
+
+  <rect class="node blue" x="560" y="890" width="280" height="75"></rect>
+  <text x="700" y="918" text-anchor="middle" class="label">Single-decision router</text>
+  <text x="700" y="941" text-anchor="middle" class="body">Check audit storage first</text>
+
+  <rect class="node yellow" x="1080" y="890" width="300" height="75"></rect>
+  <text x="1230" y="918" text-anchor="middle" class="label">Groq / qwen/qwen3.8-27b</text>
+  <text x="1230" y="941" text-anchor="middle" class="body">Cloud JSON decision</text>
+
+  <rect class="node blue" x="560" y="1000" width="280" height="75"></rect>
+  <text x="700" y="1028" text-anchor="middle" class="label">Deterministic validation</text>
+  <text x="700" y="1051" text-anchor="middle" class="body">Decision, allow-list, arguments</text>
+
+  <rect class="node red" x="1080" y="1000" width="300" height="85"></rect>
+  <text x="1230" y="1027" text-anchor="middle" class="label">Stop safely</text>
+  <text x="1230" y="1050" text-anchor="middle" class="body">Invalid / prohibited / no tool</text>
+  <text x="1230" y="1070" text-anchor="middle" class="body">Clarification, refusal or error</text>
+
+  <path class="edge" d="M700 855 V890"></path>
+  <path class="edge" d="M370 927 H560"></path>
+  <path class="edge" d="M840 927 H1080"></path>
+  <path class="edge" d="M700 965 V1000"></path>
+  <path class="edge" d="M840 1037 H960 V1040 H1080"></path>
+  <text x="950" y="1026" class="edgeLabel">Invalid decision</text>
+
+  <rect class="node green" x="100" y="1120" width="340" height="80"></rect>
+  <text x="270" y="1149" text-anchor="middle" class="label">retrieve_project_evidence</text>
+  <text x="270" y="1173" text-anchor="middle" class="body">Read approved registered documents</text>
+
+  <rect class="node green" x="560" y="1120" width="280" height="80"></rect>
+  <text x="700" y="1149" text-anchor="middle" class="label">create_issue_draft</text>
+  <text x="700" y="1173" text-anchor="middle" class="body">Create unique local draft</text>
+
+  <rect class="node yellow" x="1000" y="1120" width="380" height="80"></rect>
+  <text x="1190" y="1149" text-anchor="middle" class="label">Draft storage</text>
+  <text x="1190" y="1173" text-anchor="middle" class="body">status=draft; submitted=false</text>
+
+  <path class="edge" d="M620 1075 L440 1100 V1160 H440"></path>
+  <text x="455" y="1098" class="edgeLabel">Approved retrieval</text>
+  <path class="edge" d="M780 1075 V1120"></path>
+  <text x="793" y="1097" class="edgeLabel">Approved draft</text>
+  <path class="edge" d="M840 1160 H1000"></path>
+  <text x="920" y="1148" class="edgeLabel">Save draft</text>
+
+  <rect class="node blue" x="100" y="1240" width="340" height="80"></rect>
+  <text x="270" y="1269" text-anchor="middle" class="label">Generate grounded answer</text>
+  <text x="270" y="1293" text-anchor="middle" class="body">Groq cloud model</text>
+
+  <rect class="node blue" x="560" y="1240" width="340" height="80"></rect>
+  <text x="730" y="1269" text-anchor="middle" class="label">Validate retrieval evidence</text>
+  <text x="730" y="1293" text-anchor="middle" class="body">Return answer + source excerpts</text>
+
+  <path class="edge" d="M270 1200 V1240"></path>
+  <path class="edge" d="M440 1280 H560"></path>
+
+  <rect class="node blue" x="560" y="1360" width="340" height="75"></rect>
+  <text x="730" y="1389" text-anchor="middle" class="label">Return actual tool result</text>
+  <text x="730" y="1412" text-anchor="middle" class="body">Display result and stop</text>
+
+  <path class="edge" d="M730 1320 V1360"></path>
+  <path class="edge" d="M1190 1200 V1397 H900"></path>
+  <text x="1030" y="1384" class="edgeLabel">Draft result</text>
+
+  <rect class="node gray" x="100" y="1460" width="430" height="100"></rect>
+  <text x="315" y="1489" text-anchor="middle" class="label">Per-request execution trace</text>
+  <text x="315" y="1513" text-anchor="middle" class="body">Decision, arguments, complete result</text>
+  <text x="315" y="1536" text-anchor="middle" class="body">Timing — evidence/traces/tool_requests</text>
+
+  <path class="edge dashed" d="M560 1400 H500 V1510 H530"></path>
+  <text x="510" y="1450" class="edgeLabel">Record outcome</text>
+
+  <rect class="node gray" x="600" y="1480" width="780" height="85"></rect>
+  <text x="990" y="1508" text-anchor="middle" class="label">Safety and execution notes</text>
+  <text x="990" y="1532" text-anchor="middle" class="body">Manual /tool forms use the same dispatcher.</text>
+  <text x="990" y="1552" text-anchor="middle" class="body">Model failures stop before dispatch; audit storage is checked before side effects.</text>
+
+  <text x="750" y="1640" text-anchor="middle" class="body">RAG = Retrieval-Augmented Generation • Tool execution is validated by the application</text>
+  <text x="750" y="1665" text-anchor="middle" class="body">Vector-free retrieval snapshot: TF-IDF ranking • Top 3 matches • Minimum score 0.08</text>
+</svg>
